@@ -83,7 +83,30 @@ protected:
 
 	void set_only_update_transform_changes(bool p_enable);
 
+	uint32_t get_real_collision_mask();
+	uint32_t get_real_collision_layer();
+
+	virtual void update_real_collision_mask();
+	virtual void update_real_collision_layer();
+
+	uint32_t collision_mask;
+	uint32_t collision_layer;
+
 public:
+	void set_collision_layer(uint32_t p_layer);
+	uint32_t get_collision_layer() const;
+
+	void set_collision_mask(uint32_t p_mask);
+	uint32_t get_collision_mask() const;
+
+	void set_collision_mask_bit(int p_bit, bool p_value);
+	bool get_collision_mask_bit(int p_bit) const;
+
+	void set_collision_layer_bit(int p_bit, bool p_value);
+	bool get_collision_layer_bit(int p_bit) const;
+
+	void set_z_height(int p_height) override;
+
 	uint32_t create_shape_owner(Object *p_owner);
 	void remove_shape_owner(uint32_t owner);
 	void get_shape_owners(List<uint32_t> *r_owners);

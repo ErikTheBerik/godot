@@ -42,7 +42,8 @@ class Node2D : public CanvasItem {
 	Size2 _scale;
 	int z_index;
 	bool z_relative;
-
+	int z_height;
+	bool add_height_to_z;
 	Transform2D _mat;
 
 	bool _xform_dirty;
@@ -104,6 +105,9 @@ public:
 	void set_z_index(int p_z);
 	int get_z_index() const;
 
+	virtual void set_z_height(int p_height);
+	int get_z_height() const;
+
 	void look_at(const Vector2 &p_pos);
 	float get_angle_to(const Vector2 &p_pos) const;
 
@@ -112,6 +116,9 @@ public:
 
 	void set_z_as_relative(bool p_enabled);
 	bool is_z_relative() const;
+
+	void set_add_height_to_z(bool p_enabled);
+	bool is_height_added_to_z() const;
 
 	Transform2D get_relative_transform_to_parent(const Node *p_parent) const;
 

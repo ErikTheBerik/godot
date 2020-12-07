@@ -430,6 +430,8 @@ void TileMap::update_dirty_quadrants() {
 				vs->canvas_item_set_transform(canvas_item, xform);
 				vs->canvas_item_set_light_mask(canvas_item, get_light_mask());
 				vs->canvas_item_set_z_index(canvas_item, z_index);
+				vs->canvas_item_set_z_height(canvas_item, get_z_height());
+				vs->canvas_item_set_add_height_to_z(canvas_item, is_height_added_to_z());
 
 				q.canvas_items.push_back(canvas_item);
 
@@ -765,8 +767,8 @@ Map<TileMap::PosKey, TileMap::Quadrant>::Element *TileMap::_create_quadrant(cons
 		Physics2DServer::get_singleton()->body_set_mode(q.body, use_kinematic ? Physics2DServer::BODY_MODE_KINEMATIC : Physics2DServer::BODY_MODE_STATIC);
 
 		Physics2DServer::get_singleton()->body_attach_object_instance_id(q.body, get_instance_id());
-		Physics2DServer::get_singleton()->body_set_collision_layer(q.body, collision_layer);
-		Physics2DServer::get_singleton()->body_set_collision_mask(q.body, collision_mask);
+		Physics2DServer::get_singleton()->body_set_collision_layer(q.body, get_real_collision_layer());
+		Physics2DServer::get_singleton()->body_set_collision_mask(q.body, get_real_collision_mask());
 		Physics2DServer::get_singleton()->body_set_param(q.body, Physics2DServer::BODY_PARAM_FRICTION, friction);
 		Physics2DServer::get_singleton()->body_set_param(q.body, Physics2DServer::BODY_PARAM_BOUNCE, bounce);
 
@@ -1293,25 +1295,13 @@ Rect2 TileMap::_edit_get_rect() const {
 void TileMap::set_collision_layer(uint32_t p_layer) {
 
 	collision_layer = p_layer;
-	if (!use_parent) {
-		for (Map<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
-
-			Quadrant &q = E->get();
-			Physics2DServer::get_singleton()->body_set_collision_layer(q.body, collision_layer);
-		}
-	}
+	update_real_collision_layer();
 }
 
 void TileMap::set_collision_mask(uint32_t p_mask) {
 
 	collision_mask = p_mask;
-	if (!use_parent) {
-		for (Map<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
-
-			Quadrant &q = E->get();
-			Physics2DServer::get_singleton()->body_set_collision_mask(q.body, collision_mask);
-		}
-	}
+	update_real_collision_mask();
 }
 
 void TileMap::set_collision_layer_bit(int p_bit, bool p_value) {
@@ -1422,6 +1412,14 @@ bool TileMap::get_collision_layer_bit(int p_bit) const {
 bool TileMap::get_collision_mask_bit(int p_bit) const {
 
 	return get_collision_mask() & (1 << p_bit);
+}
+
+void TileMap::set_z_height(int p_height) {
+
+	Node2D::set_z_height(p_height);
+
+	update_real_collision_mask();
+	update_real_collision_layer();
 }
 
 void TileMap::set_mode(Mode p_mode) {
@@ -1936,6 +1934,37 @@ void TileMap::_bind_methods() {
 void TileMap::_changed_callback(Object *p_changed, const char *p_prop) {
 	if (tile_set.is_valid() && tile_set.ptr() == p_changed) {
 		emit_signal("settings_changed");
+	}
+}
+
+
+uint32_t TileMap::get_real_collision_mask() {
+	return collision_mask << (VS::HIGHEST_BIT * get_z_height());
+}
+
+
+uint32_t TileMap::get_real_collision_layer() {
+	return collision_layer << (VS::HIGHEST_BIT * get_z_height());
+}
+
+
+void TileMap::update_real_collision_mask() {
+	if (!use_parent) {
+		for (Map<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
+
+			Quadrant &q = E->get();
+			Physics2DServer::get_singleton()->body_set_collision_mask(q.body, get_real_collision_mask());
+		}
+	}
+}
+
+void TileMap::update_real_collision_layer() {
+	if (!use_parent) {
+		for (Map<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
+
+			Quadrant &q = E->get();
+			Physics2DServer::get_singleton()->body_set_collision_layer(q.body, get_real_collision_layer());
+		}
 	}
 }
 

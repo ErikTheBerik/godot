@@ -179,6 +179,8 @@ void VisualServerCanvas::_render_canvas_item(Item *p_canvas_item, const Transfor
 		ci->light_masked = false;
 
 		int zidx = p_z - VS::CANVAS_ITEM_Z_MIN;
+		if (ci->add_height_to_z)
+			zidx = CLAMP(zidx + (ci->z_height * VS::HEIGHT_Z_DIFF), 0, VS::CANVAS_ITEM_Z_MAX - VS::CANVAS_ITEM_Z_MIN);
 
 		if (z_last_list[zidx]) {
 			z_last_list[zidx]->next = ci;
@@ -920,12 +922,32 @@ void VisualServerCanvas::canvas_item_set_z_index(RID p_item, int p_z) {
 
 	canvas_item->z_index = p_z;
 }
+
+void VisualServerCanvas::canvas_item_set_z_height(RID p_item, int p_h) {
+
+	ERR_FAIL_COND(p_h < 0 || p_h > 32);
+
+	Item *canvas_item = canvas_item_owner.getptr(p_item);
+	ERR_FAIL_COND(!canvas_item);
+
+	canvas_item->z_height = p_h;
+}
+
 void VisualServerCanvas::canvas_item_set_z_as_relative_to_parent(RID p_item, bool p_enable) {
 
 	Item *canvas_item = canvas_item_owner.getornull(p_item);
 	ERR_FAIL_COND(!canvas_item);
 
 	canvas_item->z_relative = p_enable;
+}
+
+
+void VisualServerCanvas::canvas_item_set_add_height_to_z(RID p_item, bool p_enable) {
+
+	Item *canvas_item = canvas_item_owner.getornull(p_item);
+	ERR_FAIL_COND(!canvas_item);
+
+	canvas_item->add_height_to_z = p_enable;
 }
 
 void VisualServerCanvas::canvas_item_attach_skeleton(RID p_item, RID p_skeleton) {

@@ -196,6 +196,7 @@ private:
 	float bounce;
 	uint32_t collision_layer;
 	uint32_t collision_mask;
+
 	mutable DataFormat format;
 
 	TileOrigin tile_origin;
@@ -238,6 +239,12 @@ protected:
 
 	virtual void _validate_property(PropertyInfo &property) const;
 	virtual void _changed_callback(Object *p_changed, const char *p_prop);
+
+	uint32_t get_real_collision_mask();
+	uint32_t get_real_collision_layer();
+
+	void update_real_collision_mask();
+	void update_real_collision_layer();
 
 public:
 	enum {
@@ -283,11 +290,13 @@ public:
 	void set_collision_mask(uint32_t p_mask);
 	uint32_t get_collision_mask() const;
 
+	void set_collision_mask_bit(int p_bit, bool p_value);
+	bool get_collision_mask_bit(int p_bit) const;
+
 	void set_collision_layer_bit(int p_bit, bool p_value);
 	bool get_collision_layer_bit(int p_bit) const;
 
-	void set_collision_mask_bit(int p_bit, bool p_value);
-	bool get_collision_mask_bit(int p_bit) const;
+	void set_z_height(int p_height) override;
 
 	void set_collision_use_kinematic(bool p_use_kinematic);
 	bool get_collision_use_kinematic() const;

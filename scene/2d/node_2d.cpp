@@ -35,6 +35,9 @@
 #include "scene/main/viewport.h"
 #include "servers/visual_server.h"
 
+#include <iostream>
+#include <assert.h>
+
 #ifdef TOOLS_ENABLED
 Dictionary Node2D::_edit_get_state() const {
 
@@ -354,9 +357,49 @@ bool Node2D::is_z_relative() const {
 	return z_relative;
 }
 
+
+void Node2D::set_add_height_to_z(bool p_enabled) {
+
+	if (add_height_to_z == p_enabled)
+		return;
+	add_height_to_z = p_enabled;
+	VS::get_singleton()->canvas_item_set_add_height_to_z(get_canvas_item(), p_enabled);
+}
+
+bool Node2D::is_height_added_to_z() const {
+
+	return add_height_to_z;
+}
+
 int Node2D::get_z_index() const {
 
 	return z_index;
+}
+
+void Node2D::set_z_height(int p_height) {
+
+	p_height = p_height < 0 ? 0 : p_height;
+	assert(p_height <= 32);
+	assert(p_height >= 0);
+	int hDiff = p_height - z_height;
+
+	for (int i = 0; i < get_child_count(); i++)
+	{
+		Node2D *child = Object::cast_to<Node2D>(get_child(i));
+		if (child)
+		{
+			int newHeight = child->get_z_height() + hDiff;
+			child->set_z_height(newHeight);
+		}
+	}
+
+	z_height = p_height;
+	VS::get_singleton()->canvas_item_set_z_height(get_canvas_item(), z_height);
+}
+
+int Node2D::get_z_height() const {
+
+	return z_height;
 }
 
 Transform2D Node2D::get_relative_transform_to_parent(const Node *p_parent) const {
@@ -433,8 +476,14 @@ void Node2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_z_index", "z_index"), &Node2D::set_z_index);
 	ClassDB::bind_method(D_METHOD("get_z_index"), &Node2D::get_z_index);
 
+	ClassDB::bind_method(D_METHOD("set_z_height", "height"), &Node2D::set_z_height);
+	ClassDB::bind_method(D_METHOD("get_z_height"), &Node2D::get_z_height);
+
 	ClassDB::bind_method(D_METHOD("set_z_as_relative", "enable"), &Node2D::set_z_as_relative);
 	ClassDB::bind_method(D_METHOD("is_z_relative"), &Node2D::is_z_relative);
+
+	ClassDB::bind_method(D_METHOD("set_add_height_to_z", "enable"), &Node2D::set_add_height_to_z);
+	ClassDB::bind_method(D_METHOD("is_height_added_to_z"), &Node2D::is_height_added_to_z);
 
 	ClassDB::bind_method(D_METHOD("get_relative_transform_to_parent", "parent"), &Node2D::get_relative_transform_to_parent);
 
@@ -454,6 +503,8 @@ void Node2D::_bind_methods() {
 	ADD_GROUP("Z Index", "");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "z_index", PROPERTY_HINT_RANGE, itos(VS::CANVAS_ITEM_Z_MIN) + "," + itos(VS::CANVAS_ITEM_Z_MAX) + ",1"), "set_z_index", "get_z_index");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "z_as_relative"), "set_z_as_relative", "is_z_relative");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "height", PROPERTY_HINT_RANGE, itos(0) + "," + itos(VS::HEIGHT_MAX) + ",1"), "set_z_height", "get_z_height");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "add_height_to_z"), "set_add_height_to_z", "is_height_added_to_z");
 }
 
 Node2D::Node2D() {
@@ -463,4 +514,6 @@ Node2D::Node2D() {
 	_xform_dirty = false;
 	z_index = 0;
 	z_relative = true;
+	z_height = 0;
+	add_height_to_z = true;
 }

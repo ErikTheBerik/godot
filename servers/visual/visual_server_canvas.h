@@ -41,8 +41,10 @@ public:
 		RID parent; // canvas it belongs to
 		List<Item *>::Element *E;
 		int z_index;
+		int z_height;
 		bool z_relative;
 		bool sort_y;
+		bool add_height_to_z;
 		Color modulate;
 		Color self_modulate;
 		bool use_parent_material;
@@ -59,11 +61,13 @@ public:
 			children_order_dirty = true;
 			E = NULL;
 			z_index = 0;
+			z_height = 0;
 			modulate = Color(1, 1, 1, 1);
 			self_modulate = Color(1, 1, 1, 1);
 			sort_y = false;
 			use_parent_material = false;
 			z_relative = true;
+			add_height_to_z = true;
 			index = 0;
 			ysort_children_count = -1;
 			ysort_xform = Transform2D();
@@ -208,7 +212,9 @@ public:
 	void canvas_item_add_clip_ignore(RID p_item, bool p_ignore);
 	void canvas_item_set_sort_children_by_y(RID p_item, bool p_enable);
 	void canvas_item_set_z_index(RID p_item, int p_z);
+	void canvas_item_set_z_height(RID p_item, int p_h);
 	void canvas_item_set_z_as_relative_to_parent(RID p_item, bool p_enable);
+	void canvas_item_set_add_height_to_z(RID p_item, bool p_enable);
 	void canvas_item_set_copy_to_backbuffer(RID p_item, bool p_enable, const Rect2 &p_rect);
 	void canvas_item_attach_skeleton(RID p_item, RID p_skeleton);
 

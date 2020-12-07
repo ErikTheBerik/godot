@@ -216,7 +216,7 @@ void RayCast2D::_update_raycast_state() {
 
 	Physics2DDirectSpaceState::RayResult rr;
 
-	if (dss->intersect_ray(gt.get_origin(), gt.xform(to), rr, exclude, collision_mask, collide_with_bodies, collide_with_areas)) {
+	if (dss->intersect_ray(gt.get_origin(), gt.xform(to), rr, exclude, get_real_collision_mask(), collide_with_bodies, collide_with_areas)) {
 
 		collided = true;
 		against = rr.collider_id;
@@ -334,6 +334,10 @@ void RayCast2D::_bind_methods() {
 	ADD_GROUP("Collide With", "collide_with");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "collide_with_areas", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collide_with_areas", "is_collide_with_areas_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "collide_with_bodies", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collide_with_bodies", "is_collide_with_bodies_enabled");
+}
+
+uint32_t RayCast2D::get_real_collision_mask() {
+	return collision_mask << (VS::HIGHEST_BIT * get_z_height());
 }
 
 RayCast2D::RayCast2D() {

@@ -33,6 +33,9 @@
 #include "scene/scene_string_names.h"
 #include "servers/physics_2d_server.h"
 
+#include <iostream>
+#include <assert.h>
+
 void CollisionObject2D::_notification(int p_what) {
 
 	switch (p_what) {
@@ -100,6 +103,67 @@ void CollisionObject2D::_notification(int p_what) {
 				Physics2DServer::get_singleton()->body_attach_canvas_instance_id(rid, 0);
 		} break;
 	}
+}
+
+
+void CollisionObject2D::set_collision_layer(uint32_t p_layer) {
+	collision_layer = p_layer;
+	update_real_collision_layer();
+}
+
+
+uint32_t CollisionObject2D::get_collision_layer() const {
+	return collision_layer;
+}
+
+
+void CollisionObject2D::set_collision_mask(uint32_t p_mask) {
+	collision_mask = p_mask;
+	update_real_collision_mask();
+}
+
+
+uint32_t CollisionObject2D::get_collision_mask() const {
+	return collision_mask;
+}
+
+
+void CollisionObject2D::set_collision_mask_bit(int p_bit, bool p_value) {
+	uint32_t mask = get_collision_mask();
+	if (p_value)
+		mask |= 1 << p_bit;
+	else
+		mask &= ~(1 << p_bit);
+	set_collision_mask(mask);
+}
+
+
+bool CollisionObject2D::get_collision_mask_bit(int p_bit) const {
+	return get_collision_mask() & (1 << p_bit);
+}
+
+
+void CollisionObject2D::set_collision_layer_bit(int p_bit, bool p_value) {
+	uint32_t layer = get_collision_layer();
+	if (p_value)
+		layer |= 1 << p_bit;
+	else
+		layer &= ~(1 << p_bit);
+	set_collision_layer(layer);
+}
+
+
+bool CollisionObject2D::get_collision_layer_bit(int p_bit) const {
+	return get_collision_layer() & (1 << p_bit);
+}
+
+
+void CollisionObject2D::set_z_height(int p_height) {
+
+	Node2D::set_z_height(p_height);
+
+	update_real_collision_layer();
+	update_real_collision_mask();
 }
 
 uint32_t CollisionObject2D::create_shape_owner(Object *p_owner) {
@@ -369,6 +433,24 @@ void CollisionObject2D::set_only_update_transform_changes(bool p_enable) {
 	only_update_transform_changes = p_enable;
 }
 
+
+uint32_t CollisionObject2D::get_real_collision_mask() {
+	return collision_mask << (VS::HIGHEST_BIT * get_z_height());
+}
+
+
+uint32_t CollisionObject2D::get_real_collision_layer() {
+	return collision_layer << (VS::HIGHEST_BIT * get_z_height());
+}
+
+
+void CollisionObject2D::update_real_collision_mask() {
+}
+
+
+void CollisionObject2D::update_real_collision_layer() {
+}
+
 void CollisionObject2D::_update_pickable() {
 	if (!is_inside_tree())
 		return;
@@ -397,6 +479,17 @@ String CollisionObject2D::get_configuration_warning() const {
 void CollisionObject2D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_rid"), &CollisionObject2D::get_rid);
+
+	ClassDB::bind_method(D_METHOD("set_collision_layer", "layer"), &CollisionObject2D::set_collision_layer);
+	ClassDB::bind_method(D_METHOD("get_collision_layer"), &CollisionObject2D::get_collision_layer);
+	ClassDB::bind_method(D_METHOD("set_collision_mask", "mask"), &CollisionObject2D::set_collision_mask);
+	ClassDB::bind_method(D_METHOD("get_collision_mask"), &CollisionObject2D::get_collision_mask);
+
+	ClassDB::bind_method(D_METHOD("set_collision_mask_bit", "bit", "value"), &CollisionObject2D::set_collision_mask_bit);
+	ClassDB::bind_method(D_METHOD("get_collision_mask_bit", "bit"), &CollisionObject2D::get_collision_mask_bit);
+
+	ClassDB::bind_method(D_METHOD("set_collision_layer_bit", "bit", "value"), &CollisionObject2D::set_collision_layer_bit);
+	ClassDB::bind_method(D_METHOD("get_collision_layer_bit", "bit"), &CollisionObject2D::get_collision_layer_bit);
 
 	ClassDB::bind_method(D_METHOD("set_pickable", "enabled"), &CollisionObject2D::set_pickable);
 	ClassDB::bind_method(D_METHOD("is_pickable"), &CollisionObject2D::is_pickable);
@@ -428,6 +521,11 @@ void CollisionObject2D::_bind_methods() {
 
 	ADD_GROUP("Pickable", "input_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "input_pickable"), "set_pickable", "is_pickable");
+
+	ADD_GROUP("Collision", "collision_");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_layer", PROPERTY_HINT_LAYERS_2D_PHYSICS), "set_collision_layer", "get_collision_layer");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_mask", PROPERTY_HINT_LAYERS_2D_PHYSICS), "set_collision_mask", "get_collision_mask");
+
 	ADD_GROUP("", "");
 }
 

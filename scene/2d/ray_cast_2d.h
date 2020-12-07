@@ -57,6 +57,8 @@ protected:
 	void _update_raycast_state();
 	static void _bind_methods();
 
+	uint32_t get_real_collision_mask();
+
 public:
 	void set_collide_with_areas(bool p_clip);
 	bool is_collide_with_areas_enabled() const;

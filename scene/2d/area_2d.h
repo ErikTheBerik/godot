@@ -55,8 +55,7 @@ private:
 	real_t gravity_distance_scale;
 	real_t linear_damp;
 	real_t angular_damp;
-	uint32_t collision_mask;
-	uint32_t collision_layer;
+
 	int priority;
 	bool monitoring;
 	bool monitorable;
@@ -135,6 +134,9 @@ protected:
 	static void _bind_methods();
 	void _validate_property(PropertyInfo &property) const;
 
+	void update_real_collision_layer() override;
+	void update_real_collision_mask() override;
+
 public:
 	void set_space_override_mode(SpaceOverride p_mode);
 	SpaceOverride get_space_override_mode() const;
@@ -165,18 +167,6 @@ public:
 
 	void set_monitorable(bool p_enable);
 	bool is_monitorable() const;
-
-	void set_collision_mask(uint32_t p_mask);
-	uint32_t get_collision_mask() const;
-
-	void set_collision_layer(uint32_t p_layer);
-	uint32_t get_collision_layer() const;
-
-	void set_collision_mask_bit(int p_bit, bool p_value);
-	bool get_collision_mask_bit(int p_bit) const;
-
-	void set_collision_layer_bit(int p_bit, bool p_value);
-	bool get_collision_layer_bit(int p_bit) const;
 
 	Array get_overlapping_bodies() const; //function for script
 	Array get_overlapping_areas() const; //function for script

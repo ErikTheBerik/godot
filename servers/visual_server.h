@@ -75,7 +75,9 @@ public:
 		CANVAS_ITEM_Z_MIN = -4096,
 		CANVAS_ITEM_Z_MAX = 4096,
 		MAX_GLOW_LEVELS = 7,
-
+		HEIGHT_Z_DIFF = 10,
+		HEIGHT_MAX = 5,
+		HIGHEST_BIT = 6,
 		MAX_CURSORS = 8,
 	};
 
@@ -920,7 +922,9 @@ public:
 	virtual void canvas_item_add_clip_ignore(RID p_item, bool p_ignore) = 0;
 	virtual void canvas_item_set_sort_children_by_y(RID p_item, bool p_enable) = 0;
 	virtual void canvas_item_set_z_index(RID p_item, int p_z) = 0;
+	virtual void canvas_item_set_z_height(RID p_item, int p_h) = 0;
 	virtual void canvas_item_set_z_as_relative_to_parent(RID p_item, bool p_enable) = 0;
+	virtual void canvas_item_set_add_height_to_z(RID p_item, bool p_enable) = 0;
 	virtual void canvas_item_set_copy_to_backbuffer(RID p_item, bool p_enable, const Rect2 &p_rect) = 0;
 
 	virtual void canvas_item_attach_skeleton(RID p_item, RID p_skeleton) = 0;
