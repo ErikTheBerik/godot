@@ -164,7 +164,11 @@ namespace GodotTools.BuildLogger
     {
         public static string CsvEscape(this string value, char delimiter = ',')
         {
+<<<<<<< HEAD
             bool hasSpecialChar = value.IndexOfAny(new[] {'\"', '\n', '\r', delimiter}) != -1;
+=======
+            bool hasSpecialChar = value.IndexOfAny(new[] { '\"', '\n', '\r', delimiter }) != -1;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             if (hasSpecialChar)
                 return "\"" + value.Replace("\"", "\"\"") + "\"";

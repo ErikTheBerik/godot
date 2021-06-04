@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="StreamPeerSSL" inherits="StreamPeer" version="3.2">
+<class name="StreamPeerSSL" inherits="StreamPeer" version="4.0">
 	<brief_description>
 		SSL stream peer.
 	</brief_description>
@@ -7,7 +7,11 @@
 		SSL stream peer. This object can be used to connect to an SSL server or accept a single SSL client connection.
 	</description>
 	<tutorials>
+<<<<<<< HEAD
 		<link>https://docs.godotengine.org/en/3.2/tutorials/networking/ssl_certificates.html</link>
+=======
+		<link title="SSL certificates">https://docs.godotengine.org/en/latest/tutorials/networking/ssl_certificates.html</link>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</tutorials>
 	<methods>
 		<method name="accept_stream">

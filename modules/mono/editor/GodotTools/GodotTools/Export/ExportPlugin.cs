@@ -20,7 +20,7 @@ namespace GodotTools.Export
     public class ExportPlugin : EditorExportPlugin
     {
         [Flags]
-        enum I18NCodesets
+        enum I18NCodesets : long
         {
             None = 0,
             CJK = 1,
@@ -157,9 +157,12 @@ namespace GodotTools.Export
 
             string buildConfig = isDebug ? "ExportDebug" : "ExportRelease";
 
+<<<<<<< HEAD
             string scriptsMetadataPath = BuildManager.GenerateExportedGameScriptMetadata(isDebug);
             AddFile(scriptsMetadataPath, scriptsMetadataPath);
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             if (!BuildManager.BuildProjectBlocking(buildConfig, platform: platform))
                 throw new Exception("Failed to build project");
 
@@ -172,6 +175,11 @@ namespace GodotTools.Export
             string projectDllSrcPath = Path.Combine(projectDllSrcDir, $"{projectDllName}.dll");
 
             assemblies[projectDllName] = projectDllSrcPath;
+<<<<<<< HEAD
+=======
+
+            string bclDir = DeterminePlatformBclDir(platform);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             if (platform == OS.Platforms.Android)
             {
@@ -182,6 +190,7 @@ namespace GodotTools.Export
                     throw new FileNotFoundException("Assembly not found: 'Mono.Android'", monoAndroidAssemblyPath);
 
                 assemblies["Mono.Android"] = monoAndroidAssemblyPath;
+<<<<<<< HEAD
             }
 
             string bclDir = DeterminePlatformBclDir(platform);
@@ -189,6 +198,56 @@ namespace GodotTools.Export
             var initialAssemblies = assemblies.Duplicate();
             internal_GetExportedAssemblyDependencies(initialAssemblies, buildConfig, bclDir, assemblies);
 
+=======
+            }
+            else if (platform == OS.Platforms.HTML5)
+            {
+                // Ideally these would be added automatically since they're referenced by the wasm BCL assemblies.
+                // However, at least in the case of 'WebAssembly.Net.Http' for some reason the BCL assemblies
+                // reference a different version even though the assembly is the same, for some weird reason.
+
+                var wasmFrameworkAssemblies = new[] {"WebAssembly.Bindings", "WebAssembly.Net.WebSockets"};
+
+                foreach (string thisWasmFrameworkAssemblyName in wasmFrameworkAssemblies)
+                {
+                    string thisWasmFrameworkAssemblyPath = Path.Combine(bclDir, thisWasmFrameworkAssemblyName + ".dll");
+                    if (!File.Exists(thisWasmFrameworkAssemblyPath))
+                        throw new FileNotFoundException($"Assembly not found: '{thisWasmFrameworkAssemblyName}'", thisWasmFrameworkAssemblyPath);
+                    assemblies[thisWasmFrameworkAssemblyName] = thisWasmFrameworkAssemblyPath;
+                }
+
+                // Assemblies that can have a different name in a newer version. Newer version must come first and it has priority.
+                (string newName, string oldName)[] wasmFrameworkAssembliesOneOf = new[]
+                {
+                    ("System.Net.Http.WebAssemblyHttpHandler", "WebAssembly.Net.Http")
+                };
+
+                foreach (var thisWasmFrameworkAssemblyName in wasmFrameworkAssembliesOneOf)
+                {
+                    string thisWasmFrameworkAssemblyPath = Path.Combine(bclDir, thisWasmFrameworkAssemblyName.newName + ".dll");
+                    if (File.Exists(thisWasmFrameworkAssemblyPath))
+                    {
+                        assemblies[thisWasmFrameworkAssemblyName.newName] = thisWasmFrameworkAssemblyPath;
+                    }
+                    else
+                    {
+                        thisWasmFrameworkAssemblyPath = Path.Combine(bclDir, thisWasmFrameworkAssemblyName.oldName + ".dll");
+                        if (!File.Exists(thisWasmFrameworkAssemblyPath))
+                        {
+                            throw new FileNotFoundException("Expected one of the following assemblies but none were found: " +
+                                                            $"'{thisWasmFrameworkAssemblyName.newName}' / '{thisWasmFrameworkAssemblyName.oldName}'",
+                                thisWasmFrameworkAssemblyPath);
+                        }
+
+                        assemblies[thisWasmFrameworkAssemblyName.oldName] = thisWasmFrameworkAssemblyPath;
+                    }
+                }
+            }
+
+            var initialAssemblies = assemblies.Duplicate();
+            internal_GetExportedAssemblyDependencies(initialAssemblies, buildConfig, bclDir, assemblies);
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             AddI18NAssemblies(assemblies, bclDir);
 
             string outputDataDir = null;
@@ -341,7 +400,11 @@ namespace GodotTools.Export
         private static bool PlatformHasTemplateDir(string platform)
         {
             // OSX export templates are contained in a zip, so we place our custom template inside it and let Godot do the rest.
+<<<<<<< HEAD
             return !new[] {OS.Platforms.OSX, OS.Platforms.Android, OS.Platforms.iOS, OS.Platforms.HTML5}.Contains(platform);
+=======
+            return !new[] {OS.Platforms.MacOS, OS.Platforms.Android, OS.Platforms.iOS, OS.Platforms.HTML5}.Contains(platform);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         }
 
         private static bool DeterminePlatformFromFeatures(IEnumerable<string> features, out string platform)
@@ -412,8 +475,8 @@ namespace GodotTools.Export
                 case OS.Platforms.Windows:
                 case OS.Platforms.UWP:
                     return "net_4_x_win";
-                case OS.Platforms.OSX:
-                case OS.Platforms.X11:
+                case OS.Platforms.MacOS:
+                case OS.Platforms.LinuxBSD:
                 case OS.Platforms.Server:
                 case OS.Platforms.Haiku:
                     return "net_4_x";

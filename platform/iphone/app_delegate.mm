@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -29,14 +29,17 @@
 /*************************************************************************/
 
 #import "app_delegate.h"
-
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "drivers/coreaudio/audio_driver_coreaudio.h"
 #import "godot_view.h"
 #include "main/main.h"
 #include "os_iphone.h"
 #import "view_controller.h"
 
+<<<<<<< HEAD
+=======
+#import <AVFoundation/AVFoundation.h>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #import <AudioToolbox/AudioServices.h>
 
 #define kRenderingFrequency 60
@@ -56,15 +59,25 @@ static ViewController *mainViewController = nil;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+<<<<<<< HEAD
 	// Create a full-screen window
 	CGRect windowBounds = [[UIScreen mainScreen] bounds];
+=======
+	// TODO: might be required to make an early return, so app wouldn't crash because of timeout.
+	// TODO: logo screen is not displayed while shaders are compiling
+	// DummyViewController(Splash/LoadingViewController) -> setup -> GodotViewController
+
+	CGRect windowBounds = [[UIScreen mainScreen] bounds];
+
+	// Create a full-screen window
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	self.window = [[UIWindow alloc] initWithFrame:windowBounds];
 
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-			NSUserDomainMask, YES);
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 
 	int err = iphone_main(gargc, gargv, String::utf8([documentsDirectory UTF8String]));
+<<<<<<< HEAD
 	if (err != 0) {
 		// bail, things did not go very well for us, should probably output a message on screen with our error code...
 		exit(0);
@@ -75,6 +88,15 @@ static ViewController *mainViewController = nil;
 	// OS with iphone_main. This allows the GodotView to access project settings so
 	// it can properly initialize the OpenGL context
 
+=======
+
+	if (err != 0) {
+		// bail, things did not go very well for us, should probably output a message on screen with our error code...
+		exit(0);
+		return NO;
+	};
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ViewController *viewController = [[ViewController alloc] init];
 	viewController.godotView.useCADisplayLink = bool(GLOBAL_DEF("display.iOS/use_cadisplaylink", true)) ? YES : NO;
 	viewController.godotView.renderingInterval = 1.0 / kRenderingFrequency;
@@ -95,11 +117,16 @@ static ViewController *mainViewController = nil;
 	// prevent to stop music in another background app
 	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
 
+<<<<<<< HEAD
 	bool keep_screen_on = bool(GLOBAL_DEF("display/window/energy_saving/keep_screen_on", true));
 	OSIPhone::get_singleton()->set_keep_screen_on(keep_screen_on);
 
 	return TRUE;
 }
+=======
+	return YES;
+};
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 - (void)onAudioInterruption:(NSNotification *)notification {
 	if ([notification.name isEqualToString:AVAudioSessionInterruptionNotification]) {
@@ -111,6 +138,7 @@ static ViewController *mainViewController = nil;
 			OSIPhone::get_singleton()->on_focus_in();
 		}
 	}
+<<<<<<< HEAD
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
@@ -119,6 +147,15 @@ static ViewController *mainViewController = nil;
 				MainLoop::NOTIFICATION_OS_MEMORY_WARNING);
 	}
 }
+=======
+};
+
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+	if (OS::get_singleton()->get_main_loop()) {
+		OS::get_singleton()->get_main_loop()->notification(MainLoop::NOTIFICATION_OS_MEMORY_WARNING);
+	}
+};
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 - (void)applicationWillTerminate:(UIApplication *)application {
 	iphone_finish();

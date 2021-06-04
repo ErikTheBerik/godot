@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -74,17 +79,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  @brief Implementation of the FBX parser and the rudimentary DOM that we use
  */
 
+<<<<<<< HEAD
 #include "thirdparty/zlib/zlib.h"
 #include <stdlib.h> /* strtol */
+=======
+#include <stdlib.h> /* strtol */
+#include <zlib.h>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #include "ByteSwapper.h"
 #include "FBXParseTools.h"
 #include "FBXParser.h"
 #include "FBXTokenizer.h"
 #include "core/math/math_defs.h"
+<<<<<<< HEAD
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
 #include "core/print_string.h"
+=======
+#include "core/math/transform_3d.h"
+#include "core/math/vector3.h"
+#include "core/string/print_string.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 using namespace FBXDocParser;
 namespace {
@@ -131,6 +147,11 @@ Element::Element(const TokenPtr key_token, Parser &parser) :
 
 			if (!n) {
 				print_error("unexpected end of file, expected bracket, comma or key" + String(parser.LastToken()->StringContents().c_str()));
+<<<<<<< HEAD
+=======
+				parser.corrupt = true;
+				return;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			}
 
 			const TokenType ty = n->Type();
@@ -143,6 +164,11 @@ Element::Element(const TokenPtr key_token, Parser &parser) :
 
 			if (ty != TokenType_OPEN_BRACKET && ty != TokenType_CLOSE_BRACKET && ty != TokenType_COMMA && ty != TokenType_KEY) {
 				print_error("unexpected token; expected bracket, comma or key" + String(n->StringContents().c_str()));
+<<<<<<< HEAD
+=======
+				parser.corrupt = true;
+				return;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			}
 		}
 
@@ -150,11 +176,23 @@ Element::Element(const TokenPtr key_token, Parser &parser) :
 			compound = new_Scope(parser);
 			parser.scopes.push_back(compound);
 
+<<<<<<< HEAD
+=======
+			if (parser.corrupt) {
+				return;
+			}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			// current token should be a TOK_CLOSE_BRACKET
 			n = parser.CurrentToken();
 
 			if (n && n->Type() != TokenType_CLOSE_BRACKET) {
 				print_error("expected closing bracket" + String(n->StringContents().c_str()));
+<<<<<<< HEAD
+=======
+				parser.corrupt = true;
+				return;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			}
 
 			parser.AdvanceToNextToken();
@@ -173,22 +211,43 @@ Scope::Scope(Parser &parser, bool topLevel) {
 		TokenPtr t = parser.CurrentToken();
 		if (t->Type() != TokenType_OPEN_BRACKET) {
 			print_error("expected open bracket" + String(t->StringContents().c_str()));
+<<<<<<< HEAD
+=======
+			parser.corrupt = true;
+			return;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
 	}
 
 	TokenPtr n = parser.AdvanceToNextToken();
 	if (n == nullptr) {
 		print_error("unexpected end of file");
+<<<<<<< HEAD
+=======
+		parser.corrupt = true;
+		return;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	// note: empty scopes are allowed
 	while (n && n->Type() != TokenType_CLOSE_BRACKET) {
 		if (n->Type() != TokenType_KEY) {
 			print_error("unexpected token, expected TOK_KEY" + String(n->StringContents().c_str()));
+<<<<<<< HEAD
+=======
+			parser.corrupt = true;
+			return;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
 
 		const std::string str = n->StringContents();
 
+<<<<<<< HEAD
+=======
+		if (parser.corrupt) {
+			return;
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// std::multimap<std::string, ElementPtr> (key and value)
 		elements.insert(ElementMap::value_type(str, new_Element(n, parser)));
 
@@ -216,7 +275,11 @@ Scope::~Scope() {
 
 // ------------------------------------------------------------------------------------------------
 Parser::Parser(const TokenList &tokens, bool is_binary) :
+<<<<<<< HEAD
 		tokens(tokens), last(), current(), cursor(tokens.begin()), is_binary(is_binary) {
+=======
+		corrupt(false), tokens(tokens), cursor(tokens.begin()), is_binary(is_binary) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	root = new_Scope(*this, true);
 	scopes.push_back(root);
 }
@@ -593,7 +656,10 @@ void ReadBinaryDataArray(char type, uint32_t count, const char *&data, const cha
 	data += comp_len;
 	//ai_assert(data == end);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace
 
 // ------------------------------------------------------------------------------------------------
@@ -671,6 +737,7 @@ void ParseVectorDataArray(std::vector<Vector3> &out, const ElementPtr el) {
 
 	if (a->Tokens().size() % 3 != 0) {
 		print_error("number of floats is not a multiple of three (3)" + String(token->StringContents().c_str()));
+<<<<<<< HEAD
 	}
 	for (TokenList::const_iterator it = a->Tokens().begin(), end = a->Tokens().end(); it != end;) {
 		Vector3 v;
@@ -679,6 +746,17 @@ void ParseVectorDataArray(std::vector<Vector3> &out, const ElementPtr el) {
 		v.z = ParseTokenAsFloat(*it++);
 
 		out.push_back(v);
+=======
+	} else {
+		for (TokenList::const_iterator it = a->Tokens().begin(), end = a->Tokens().end(); it != end;) {
+			Vector3 v;
+			v.x = ParseTokenAsFloat(*it++);
+			v.y = ParseTokenAsFloat(*it++);
+			v.z = ParseTokenAsFloat(*it++);
+
+			out.push_back(v);
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 }
 
@@ -825,12 +903,22 @@ void ParseVectorDataArray(std::vector<Vector2> &out, const ElementPtr el) {
 
 	if (a->Tokens().size() % 2 != 0) {
 		print_error("number of floats is not a multiple of two (2)" + String(token->StringContents().c_str()));
+<<<<<<< HEAD
 	}
 	for (TokenList::const_iterator it = a->Tokens().begin(), end = a->Tokens().end(); it != end;) {
 		Vector2 v;
 		v.x = ParseTokenAsFloat(*it++);
 		v.y = ParseTokenAsFloat(*it++);
 		out.push_back(v);
+=======
+	} else {
+		for (TokenList::const_iterator it = a->Tokens().begin(), end = a->Tokens().end(); it != end;) {
+			Vector2 v;
+			v.x = ParseTokenAsFloat(*it++);
+			v.y = ParseTokenAsFloat(*it++);
+			out.push_back(v);
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 }
 
@@ -1137,7 +1225,11 @@ void ParseVectorDataArray(std::vector<int64_t> &out, const ElementPtr el) {
 }
 
 // ------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
 Transform ReadMatrix(const ElementPtr element) {
+=======
+Transform3D ReadMatrix(const ElementPtr element) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	std::vector<float> values;
 	ParseVectorDataArray(values, element);
 
@@ -1152,7 +1244,11 @@ Transform ReadMatrix(const ElementPtr element) {
 		}
 	}
 
+<<<<<<< HEAD
 	Transform xform;
+=======
+	Transform3D xform;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	Basis basis;
 
 	basis.set(
@@ -1186,7 +1282,11 @@ std::string ParseTokenAsString(const TokenPtr t) {
 
 // ------------------------------------------------------------------------------------------------
 // extract a required element from a scope, abort if the element cannot be found
+<<<<<<< HEAD
 const ElementPtr GetRequiredElement(const ScopePtr sc, const std::string &index, const ElementPtr element /*= NULL*/) {
+=======
+ElementPtr GetRequiredElement(const ScopePtr sc, const std::string &index, const ElementPtr element /*= nullptr*/) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	const ElementPtr el = sc->GetElement(index);
 	TokenPtr token = el->KeyToken();
 	ERR_FAIL_COND_V(!token, nullptr);
@@ -1207,14 +1307,22 @@ bool HasElement(const ScopePtr sc, const std::string &index) {
 
 // ------------------------------------------------------------------------------------------------
 // extract a required element from a scope, abort if the element cannot be found
+<<<<<<< HEAD
 const ElementPtr GetOptionalElement(const ScopePtr sc, const std::string &index, const ElementPtr element /*= NULL*/) {
+=======
+ElementPtr GetOptionalElement(const ScopePtr sc, const std::string &index, const ElementPtr element /*= nullptr*/) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	const ElementPtr el = sc->GetElement(index);
 	return el;
 }
 
 // ------------------------------------------------------------------------------------------------
 // extract required compound scope
+<<<<<<< HEAD
 const ScopePtr GetRequiredScope(const ElementPtr el) {
+=======
+ScopePtr GetRequiredScope(const ElementPtr el) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (el) {
 		ScopePtr s = el->Compound();
 		TokenPtr token = el->KeyToken();
@@ -1230,6 +1338,24 @@ const ScopePtr GetRequiredScope(const ElementPtr el) {
 }
 
 // ------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+// extract optional compound scope
+ScopePtr GetOptionalScope(const ElementPtr el) {
+	if (el) {
+		ScopePtr s = el->Compound();
+		TokenPtr token = el->KeyToken();
+
+		if (token && s) {
+			return s;
+		}
+	}
+
+	return nullptr;
+}
+
+// ------------------------------------------------------------------------------------------------
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 // get token at a particular index
 TokenPtr GetRequiredToken(const ElementPtr el, unsigned int index) {
 	if (el) {
@@ -1291,5 +1417,8 @@ int64_t ParseTokenAsInt64(const TokenPtr t) {
 	}
 	return i;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser

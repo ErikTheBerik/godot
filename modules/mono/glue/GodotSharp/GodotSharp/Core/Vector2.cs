@@ -160,25 +160,42 @@ namespace Godot
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Returns the vector with a maximum length by limiting its length to `length`.
         /// </summary>
         /// <param name="length">The length to limit to.</param>
         /// <returns>The vector with its length limited.</returns>
         public Vector2 Clamped(real_t length)
+=======
+        /// Returns a new vector with all components clamped between the
+        /// components of `min` and `max` using
+        /// <see cref="Mathf.Clamp(real_t, real_t, real_t)"/>.
+        /// </summary>
+        /// <param name="min">The vector with minimum allowed values.</param>
+        /// <param name="max">The vector with maximum allowed values.</param>
+        /// <returns>The vector with all components clamped.</returns>
+        public Vector2 Clamp(Vector2 min, Vector2 max)
         {
-            var v = this;
-            real_t l = Length();
-
-            if (l > 0 && length < l)
-            {
-                v /= l;
-                v *= length;
-            }
-
-            return v;
+            return new Vector2
+            (
+                Mathf.Clamp(x, min.x, max.x),
+                Mathf.Clamp(y, min.y, max.y)
+            );
         }
 
         /// <summary>
+        /// Returns the cross product of this vector and `b`.
+        /// </summary>
+        /// <param name="b">The other vector.</param>
+        /// <returns>The cross product value.</returns>
+        public real_t Cross(Vector2 b)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
+        {
+            return x * b.y - y * b.x;
+        }
+
+        /// <summary>
+<<<<<<< HEAD
         /// Returns the cross product of this vector and `b`.
         /// </summary>
         /// <param name="b">The other vector.</param>
@@ -189,20 +206,29 @@ namespace Godot
         }
 
         /// <summary>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// Performs a cubic interpolation between vectors `preA`, this vector, `b`, and `postB`, by the given amount `t`.
         /// </summary>
         /// <param name="b">The destination vector.</param>
         /// <param name="preA">A vector before this vector.</param>
         /// <param name="postB">A vector after `b`.</param>
+<<<<<<< HEAD
         /// <param name="t">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
         /// <returns>The interpolated vector.</returns>
         public Vector2 CubicInterpolate(Vector2 b, Vector2 preA, Vector2 postB, real_t t)
+=======
+        /// <param name="weight">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
+        /// <returns>The interpolated vector.</returns>
+        public Vector2 CubicInterpolate(Vector2 b, Vector2 preA, Vector2 postB, real_t weight)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         {
             Vector2 p0 = preA;
             Vector2 p1 = this;
             Vector2 p2 = b;
             Vector2 p3 = postB;
 
+            real_t t = weight;
             real_t t2 = t * t;
             real_t t3 = t2 * t;
 
@@ -308,7 +334,11 @@ namespace Godot
         /// <param name="to">The destination vector for interpolation.</param>
         /// <param name="weight">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
         /// <returns>The resulting vector of the interpolation.</returns>
+<<<<<<< HEAD
         public Vector2 LinearInterpolate(Vector2 to, real_t weight)
+=======
+        public Vector2 Lerp(Vector2 to, real_t weight)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         {
             return new Vector2
             (
@@ -324,7 +354,11 @@ namespace Godot
         /// <param name="to">The destination vector for interpolation.</param>
         /// <param name="weight">A vector with components on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
         /// <returns>The resulting vector of the interpolation.</returns>
+<<<<<<< HEAD
         public Vector2 LinearInterpolate(Vector2 to, Vector2 weight)
+=======
+        public Vector2 Lerp(Vector2 to, Vector2 weight)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         {
             return new Vector2
             (
@@ -334,6 +368,28 @@ namespace Godot
         }
 
         /// <summary>
+<<<<<<< HEAD
+=======
+        /// Returns the vector with a maximum length by limiting its length to `length`.
+        /// </summary>
+        /// <param name="length">The length to limit to.</param>
+        /// <returns>The vector with its length limited.</returns>
+        public Vector2 LimitLength(real_t length = 1.0f)
+        {
+            Vector2 v = this;
+            real_t l = Length();
+
+            if (l > 0 && length < l)
+            {
+                v /= l;
+                v *= length;
+            }
+
+            return v;
+        }
+
+        /// <summary>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// Returns the axis of the vector's largest value. See <see cref="Axis"/>.
         /// If both components are equal, this method returns <see cref="Axis.X"/>.
         /// </summary>
@@ -379,6 +435,7 @@ namespace Godot
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Returns a perpendicular vector rotated 90 degrees counter-clockwise
         /// compared to the original, with the same length.
         /// </summary>
@@ -389,6 +446,8 @@ namespace Godot
         }
 
         /// <summary>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// Returns a vector composed of the <see cref="Mathf.PosMod(real_t, real_t)"/> of this vector's components and `mod`.
         /// </summary>
         /// <param name="mod">A value representing the divisor of the operation.</param>
@@ -415,7 +474,11 @@ namespace Godot
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Returns this vector projected onto another vector.
+=======
+        /// Returns this vector projected onto another vector `b`.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// </summary>
         /// <param name="onNormal">The vector to project onto.</param>
         /// <returns>The projected vector.</returns>
@@ -447,8 +510,11 @@ namespace Godot
         /// <returns>The rotated vector.</returns>
         public Vector2 Rotated(real_t phi)
         {
-            real_t rads = Angle() + phi;
-            return new Vector2(Mathf.Cos(rads), Mathf.Sin(rads)) * Length();
+            real_t sine = Mathf.Sin(phi);
+            real_t cosi = Mathf.Cos(phi);
+            return new Vector2(
+                x * cosi - y * sine,
+                x * sine + y * cosi);
         }
 
         /// <summary>
@@ -461,6 +527,7 @@ namespace Godot
             return new Vector2(Mathf.Round(x), Mathf.Round(y));
         }
 
+<<<<<<< HEAD
         [Obsolete("Set is deprecated. Use the Vector2(" + nameof(real_t) + ", " + nameof(real_t) + ") constructor instead.", error: true)]
         public void Set(real_t x, real_t y)
         {
@@ -474,6 +541,8 @@ namespace Godot
             y = v.y;
         }
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// <summary>
         /// Returns a vector with each component set to one or negative one, depending
         /// on the signs of this vector's components, or zero if the component is zero,
@@ -530,16 +599,26 @@ namespace Godot
         /// <returns>The snapped vector.</returns>
         public Vector2 Snapped(Vector2 step)
         {
+<<<<<<< HEAD
             return new Vector2(Mathf.Stepify(x, step.x), Mathf.Stepify(y, step.y));
+=======
+            return new Vector2(Mathf.Snapped(x, step.x), Mathf.Snapped(y, step.y));
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         }
 
         /// <summary>
         /// Returns a perpendicular vector rotated 90 degrees counter-clockwise
         /// compared to the original, with the same length.
+<<<<<<< HEAD
         /// Deprecated, will be replaced by <see cref="Perpendicular"/> in 4.0.
         /// </summary>
         /// <returns>The perpendicular vector.</returns>
         public Vector2 Tangent()
+=======
+        /// </summary>
+        /// <returns>The perpendicular vector.</returns>
+        public Vector2 Orthogonal()
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         {
             return new Vector2(y, -x);
         }
@@ -547,7 +626,6 @@ namespace Godot
         // Constants
         private static readonly Vector2 _zero = new Vector2(0, 0);
         private static readonly Vector2 _one = new Vector2(1, 1);
-        private static readonly Vector2 _negOne = new Vector2(-1, -1);
         private static readonly Vector2 _inf = new Vector2(Mathf.Inf, Mathf.Inf);
 
         private static readonly Vector2 _up = new Vector2(0, -1);
@@ -561,11 +639,14 @@ namespace Godot
         /// <value>Equivalent to `new Vector2(0, 0)`</value>
         public static Vector2 Zero { get { return _zero; } }
         /// <summary>
+<<<<<<< HEAD
         /// Deprecated, please use a negative sign with <see cref="One"/> instead.
         /// </summary>
         /// <value>Equivalent to `new Vector2(-1, -1)`</value>
         public static Vector2 NegOne { get { return _negOne; } }
         /// <summary>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// One vector, a vector with all components set to `1`.
         /// </summary>
         /// <value>Equivalent to `new Vector2(1, 1)`</value>

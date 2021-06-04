@@ -107,8 +107,18 @@ libvpx_sources_intrin_x86_sse2 = [
     "vpx_dsp/x86/inv_txfm_sse2.c",
     "vpx_dsp/x86/loopfilter_sse2.c",
 ]
+<<<<<<< HEAD
 libvpx_sources_intrin_x86_ssse3 = ["vpx_dsp/x86/vpx_subpixel_8t_intrin_ssse3.c"]
 libvpx_sources_intrin_x86_avx2 = ["vpx_dsp/x86/loopfilter_avx2.c", "vpx_dsp/x86/vpx_subpixel_8t_intrin_avx2.c"]
+=======
+libvpx_sources_intrin_x86_ssse3 = [
+    "vpx_dsp/x86/vpx_subpixel_8t_intrin_ssse3.c",
+]
+libvpx_sources_intrin_x86_avx2 = [
+    "vpx_dsp/x86/loopfilter_avx2.c",
+    "vpx_dsp/x86/vpx_subpixel_8t_intrin_avx2.c",
+]
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 libvpx_sources_x86asm = [
     "vp8/common/x86/copy_sse2.asm",
     "vp8/common/x86/copy_sse3.asm",
@@ -133,6 +143,13 @@ libvpx_sources_x86asm = [
     "vpx_dsp/x86/vpx_subpixel_bilinear_sse2.asm",
     "vpx_dsp/x86/vpx_subpixel_bilinear_ssse3.asm",
     "vpx_ports/emms.asm",
+<<<<<<< HEAD
+=======
+]
+libvpx_sources_x86_64asm = [
+    "vp8/common/x86/loopfilter_block_sse2_x86_64.asm",
+    "vpx_dsp/x86/inv_txfm_ssse3_x86_64.asm",
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 ]
 libvpx_sources_x86_64asm = ["vp8/common/x86/loopfilter_block_sse2_x86_64.asm", "vpx_dsp/x86/inv_txfm_ssse3_x86_64.asm"]
 
@@ -227,7 +244,11 @@ if env["platform"] == "uwp":
 else:
     import platform
 
+<<<<<<< HEAD
     is_x11_or_server_arm = (env["platform"] == "x11" or env["platform"] == "server") and (
+=======
+    is_x11_or_server_arm = env["platform"] == "linuxbsd" and (
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         platform.machine().startswith("arm") or platform.machine().startswith("aarch")
     )
     is_macos_x86 = env["platform"] == "osx" and ("arch" in env and (env["arch"] != "arm64"))
@@ -240,7 +261,11 @@ else:
         and (cpu_bits == "32" or cpu_bits == "64")
         and (
             env["platform"] == "windows"
+<<<<<<< HEAD
             or env["platform"] == "x11"
+=======
+            or env["platform"] == "linuxbsd"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             or env["platform"] == "haiku"
             or is_macos_x86
             or is_android_x86
@@ -270,7 +295,7 @@ if webm_cpu_x86:
         try:
             yasm_found = True
             subprocess.Popen([yasm_path, "--version"], stdout=devnull, stderr=devnull).communicate()
-        except:
+        except Exception:
             yasm_found = False
         if yasm_found:
             break
@@ -306,12 +331,16 @@ if webm_cpu_x86:
 if webm_cpu_arm:
     if env["platform"] == "iphone":
         env_libvpx["ASFLAGS"] = "-arch armv7"
+<<<<<<< HEAD
     elif (
         env["platform"] == "android"
         and env["android_arch"] == "armv7"
         or env["platform"] == "x11"
         or env["platform"] == "server"
     ):
+=======
+    elif env["platform"] == "android" and env["android_arch"] == "armv7" or env["platform"] == "linuxbsd":
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         env_libvpx["ASFLAGS"] = "-mfpu=neon"
     elif env["platform"] == "uwp":
         env_libvpx["AS"] = "armasm"

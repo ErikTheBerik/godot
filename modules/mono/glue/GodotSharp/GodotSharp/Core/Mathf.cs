@@ -618,10 +618,17 @@ namespace Godot
         /// This can also be used to round a floating point
         /// number to an arbitrary number of decimals.
         /// </summary>
+<<<<<<< HEAD
         /// <param name="s">The value to stepify.</param>
         /// <param name="step">The step size to snap to.</param>
         /// <returns></returns>
         public static real_t Stepify(real_t s, real_t step)
+=======
+        /// <param name="s">The value to snap.</param>
+        /// <param name="step">The step size to snap to.</param>
+        /// <returns></returns>
+        public static real_t Snapped(real_t s, real_t step)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         {
             if (step != 0f)
             {

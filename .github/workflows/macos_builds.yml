@@ -3,15 +3,24 @@ on: [push, pull_request]
 
 # Global Settings
 env:
+<<<<<<< HEAD
   GODOT_BASE_BRANCH: 3.2
   SCONSFLAGS: platform=osx verbose=yes warnings=all werror=yes --jobs=2
+=======
+  GODOT_BASE_BRANCH: master
+  SCONSFLAGS: platform=osx verbose=yes warnings=extra werror=yes debug_symbols=no --jobs=2 module_text_server_fb_enabled=yes
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
   SCONS_CACHE_LIMIT: 4096
 
 jobs:
   macos-editor:
     runs-on: "macos-latest"
 
+<<<<<<< HEAD
     name: Editor (target=release_debug, tools=yes)
+=======
+    name: Editor (target=release_debug, tools=yes, tests=yes)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
     steps:
       - uses: actions/checkout@v2
@@ -50,9 +59,20 @@ jobs:
         env:
           SCONS_CACHE: ${{github.workspace}}/.scons_cache/
         run: |
+<<<<<<< HEAD
           scons tools=yes target=release_debug
           ls -l bin/
 
+=======
+          scons tools=yes tests=yes target=release_debug
+          ls -l bin/
+
+      # Execute unit tests for the editor
+      - name: Unit Tests
+        run: |
+          ./bin/godot.osx.opt.tools.64 --test
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ github.job }}
@@ -99,7 +119,11 @@ jobs:
         env:
           SCONS_CACHE: ${{github.workspace}}/.scons_cache/
         run: |
+<<<<<<< HEAD
           scons target=release tools=no debug_symbols=no
+=======
+          scons target=release tools=no
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
           ls -l bin/
 
       - uses: actions/upload-artifact@v2

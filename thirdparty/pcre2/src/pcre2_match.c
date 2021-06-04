@@ -7,7 +7,7 @@ and semantics are as close as possible to those of the Perl 5 language.
 
                        Written by Philip Hazel
      Original API code Copyright (c) 1997-2012 University of Cambridge
-          New API code Copyright (c) 2015-2019 University of Cambridge
+          New API code Copyright (c) 2015-2020 University of Cambridge
 
 -----------------------------------------------------------------------------
 Redistribution and use in source and binary forms, with or without
@@ -381,8 +381,12 @@ length = Fovector[offset+1] - Fovector[offset];
 if (caseless)
   {
 #if defined SUPPORT_UNICODE
-  if ((mb->poptions & PCRE2_UTF) != 0)
+  BOOL utf = (mb->poptions & PCRE2_UTF) != 0;
+
+  if (utf || (mb->poptions & PCRE2_UCP) != 0)
     {
+    PCRE2_SPTR endptr = p + length;
+
     /* Match characters up to the end of the reference. NOTE: the number of
     code units matched may differ, because in UTF-8 there are some characters
     whose upper and lower case codes have different numbers of bytes. For
@@ -390,16 +394,25 @@ if (caseless)
     bytes in UTF-8); a sequence of 3 of the former uses 6 bytes, as does a
     sequence of two of the latter. It is important, therefore, to check the
     length along the reference, not along the subject (earlier code did this
-    wrong). */
+    wrong). UCP without uses Unicode properties but without UTF encoding. */
 
-    PCRE2_SPTR endptr = p + length;
     while (p < endptr)
       {
       uint32_t c, d;
       const ucd_record *ur;
       if (eptr >= mb->end_subject) return 1;   /* Partial match */
-      GETCHARINC(c, eptr);
-      GETCHARINC(d, p);
+
+      if (utf)
+        {
+        GETCHARINC(c, eptr);
+        GETCHARINC(d, p);
+        }
+      else
+        {
+        c = *eptr++;
+        d = *p++;
+        }
+
       ur = GET_UCD(d);
       if (c != d && c != (uint32_t)((int)d + ur->other_case))
         {
@@ -415,7 +428,11 @@ if (caseless)
   else
 #endif
 
+<<<<<<< HEAD
   /* Not in UTF mode */
+=======
+  /* Not in UTF or UCP mode */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     {
     for (; length > 0; length--)
       {
@@ -432,7 +449,8 @@ if (caseless)
   }
 
 /* In the caseful case, we can just compare the code units, whether or not we
-are in UTF mode. When partial matching, we have to do this unit-by-unit. */
+are in UTF and/or UCP mode. When partial matching, we have to do this unit by
+unit. */
 
 else
   {
@@ -574,8 +592,8 @@ match(PCRE2_SPTR start_eptr, PCRE2_SPTR start_ecode, PCRE2_SIZE *ovector,
 heapframe *F;           /* Current frame pointer */
 heapframe *N = NULL;    /* Temporary frame pointers */
 heapframe *P = NULL;
-heapframe *assert_accept_frame;  /* For passing back the frame with captures */
-PCRE2_SIZE frame_copy_size;      /* Amount to copy when creating a new frame */
+heapframe *assert_accept_frame = NULL;  /* For passing back a frame with captures */
+PCRE2_SIZE frame_copy_size;     /* Amount to copy when creating a new frame */
 
 /* Local variables that do not need to be preserved over calls to RRMATCH(). */
 
@@ -598,12 +616,13 @@ BOOL condition;         /* Used in conditional groups */
 BOOL cur_is_word;       /* Used in "word" tests */
 BOOL prev_is_word;      /* Used in "word" tests */
 
-/* UTF flag */
+/* UTF and UCP flags */
 
 #ifdef SUPPORT_UNICODE
 BOOL utf = (mb->poptions & PCRE2_UTF) != 0;
+BOOL ucp = (mb->poptions & PCRE2_UCP) != 0;
 #else
-BOOL utf = FALSE;
+BOOL utf = FALSE;  /* Required for convenience even when no Unicode support */
 #endif
 
 /* This is the length of the last part of a backtracking frame that must be
@@ -928,6 +947,7 @@ fprintf(stderr, "++ op=%d\n", *Fecode);
       }
     else
 #endif
+
     /* Not UTF mode */
       {
       if (mb->end_subject - Feptr < 1)
@@ -987,10 +1007,30 @@ fprintf(stderr, "++ op=%d\n", *Fecode);
         if (dc != fc && dc != UCD_OTHERCASE(fc)) RRETURN(MATCH_NOMATCH);
         }
       }
+
+    /* If UCP is set without UTF we must do the same as above, but with one
+    character per code unit. */
+
+    else if (ucp)
+      {
+      uint32_t cc = UCHAR21(Feptr);
+      fc = Fecode[1];
+      if (fc < 128)
+        {
+        if (mb->lcc[fc] != TABLE_GET(cc, mb->lcc, cc)) RRETURN(MATCH_NOMATCH);
+        }
+      else
+        {
+        if (cc != fc && cc != UCD_OTHERCASE(fc)) RRETURN(MATCH_NOMATCH);
+        }
+      Feptr++;
+      Fecode += 2;
+      }
+
     else
 #endif   /* SUPPORT_UNICODE */
 
-    /* Not UTF mode; use the table for characters < 256. */
+    /* Not UTF or UCP mode; use the table for characters < 256. */
       {
       if (TABLE_GET(Fecode[1], mb->lcc, Fecode[1])
           != TABLE_GET(*Feptr, mb->lcc, *Feptr)) RRETURN(MATCH_NOMATCH);
@@ -1010,6 +1050,7 @@ fprintf(stderr, "++ op=%d\n", *Fecode);
       SCHECK_PARTIAL();
       RRETURN(MATCH_NOMATCH);
       }
+
 #ifdef SUPPORT_UNICODE
     if (utf)
       {
@@ -1026,15 +1067,42 @@ fprintf(stderr, "++ op=%d\n", *Fecode);
         if (ch > 127)
           ch = UCD_OTHERCASE(ch);
         else
-          ch = TABLE_GET(ch, mb->fcc, ch);
+          ch = (mb->fcc)[ch];
         if (ch == fc) RRETURN(MATCH_NOMATCH);
         }
       }
+
+    /* UCP without UTF is as above, but with one character per code unit. */
+
+    else if (ucp)
+      {
+      uint32_t ch;
+      fc = UCHAR21INC(Feptr);
+      ch = Fecode[1];
+      Fecode += 2;
+
+      if (ch == fc)
+        {
+        RRETURN(MATCH_NOMATCH);  /* Caseful match */
+        }
+      else if (Fop == OP_NOTI)   /* If caseless */
+        {
+        if (ch > 127)
+          ch = UCD_OTHERCASE(ch);
+        else
+          ch = (mb->fcc)[ch];
+        if (ch == fc) RRETURN(MATCH_NOMATCH);
+        }
+      }
+
     else
 #endif  /* SUPPORT_UNICODE */
+
+    /* Neither UTF nor UCP is set */
+
       {
       uint32_t ch = Fecode[1];
-      fc = *Feptr++;
+      fc = UCHAR21INC(Feptr);
       if (ch == fc || (Fop == OP_NOTI && TABLE_GET(ch, mb->fcc, ch) == fc))
         RRETURN(MATCH_NOMATCH);
       Fecode += 2;
@@ -1244,7 +1312,7 @@ fprintf(stderr, "++ op=%d\n", *Fecode);
 #endif  /* SUPPORT_UNICODE */
 
     /* When not in UTF mode, load a single-code-unit character. Then proceed as
-    above. */
+    above, using Unicode casing if either UTF or UCP is set. */
 
     Lc = *Fecode++;
 
@@ -1253,11 +1321,15 @@ fprintf(stderr, "++ op=%d\n", *Fecode);
     if (Fop >= OP_STARI)
       {
 #if PCRE2_CODE_UNIT_WIDTH == 8
-      /* Lc must be < 128 in UTF-8 mode. */
+#ifdef SUPPORT_UNICODE
+      if (ucp && !utf && Lc > 127) Loc = UCD_OTHERCASE(Lc);
+      else
+#endif  /* SUPPORT_UNICODE */
+      /* Lc will be < 128 in UTF-8 mode. */
       Loc = mb->fcc[Lc];
 #else /* 16-bit & 32-bit */
 #ifdef SUPPORT_UNICODE
-      if (utf && Lc > 127) Loc = UCD_OTHERCASE(Lc);
+      if ((utf || ucp) && Lc > 127) Loc = UCD_OTHERCASE(Lc);
       else
 #endif  /* SUPPORT_UNICODE */
       Loc = TABLE_GET(Lc, mb->fcc, Lc);
@@ -1490,7 +1562,7 @@ fprintf(stderr, "++ op=%d\n", *Fecode);
     if (Fop >= OP_NOTSTARI)     /* Caseless */
       {
 #ifdef SUPPORT_UNICODE
-      if (utf && Lc > 127)
+      if ((utf || ucp) && Lc > 127)
         Loc = UCD_OTHERCASE(Lc);
       else
 #endif /* SUPPORT_UNICODE */
@@ -6045,7 +6117,11 @@ BOOL firstline;
 BOOL has_first_cu = FALSE;
 BOOL has_req_cu = FALSE;
 BOOL startline;
-BOOL utf;
+
+#if PCRE2_CODE_UNIT_WIDTH == 8
+BOOL memchr_not_found_first_cu;
+BOOL memchr_not_found_first_cu2;
+#endif
 
 #if PCRE2_CODE_UNIT_WIDTH == 8
 BOOL memchr_not_found_first_cu = FALSE;
@@ -6069,13 +6145,27 @@ PCRE2_SPTR match_partial;
 BOOL use_jit;
 #endif
 
+<<<<<<< HEAD
 #ifdef SUPPORT_UNICODE
+=======
+/* This flag is needed even when Unicode is not supported for convenience
+(it is used by the IS_NEWLINE macro). */
+
+BOOL utf = FALSE;
+
+#ifdef SUPPORT_UNICODE
+BOOL ucp = FALSE;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 BOOL allow_invalid;
 uint32_t fragment_options = 0;
 #ifdef SUPPORT_JIT
 BOOL jit_checked_utf = FALSE;
 #endif
+<<<<<<< HEAD
 #endif
+=======
+#endif  /* SUPPORT_UNICODE */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 PCRE2_SIZE frame_size;
 
@@ -6091,7 +6181,8 @@ proves to be too small, it is replaced by a larger one on the heap. To get a
 vector of the size required that is aligned for pointers, allocate it as a
 vector of pointers. */
 
-PCRE2_SPTR stack_frames_vector[START_FRAMES_SIZE/sizeof(PCRE2_SPTR)];
+PCRE2_SPTR stack_frames_vector[START_FRAMES_SIZE/sizeof(PCRE2_SPTR)]
+    PCRE2_KEEP_UNINITIALIZED;
 mb->stack_frames = (heapframe *)stack_frames_vector;
 
 /* A length equal to PCRE2_ZERO_TERMINATED implies a zero-terminated
@@ -6141,6 +6232,7 @@ options |= (re->flags & FF) / ((FF & (~FF+1)) / (OO & (~OO+1)));
 /* If the pattern was successfully studied with JIT support, we will run the
 JIT executable instead of the rest of this function. Most options must be set
 at compile time for the JIT code to be usable. */
+<<<<<<< HEAD
 
 #ifdef SUPPORT_JIT
 use_jit = (re->executable_jit != NULL &&
@@ -6148,11 +6240,27 @@ use_jit = (re->executable_jit != NULL &&
 #endif
 
 /* Initialize UTF parameters. */
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
+#ifdef SUPPORT_JIT
+use_jit = (re->executable_jit != NULL &&
+          (options & ~PUBLIC_JIT_MATCH_OPTIONS) == 0);
+#endif
+
+/* Initialize UTF/UCP parameters. */
+
+#ifdef SUPPORT_UNICODE
 utf = (re->overall_options & PCRE2_UTF) != 0;
+<<<<<<< HEAD
 #ifdef SUPPORT_UNICODE
 allow_invalid = (re->overall_options & PCRE2_MATCH_INVALID_UTF) != 0;
 #endif
+=======
+allow_invalid = (re->overall_options & PCRE2_MATCH_INVALID_UTF) != 0;
+ucp = (re->overall_options & PCRE2_UCP) != 0;
+#endif  /* SUPPORT_UNICODE */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 /* Convert the partial matching flags into an integer. */
 
@@ -6215,6 +6323,7 @@ if (use_jit)
     if (start_match < end_subject && NOT_FIRSTCU(*start_match))
       {
       if (start_offset > 0) return PCRE2_ERROR_BADUTFOFFSET;
+<<<<<<< HEAD
 #if PCRE2_CODE_UNIT_WIDTH == 8
       return PCRE2_ERROR_UTF8_ERR20;  /* Isolated 0x80 byte */
 #else
@@ -6232,6 +6341,25 @@ if (use_jit)
       start_match--;
       while (start_match > subject &&
 #if PCRE2_CODE_UNIT_WIDTH == 8
+=======
+#if PCRE2_CODE_UNIT_WIDTH == 8
+      return PCRE2_ERROR_UTF8_ERR20;  /* Isolated 0x80 byte */
+#else
+      return PCRE2_ERROR_UTF16_ERR3;  /* Isolated low surrogate */
+#endif
+      }
+#endif  /* WIDTH != 32 */
+
+    /* Move back by the maximum lookbehind, just in case it happens at the very
+    start of matching. */
+
+#if PCRE2_CODE_UNIT_WIDTH != 32
+    for (i = re->max_lookbehind; i > 0 && start_match > subject; i--)
+      {
+      start_match--;
+      while (start_match > subject &&
+#if PCRE2_CODE_UNIT_WIDTH == 8
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       (*start_match & 0xc0) == 0x80)
 #else  /* 16-bit */
       (*start_match & 0xfc00) == 0xdc00)
@@ -6319,8 +6447,119 @@ if (utf &&
   {
 #if PCRE2_CODE_UNIT_WIDTH != 32
   BOOL skipped_bad_start = FALSE;
+<<<<<<< HEAD
 #endif
 
+  /* For 8-bit and 16-bit UTF, check that the first code unit is a valid
+  character start. If we are handling invalid UTF, just skip over such code
+  units. Otherwise, give an appropriate error. */
+
+#if PCRE2_CODE_UNIT_WIDTH != 32
+  if (allow_invalid)
+    {
+    while (start_match < end_subject && NOT_FIRSTCU(*start_match))
+      {
+      start_match++;
+      skipped_bad_start = TRUE;
+      }
+    }
+  else if (start_match < end_subject && NOT_FIRSTCU(*start_match))
+    {
+    if (start_offset > 0) return PCRE2_ERROR_BADUTFOFFSET;
+#if PCRE2_CODE_UNIT_WIDTH == 8
+    return PCRE2_ERROR_UTF8_ERR20;  /* Isolated 0x80 byte */
+#else
+    return PCRE2_ERROR_UTF16_ERR3;  /* Isolated low surrogate */
+#endif
+    }
+#endif  /* WIDTH != 32 */
+
+  /* The mb->check_subject field points to the start of UTF checking;
+  lookbehinds can go back no further than this. */
+
+  mb->check_subject = start_match;
+
+  /* Move back by the maximum lookbehind, just in case it happens at the very
+  start of matching, but don't do this if we skipped bad 8-bit or 16-bit code
+  units above. */
+
+#if PCRE2_CODE_UNIT_WIDTH != 32
+  if (!skipped_bad_start)
+    {
+    unsigned int i;
+    for (i = re->max_lookbehind; i > 0 && mb->check_subject > subject; i--)
+      {
+      mb->check_subject--;
+      while (mb->check_subject > subject &&
+#if PCRE2_CODE_UNIT_WIDTH == 8
+      (*mb->check_subject & 0xc0) == 0x80)
+#else  /* 16-bit */
+      (*mb->check_subject & 0xfc00) == 0xdc00)
+#endif
+        mb->check_subject--;
+      }
+    }
+#else  /* PCRE2_CODE_UNIT_WIDTH != 32 */
+
+  /* In the 32-bit library, one code unit equals one character. However,
+  we cannot just subtract the lookbehind and then compare pointers, because
+  a very large lookbehind could create an invalid pointer. */
+
+  if (start_offset >= re->max_lookbehind)
+    mb->check_subject -= re->max_lookbehind;
+  else
+    mb->check_subject = subject;
+#endif  /* PCRE2_CODE_UNIT_WIDTH != 32 */
+
+  /* Validate the relevant portion of the subject. There's a loop in case we
+  encounter bad UTF in the characters preceding start_match which we are
+  scanning because of a lookbehind. */
+
+  for (;;)
+    {
+    match_data->rc = PRIV(valid_utf)(mb->check_subject,
+      length - (mb->check_subject - subject), &(match_data->startchar));
+
+    if (match_data->rc == 0) break;   /* Valid UTF string */
+
+    /* Invalid UTF string. Adjust the offset to be an absolute offset in the
+    whole string. If we are handling invalid UTF strings, set end_subject to
+    stop before the bad code unit, and set the options to "not end of line".
+    Otherwise return the error. */
+
+    match_data->startchar += mb->check_subject - subject;
+    if (!allow_invalid || match_data->rc > 0) return match_data->rc;
+    end_subject = subject + match_data->startchar;
+
+    /* If the end precedes start_match, it means there is invalid UTF in the
+    extra code units we reversed over because of a lookbehind. Advance past the
+    first bad code unit, and then skip invalid character starting code units in
+    8-bit and 16-bit modes, and try again. */
+
+    if (end_subject < start_match)
+      {
+      mb->check_subject = end_subject + 1;
+#if PCRE2_CODE_UNIT_WIDTH != 32
+      while (mb->check_subject < start_match && NOT_FIRSTCU(*mb->check_subject))
+        mb->check_subject++;
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
+#endif
+      }
+
+    /* Otherwise, set the not end of line option, and do the match. */
+
+    else
+      {
+      fragment_options = PCRE2_NOTEOL;
+      break;
+      }
+    }
+  }
+#endif  /* SUPPORT_UNICODE */
+
+<<<<<<< HEAD
+=======
   /* For 8-bit and 16-bit UTF, check that the first code unit is a valid
   character start. If we are handling invalid UTF, just skip over such code
   units. Otherwise, give an appropriate error. */
@@ -6427,6 +6666,7 @@ if (utf &&
   }
 #endif  /* SUPPORT_UNICODE */
 
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /* A NULL match context means "use a default context", but we take the memory
 control functions from the pattern. */
 
@@ -6589,9 +6829,13 @@ if ((re->flags & PCRE2_FIRSTSET) != 0)
   if ((re->flags & PCRE2_FIRSTCASELESS) != 0)
     {
     first_cu2 = TABLE_GET(first_cu, mb->fcc, first_cu);
-#if defined SUPPORT_UNICODE && PCRE2_CODE_UNIT_WIDTH != 8
-    if (utf && first_cu > 127) first_cu2 = UCD_OTHERCASE(first_cu);
+#ifdef SUPPORT_UNICODE
+#if PCRE2_CODE_UNIT_WIDTH == 8
+    if (first_cu > 127 && ucp && !utf) first_cu2 = UCD_OTHERCASE(first_cu);
+#else
+    if (first_cu > 127 && (utf || ucp)) first_cu2 = UCD_OTHERCASE(first_cu);
 #endif
+#endif  /* SUPPORT_UNICODE */
     }
   }
 else
@@ -6607,9 +6851,13 @@ if ((re->flags & PCRE2_LASTSET) != 0)
   if ((re->flags & PCRE2_LASTCASELESS) != 0)
     {
     req_cu2 = TABLE_GET(req_cu, mb->fcc, req_cu);
-#if defined SUPPORT_UNICODE && PCRE2_CODE_UNIT_WIDTH != 8
-    if (utf && req_cu > 127) req_cu2 = UCD_OTHERCASE(req_cu);
+#ifdef SUPPORT_UNICODE
+#if PCRE2_CODE_UNIT_WIDTH == 8
+    if (req_cu > 127 && ucp && !utf) req_cu2 = UCD_OTHERCASE(req_cu);
+#else
+    if (req_cu > 127 && (utf || ucp)) req_cu2 = UCD_OTHERCASE(req_cu);
 #endif
+#endif  /* SUPPORT_UNICODE */
     }
   }
 
@@ -6626,6 +6874,14 @@ FRAGMENT_RESTART:
 start_partial = match_partial = NULL;
 mb->hitend = FALSE;
 
+<<<<<<< HEAD
+=======
+#if PCRE2_CODE_UNIT_WIDTH == 8
+memchr_not_found_first_cu = FALSE;
+memchr_not_found_first_cu2 = FALSE;
+#endif
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 for(;;)
   {
   PCRE2_SPTR new_start_match;
@@ -6756,6 +7012,7 @@ for(;;)
 #endif
           }
 
+<<<<<<< HEAD
         /* If we can't find the required code unit, having reached the true end
         of the subject, break the bumpalong loop, to force a match failure,
         except when doing partial matching, when we let the next cycle run at
@@ -6765,6 +7022,18 @@ for(;;)
         subject (PCRE2_FIRSTLINE caused end_subject to be temporarily modified)
         we also let the cycle run, because the matching string is legitimately
         allowed to start with the first code unit of a newline. */
+=======
+        /* If we can't find the required first code unit, having reached the
+        true end of the subject, break the bumpalong loop, to force a match
+        failure, except when doing partial matching, when we let the next cycle
+        run at the end of the subject. To see why, consider the pattern
+        /(?<=abc)def/, which partially matches "abc", even though the string
+        does not contain the starting character "d". If we have not reached the
+        true end of the subject (PCRE2_FIRSTLINE caused end_subject to be
+        temporarily modified) we also let the cycle run, because the matching
+        string is legitimately allowed to start with the first code unit of a
+        newline. */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
         if (mb->partial == 0 && start_match >= mb->end_subject)
           {
@@ -7103,6 +7372,10 @@ if (utf && end_subject != true_end_subject &&
     starting code units in 8-bit and 16-bit modes. */
 
     start_match = end_subject + 1;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #if PCRE2_CODE_UNIT_WIDTH != 32
     while (start_match < true_end_subject && NOT_FIRSTCU(*start_match))
       start_match++;

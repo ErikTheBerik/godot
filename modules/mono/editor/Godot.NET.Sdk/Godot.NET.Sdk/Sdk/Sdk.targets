@@ -15,6 +15,7 @@
     <DefineConstants Condition=" '$(GodotRealTIsDouble)' == 'true' ">GODOT_REAL_T_IS_DOUBLE;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
+<<<<<<< HEAD
   <!-- Backported from newer Microsoft.NET.Sdk version -->
   <Target Name="IncludeTargetingPackReference" BeforeTargets="_GetRestoreSettingsPerFramework;_CheckForInvalidConfigurationAndPlatform"
           Condition=" '$(GodotUseNETFrameworkRefAssemblies)' == 'true' and '$(TargetFrameworkMoniker)' != '' and '$(TargetFrameworkIdentifier)' == '.NETFramework' and '$(AutomaticallyUseReferenceAssemblyPackages)' == 'true' ">
@@ -31,4 +32,10 @@
       <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="$(MicrosoftNETFrameworkReferenceAssembliesLatestPackageVersion)" IsImplicitlyDefined="true" Condition="'$(_FullFrameworkReferenceAssemblyPaths)' == ''"/>
     </ItemGroup>
   </Target>
+=======
+  <!-- C# source generators -->
+  <ItemGroup Condition=" '$(DisableImplicitGodotGeneratorReferences)' != 'true' ">
+    <PackageReference Include="Godot.SourceGenerators" Version="$(PackageVersion_Godot_SourceGenerators)" />
+  </ItemGroup>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 </Project>

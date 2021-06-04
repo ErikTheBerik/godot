@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<<<<<<< HEAD
 <class name="VisualShaderNodeUniformRef" inherits="VisualShaderNode" version="3.2">
+=======
+<class name="VisualShaderNodeUniformRef" inherits="VisualShaderNode" version="4.0">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	<brief_description>
 		A reference to an existing [VisualShaderNodeUniform].
 	</brief_description>

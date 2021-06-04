@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<<<<<<< HEAD
 <class name="AudioStreamMP3" inherits="AudioStream" version="3.2">
+=======
+<class name="AudioStreamMP3" inherits="AudioStream" version="4.0">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	<brief_description>
 		MP3 audio stream driver.
 	</brief_description>
@@ -11,7 +15,11 @@
 	<methods>
 	</methods>
 	<members>
+<<<<<<< HEAD
 		<member name="data" type="PoolByteArray" setter="set_data" getter="get_data" default="PoolByteArray(  )">
+=======
+		<member name="data" type="PackedByteArray" setter="set_data" getter="get_data" default="PackedByteArray(  )">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			Contains the audio data in bytes.
 		</member>
 		<member name="loop" type="bool" setter="set_loop" getter="has_loop" default="false">

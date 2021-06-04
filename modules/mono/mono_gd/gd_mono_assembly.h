@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,13 +34,12 @@
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 
-#include "core/hash_map.h"
-#include "core/map.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/map.h"
 #include "gd_mono_utils.h"
 
 class GDMonoAssembly {
-
 	struct ClassKey {
 		struct Hasher {
 			static _FORCE_INLINE_ uint32_t hash(const ClassKey &p_key) {
@@ -72,6 +71,7 @@ class GDMonoAssembly {
 	MonoImage *image;
 	MonoAssembly *assembly;
 
+<<<<<<< HEAD
 #ifdef GD_MONO_HOT_RELOAD
 	uint64_t modified_time;
 #endif
@@ -82,6 +82,18 @@ class GDMonoAssembly {
 	HashMap<ClassKey, GDMonoClass *, ClassKey::Hasher> cached_classes;
 	Map<MonoClass *, GDMonoClass *> cached_raw;
 
+=======
+	bool attrs_fetched = false;
+	MonoCustomAttrInfo *attributes = nullptr;
+
+#ifdef GD_MONO_HOT_RELOAD
+	uint64_t modified_time = 0;
+#endif
+
+	HashMap<ClassKey, GDMonoClass *, ClassKey::Hasher> cached_classes;
+	Map<MonoClass *, GDMonoClass *> cached_raw;
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	static Vector<String> search_dirs;
 
 	static void assembly_load_hook(MonoAssembly *assembly, void *user_data);
@@ -111,11 +123,17 @@ public:
 #endif
 
 	String get_path() const;
+<<<<<<< HEAD
+=======
+
+	bool has_attribute(GDMonoClass *p_attr_class);
+	MonoObject *get_attribute(GDMonoClass *p_attr_class);
+
+	void fetch_attributes();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	GDMonoClass *get_class(const StringName &p_namespace, const StringName &p_name);
 	GDMonoClass *get_class(MonoClass *p_mono_class);
-
-	GDMonoClass *get_object_derived_class(const StringName &p_class);
 
 	static String find_assembly(const String &p_name);
 
@@ -125,7 +143,15 @@ public:
 	static GDMonoAssembly *load(const String &p_name, MonoAssemblyName *p_aname, bool p_refonly, const Vector<String> &p_search_dirs);
 	static GDMonoAssembly *load_from(const String &p_name, const String &p_path, bool p_refonly);
 
+<<<<<<< HEAD
 	GDMonoAssembly(const String &p_name, MonoImage *p_image, MonoAssembly *p_assembly);
+=======
+	GDMonoAssembly(const String &p_name, MonoImage *p_image, MonoAssembly *p_assembly) :
+			name(p_name),
+			image(p_image),
+			assembly(p_assembly) {
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	~GDMonoAssembly();
 };
 

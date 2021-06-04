@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -33,17 +33,17 @@
 #include "../csharp_script.h"
 #include "../mono_gc_handle.h"
 #include "../utils/macros.h"
-#include "../utils/thread_local.h"
 #include "gd_mono_class.h"
 #include "gd_mono_marshal.h"
 #include "gd_mono_utils.h"
 
+#include "core/debugger/engine_debugger.h"
+#include "core/debugger/script_debugger.h"
+
 #include <mono/metadata/exception.h>
 
 namespace GDMonoInternals {
-
 void tie_managed_to_unmanaged(MonoObject *managed, Object *unmanaged) {
-
 	// This method should not fail
 
 	CRASH_COND(!unmanaged);
@@ -59,7 +59,7 @@ void tie_managed_to_unmanaged(MonoObject *managed, Object *unmanaged) {
 
 	GDMonoClass *native = GDMonoUtils::get_class_native_base(klass);
 
-	CRASH_COND(native == NULL);
+	CRASH_COND(native == nullptr);
 
 	if (native == klass) {
 		// If it's just a wrapper Godot class and not a custom inheriting class, then attach a
@@ -73,7 +73,7 @@ void tie_managed_to_unmanaged(MonoObject *managed, Object *unmanaged) {
 		script_binding.inited = true;
 		script_binding.type_name = NATIVE_GDMONOCLASS_NAME(klass);
 		script_binding.wrapper_class = klass;
-		script_binding.gchandle = ref ? MonoGCHandle::create_weak(managed) : MonoGCHandle::create_strong(managed);
+		script_binding.gchandle = ref ? MonoGCHandleData::new_weak_handle(managed) : MonoGCHandleData::new_strong_handle(managed);
 		script_binding.owner = unmanaged;
 
 		if (ref) {
@@ -99,31 +99,46 @@ void tie_managed_to_unmanaged(MonoObject *managed, Object *unmanaged) {
 		return;
 	}
 
-	Ref<MonoGCHandle> gchandle = ref ? MonoGCHandle::create_weak(managed) : MonoGCHandle::create_strong(managed);
+	MonoGCHandleData gchandle = ref ? MonoGCHandleData::new_weak_handle(managed) : MonoGCHandleData::new_strong_handle(managed);
 
 	Ref<CSharpScript> script = CSharpScript::create_for_managed_type(klass, native);
 
 	CRASH_COND(script.is_null());
 
-	ScriptInstance *si = CSharpInstance::create_for_managed_type(unmanaged, script.ptr(), gchandle);
+	CSharpInstance *csharp_instance = CSharpInstance::create_for_managed_type(unmanaged, script.ptr(), gchandle);
 
-	unmanaged->set_script_and_instance(script.get_ref_ptr(), si);
+	unmanaged->set_script_and_instance(script, csharp_instance);
 }
 
 void unhandled_exception(MonoException *p_exc) {
 	mono_print_unhandled_exception((MonoObject *)p_exc);
+<<<<<<< HEAD
+=======
+	gd_unhandled_exception_event(p_exc);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	if (GDMono::get_singleton()->get_unhandled_exception_policy() == GDMono::POLICY_TERMINATE_APP) {
 		// Too bad 'mono_invoke_unhandled_exception_hook' is not exposed to embedders
-		GDMono::unhandled_exception_hook((MonoObject *)p_exc, NULL);
+		mono_unhandled_exception((MonoObject *)p_exc);
+		GDMono::unhandled_exception_hook((MonoObject *)p_exc, nullptr);
 		GD_UNREACHABLE();
 	} else {
 #ifdef DEBUG_ENABLED
-		GDMonoUtils::debug_send_unhandled_exception_error((MonoException *)p_exc);
-		if (ScriptDebugger::get_singleton())
-			ScriptDebugger::get_singleton()->idle_poll();
+		GDMonoUtils::debug_send_unhandled_exception_error(p_exc);
+		if (EngineDebugger::is_active()) {
+			EngineDebugger::get_singleton()->poll_events(false);
+		}
 #endif
 	}
 }
 
+void gd_unhandled_exception_event(MonoException *p_exc) {
+	MonoImage *mono_image = GDMono::get_singleton()->get_core_api_assembly()->get_image();
+
+	MonoClass *gd_klass = mono_class_from_name(mono_image, "Godot", "GD");
+	MonoMethod *unhandled_exception_method = mono_class_get_method_from_name(gd_klass, "OnUnhandledException", -1);
+	void *args[1];
+	args[0] = p_exc;
+	mono_runtime_invoke(unhandled_exception_method, nullptr, (void **)args, nullptr);
+}
 } // namespace GDMonoInternals

@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,9 +35,15 @@
 
 #include "godot_plugin_jni.h"
 
+<<<<<<< HEAD
 #include <core/engine.h>
 #include <core/error_macros.h>
 #include <core/project_settings.h>
+=======
+#include <core/config/engine.h>
+#include <core/config/project_settings.h>
+#include <core/error/error_macros.h>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #include <platform/android/api/jni_singleton.h>
 #include <platform/android/jni_utils.h>
 #include <platform/android/string_android.h>
@@ -42,7 +53,10 @@ static HashMap<String, JNISingleton *> jni_singletons;
 extern "C" {
 
 JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegisterSingleton(JNIEnv *env, jclass clazz, jstring name, jobject obj) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	String singname = jstring_to_string(name, env);
 	JNISingleton *s = (JNISingleton *)ClassDB::instance("JNISingleton");
 	s->set_instance(env->NewGlobalRef(obj));
@@ -53,7 +67,10 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegis
 }
 
 JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegisterMethod(JNIEnv *env, jclass clazz, jstring sname, jstring name, jstring ret, jobjectArray args) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	String singname = jstring_to_string(sname, env);
 
 	ERR_FAIL_COND(!jni_singletons.has(singname));
@@ -68,7 +85,10 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegis
 	int stringCount = env->GetArrayLength(args);
 
 	for (int i = 0; i < stringCount; i++) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		jstring string = (jstring)env->GetObjectArrayElement(args, i);
 		const String rawString = jstring_to_string(string, env);
 		types.push_back(get_jni_type(rawString));
@@ -80,14 +100,21 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegis
 	jclass cls = env->GetObjectClass(s->get_instance());
 	jmethodID mid = env->GetMethodID(cls, mname.ascii().get_data(), cs.ascii().get_data());
 	if (!mid) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		print_line("Failed getting method ID " + mname);
 	}
 
 	s->add_method(mname, mid, types, get_jni_type(retval));
 }
 
+<<<<<<< HEAD
 JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegisterSignal(JNIEnv *env, jobject obj, jstring j_plugin_name, jstring j_signal_name, jobjectArray j_signal_param_types) {
+=======
+JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegisterSignal(JNIEnv *env, jclass clazz, jstring j_plugin_name, jstring j_signal_name, jobjectArray j_signal_param_types) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	String singleton_name = jstring_to_string(j_plugin_name, env);
 
 	ERR_FAIL_COND(!jni_singletons.has(singleton_name));
@@ -100,7 +127,10 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegis
 	int stringCount = env->GetArrayLength(j_signal_param_types);
 
 	for (int i = 0; i < stringCount; i++) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		jstring j_signal_param_type = (jstring)env->GetObjectArrayElement(j_signal_param_types, i);
 		const String signal_param_type = jstring_to_string(j_signal_param_type, env);
 		types.push_back(get_jni_type(signal_param_type));
@@ -109,7 +139,11 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegis
 	singleton->add_signal(signal_name, types);
 }
 
+<<<<<<< HEAD
 JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeEmitSignal(JNIEnv *env, jobject obj, jstring j_plugin_name, jstring j_signal_name, jobjectArray j_signal_params) {
+=======
+JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeEmitSignal(JNIEnv *env, jclass clazz, jstring j_plugin_name, jstring j_signal_name, jobjectArray j_signal_params) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	String singleton_name = jstring_to_string(j_plugin_name, env);
 
 	ERR_FAIL_COND(!jni_singletons.has(singleton_name));
@@ -134,7 +168,11 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeEmitS
 	singleton->emit_signal(signal_name, args, count);
 }
 
+<<<<<<< HEAD
 JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegisterGDNativeLibraries(JNIEnv *env, jobject obj, jobjectArray gdnlib_paths) {
+=======
+JNIEXPORT void JNICALL Java_org_godotengine_godot_plugin_GodotPlugin_nativeRegisterGDNativeLibraries(JNIEnv *env, jclass clazz, jobjectArray gdnlib_paths) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	int gdnlib_count = env->GetArrayLength(gdnlib_paths);
 	if (gdnlib_count == 0) {
 		return;

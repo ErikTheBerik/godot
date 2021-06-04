@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -264,14 +269,23 @@ struct Getter {
 		le = !le;
 		if (le) {
 			ByteSwapper<T, (sizeof(T) > 1 ? true : false)>()(inout);
+<<<<<<< HEAD
 		} else
 			ByteSwapper<T, false>()(inout);
+=======
+		} else {
+			ByteSwapper<T, false>()(inout);
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 };
 
 template <bool SwapEndianess, typename T>
 struct Getter<SwapEndianess, T, false> {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	void operator()(T *inout, bool /*le*/) {
 		// static branch
 		ByteSwapper<T, (SwapEndianess && sizeof(T) > 1)>()(inout);

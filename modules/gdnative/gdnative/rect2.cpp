@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,13 +30,16 @@
 
 #include "gdnative/rect2.h"
 
-#include "core/math/transform_2d.h"
-#include "core/variant.h"
+#include "core/math/rect2.h"
+
+static_assert(sizeof(godot_rect2) == sizeof(Rect2), "Rect2 size mismatch");
+static_assert(sizeof(godot_rect2i) == sizeof(Rect2i), "Rect2i size mismatch");
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+<<<<<<< HEAD
 static_assert(sizeof(godot_rect2) == sizeof(Rect2), "Rect2 size mismatch");
 
 void GDAPI godot_rect2_new_with_position_and_size(godot_rect2 *r_dest, const godot_vector2 *p_pos, const godot_vector2 *p_size) {
@@ -152,26 +155,22 @@ godot_vector2 GDAPI godot_rect2_get_position(const godot_rect2 *p_self) {
 	const Rect2 *self = (const Rect2 *)p_self;
 	*d = self->get_position();
 	return dest;
+=======
+void GDAPI godot_rect2_new(godot_rect2 *p_self) {
+	memnew_placement(p_self, Rect2);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
-godot_vector2 GDAPI godot_rect2_get_size(const godot_rect2 *p_self) {
-	godot_vector2 dest;
-	Vector2 *d = (Vector2 *)&dest;
-	const Rect2 *self = (const Rect2 *)p_self;
-	*d = self->get_size();
-	return dest;
+void GDAPI godot_rect2_new_copy(godot_rect2 *r_dest, const godot_rect2 *p_src) {
+	memnew_placement(r_dest, Rect2(*(Rect2 *)p_src));
 }
 
-void GDAPI godot_rect2_set_position(godot_rect2 *p_self, const godot_vector2 *p_pos) {
-	Rect2 *self = (Rect2 *)p_self;
-	const Vector2 *position = (const Vector2 *)p_pos;
-	self->set_position(*position);
+void GDAPI godot_rect2i_new(godot_rect2i *p_self) {
+	memnew_placement(p_self, Rect2i);
 }
 
-void GDAPI godot_rect2_set_size(godot_rect2 *p_self, const godot_vector2 *p_size) {
-	Rect2 *self = (Rect2 *)p_self;
-	const Vector2 *size = (const Vector2 *)p_size;
-	self->set_size(*size);
+void GDAPI godot_rect2i_new_copy(godot_rect2i *r_dest, const godot_rect2i *p_src) {
+	memnew_placement(r_dest, Rect2i(*(Rect2i *)p_src));
 }
 
 #ifdef __cplusplus

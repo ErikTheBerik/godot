@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,8 +30,8 @@
 
 #include "gdscript_function.h"
 
-#include "core/os/os.h"
 #include "gdscript.h"
+<<<<<<< HEAD
 #include "gdscript_functions.h"
 
 Variant *GDScriptFunction::_get_variant(int p_address, GDScriptInstance *p_instance, GDScript *p_script, Variant &self, Variant &static_ref, Variant *p_stack, String &r_error) const {
@@ -1650,34 +1650,32 @@ Variant GDScriptFunction::call(GDScriptInstance *p_instance, const Variant **p_a
 
 	return retvalue;
 }
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 const int *GDScriptFunction::get_code() const {
-
 	return _code_ptr;
 }
-int GDScriptFunction::get_code_size() const {
 
+int GDScriptFunction::get_code_size() const {
 	return _code_size;
 }
 
 Variant GDScriptFunction::get_constant(int p_idx) const {
-
 	ERR_FAIL_INDEX_V(p_idx, constants.size(), "<errconst>");
 	return constants[p_idx];
 }
 
 StringName GDScriptFunction::get_global_name(int p_idx) const {
-
 	ERR_FAIL_INDEX_V(p_idx, global_names.size(), "<errgname>");
 	return global_names[p_idx];
 }
 
 int GDScriptFunction::get_default_argument_count() const {
-
 	return _default_arg_count;
 }
-int GDScriptFunction::get_default_argument_addr(int p_idx) const {
 
+int GDScriptFunction::get_default_argument_addr(int p_idx) const {
 	ERR_FAIL_INDEX_V(p_idx, default_arguments.size(), -1);
 	return default_arguments[p_idx];
 }
@@ -1692,45 +1690,38 @@ GDScriptDataType GDScriptFunction::get_argument_type(int p_idx) const {
 }
 
 StringName GDScriptFunction::get_name() const {
-
 	return name;
 }
 
 int GDScriptFunction::get_max_stack_size() const {
-
 	return _stack_size;
 }
 
 struct _GDFKC {
-
-	int order;
+	int order = 0;
 	List<int> pos;
 };
 
 struct _GDFKCS {
-
-	int order;
+	int order = 0;
 	StringName id;
-	int pos;
+	int pos = 0;
 
 	bool operator<(const _GDFKCS &p_r) const {
-
 		return order < p_r.order;
 	}
 };
 
-void GDScriptFunction::debug_get_stack_member_state(int p_line, List<Pair<StringName, int> > *r_stackvars) const {
-
+void GDScriptFunction::debug_get_stack_member_state(int p_line, List<Pair<StringName, int>> *r_stackvars) const {
 	int oc = 0;
 	Map<StringName, _GDFKC> sdmap;
 	for (const List<StackDebug>::Element *E = stack_debug.front(); E; E = E->next()) {
-
 		const StackDebug &sd = E->get();
-		if (sd.line > p_line)
+		if (sd.line > p_line) {
 			break;
+		}
 
 		if (sd.added) {
-
 			if (!sdmap.has(sd.identifier)) {
 				_GDFKC d;
 				d.order = oc++;
@@ -1741,18 +1732,17 @@ void GDScriptFunction::debug_get_stack_member_state(int p_line, List<Pair<String
 				sdmap[sd.identifier].pos.push_back(sd.pos);
 			}
 		} else {
-
 			ERR_CONTINUE(!sdmap.has(sd.identifier));
 
 			sdmap[sd.identifier].pos.pop_back();
-			if (sdmap[sd.identifier].pos.empty())
+			if (sdmap[sd.identifier].pos.is_empty()) {
 				sdmap.erase(sd.identifier);
+			}
 		}
 	}
 
 	List<_GDFKCS> stackpositions;
 	for (Map<StringName, _GDFKC>::Element *E = sdmap.front(); E; E = E->next()) {
-
 		_GDFKCS spp;
 		spp.id = E->key();
 		spp.order = E->get().order;
@@ -1763,7 +1753,6 @@ void GDScriptFunction::debug_get_stack_member_state(int p_line, List<Pair<String
 	stackpositions.sort();
 
 	for (List<_GDFKCS>::Element *E = stackpositions.front(); E; E = E->next()) {
-
 		Pair<StringName, int> p;
 		p.first = E->get().id;
 		p.second = E->get().pos;
@@ -1771,60 +1760,37 @@ void GDScriptFunction::debug_get_stack_member_state(int p_line, List<Pair<String
 	}
 }
 
-GDScriptFunction::GDScriptFunction() :
-		function_list(this) {
-
-	_stack_size = 0;
-	_call_size = 0;
-	rpc_mode = MultiplayerAPI::RPC_MODE_DISABLED;
+GDScriptFunction::GDScriptFunction() {
 	name = "<anonymous>";
 #ifdef DEBUG_ENABLED
-	_func_cname = NULL;
-
-	if (GDScriptLanguage::get_singleton()->lock) {
-		GDScriptLanguage::get_singleton()->lock->lock();
+	{
+		MutexLock lock(GDScriptLanguage::get_singleton()->lock);
+		GDScriptLanguage::get_singleton()->function_list.add(&function_list);
 	}
-	GDScriptLanguage::get_singleton()->function_list.add(&function_list);
-
-	if (GDScriptLanguage::get_singleton()->lock) {
-		GDScriptLanguage::get_singleton()->lock->unlock();
-	}
-
-	profile.call_count = 0;
-	profile.self_time = 0;
-	profile.total_time = 0;
-	profile.frame_call_count = 0;
-	profile.frame_self_time = 0;
-	profile.frame_total_time = 0;
-	profile.last_frame_call_count = 0;
-	profile.last_frame_self_time = 0;
-	profile.last_frame_total_time = 0;
-
 #endif
 }
 
 GDScriptFunction::~GDScriptFunction() {
-#ifdef DEBUG_ENABLED
-	if (GDScriptLanguage::get_singleton()->lock) {
-		GDScriptLanguage::get_singleton()->lock->lock();
+	for (int i = 0; i < lambdas.size(); i++) {
+		memdelete(lambdas[i]);
 	}
-	GDScriptLanguage::get_singleton()->function_list.remove(&function_list);
 
-	if (GDScriptLanguage::get_singleton()->lock) {
-		GDScriptLanguage::get_singleton()->lock->unlock();
-	}
+#ifdef DEBUG_ENABLED
+
+	MutexLock lock(GDScriptLanguage::get_singleton()->lock);
+
+	GDScriptLanguage::get_singleton()->function_list.remove(&function_list);
 #endif
 }
 
 /////////////////////
 
-Variant GDScriptFunctionState::_signal_callback(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
-
+Variant GDScriptFunctionState::_signal_callback(const Variant **p_args, int p_argcount, Callable::CallError &r_error) {
 	Variant arg;
-	r_error.error = Variant::CallError::CALL_OK;
+	r_error.error = Callable::CallError::CALL_OK;
 
 	if (p_argcount == 0) {
-		r_error.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
+		r_error.error = Callable::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
 		r_error.argument = 1;
 		return Variant();
 	} else if (p_argcount == 1) {
@@ -1842,7 +1808,7 @@ Variant GDScriptFunctionState::_signal_callback(const Variant **p_args, int p_ar
 	Ref<GDScriptFunctionState> self = *p_args[p_argcount - 1];
 
 	if (self.is_null()) {
-		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+		r_error.error = Callable::CallError::CALL_ERROR_INVALID_ARGUMENT;
 		r_error.argument = p_argcount - 1;
 		r_error.expected = Variant::OBJECT;
 		return Variant();
@@ -1852,11 +1818,12 @@ Variant GDScriptFunctionState::_signal_callback(const Variant **p_args, int p_ar
 }
 
 bool GDScriptFunctionState::is_valid(bool p_extended_check) const {
-
-	if (function == NULL)
+	if (function == nullptr) {
 		return false;
+	}
 
 	if (p_extended_check) {
+<<<<<<< HEAD
 #ifndef NO_THREADS
 		MutexLock lock(GDScriptLanguage::get_singleton()->lock);
 #endif
@@ -1868,15 +1835,27 @@ bool GDScriptFunctionState::is_valid(bool p_extended_check) const {
 		if (state.instance && !instances_list.in_list()) {
 			return false;
 		}
+=======
+		MutexLock lock(GDScriptLanguage::get_singleton()->lock);
+
+		// Script gone?
+		if (!scripts_list.in_list()) {
+			return false;
+		}
+		// Class instance gone? (if not static function)
+		if (state.instance && !instances_list.in_list()) {
+			return false;
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	return true;
 }
 
 Variant GDScriptFunctionState::resume(const Variant &p_arg) {
-
 	ERR_FAIL_COND_V(!function, Variant());
 	{
+<<<<<<< HEAD
 #ifndef NO_THREADS
 		MutexLock lock(GDScriptLanguage::singleton->lock);
 #endif
@@ -1894,19 +1873,37 @@ Variant GDScriptFunctionState::resume(const Variant &p_arg) {
 			return Variant();
 #endif
 		}
+=======
+		MutexLock lock(GDScriptLanguage::singleton->lock);
+
+		if (!scripts_list.in_list()) {
+#ifdef DEBUG_ENABLED
+			ERR_FAIL_V_MSG(Variant(), "Resumed function '" + state.function_name + "()' after await, but script is gone. At script: " + state.script_path + ":" + itos(state.line));
+#else
+			return Variant();
+#endif
+		}
+		if (state.instance && !instances_list.in_list()) {
+#ifdef DEBUG_ENABLED
+			ERR_FAIL_V_MSG(Variant(), "Resumed function '" + state.function_name + "()' after await, but class instance is gone. At script: " + state.script_path + ":" + itos(state.line));
+#else
+			return Variant();
+#endif
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// Do these now to avoid locking again after the call
 		scripts_list.remove_from_list();
 		instances_list.remove_from_list();
 	}
 
 	state.result = p_arg;
-	Variant::CallError err;
-	Variant ret = function->call(NULL, NULL, 0, err, &state);
+	Callable::CallError err;
+	Variant ret = function->call(nullptr, nullptr, 0, err, &state);
 
 	bool completed = true;
 
 	// If the return value is a GDScriptFunctionState reference,
-	// then the function did yield again after resuming.
+	// then the function did await again after resuming.
 	if (ret.is_ref()) {
 		GDScriptFunctionState *gdfs = Object::cast_to<GDScriptFunctionState>(ret);
 		if (gdfs && gdfs->function == function) {
@@ -1915,7 +1912,7 @@ Variant GDScriptFunctionState::resume(const Variant &p_arg) {
 		}
 	}
 
-	function = NULL; //cleaned up;
+	function = nullptr; //cleaned up;
 	state.result = Variant();
 
 	if (completed) {
@@ -1926,8 +1923,12 @@ Variant GDScriptFunctionState::resume(const Variant &p_arg) {
 		}
 
 #ifdef DEBUG_ENABLED
-		if (ScriptDebugger::get_singleton())
+		if (EngineDebugger::is_active()) {
 			GDScriptLanguage::get_singleton()->exit_function();
+<<<<<<< HEAD
+=======
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #endif
 	}
 
@@ -1935,6 +1936,7 @@ Variant GDScriptFunctionState::resume(const Variant &p_arg) {
 }
 
 void GDScriptFunctionState::_clear_stack() {
+<<<<<<< HEAD
 
 	if (state.stack_size) {
 		Variant *stack = (Variant *)state.stack.ptr();
@@ -1945,7 +1947,18 @@ void GDScriptFunctionState::_clear_stack() {
 }
 
 void GDScriptFunctionState::_bind_methods() {
+=======
+	if (state.stack_size) {
+		Variant *stack = (Variant *)state.stack.ptr();
+		for (int i = 0; i < state.stack_size; i++) {
+			stack[i].~Variant();
+		}
+		state.stack_size = 0;
+	}
+}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
+void GDScriptFunctionState::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("resume", "arg"), &GDScriptFunctionState::resume, DEFVAL(Variant()));
 	ClassDB::bind_method(D_METHOD("is_valid", "extended_check"), &GDScriptFunctionState::is_valid, DEFVAL(false));
 	ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "_signal_callback", &GDScriptFunctionState::_signal_callback, MethodInfo("_signal_callback"));
@@ -1956,12 +1969,17 @@ void GDScriptFunctionState::_bind_methods() {
 GDScriptFunctionState::GDScriptFunctionState() :
 		scripts_list(this),
 		instances_list(this) {
+<<<<<<< HEAD
 
 	function = NULL;
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 GDScriptFunctionState::~GDScriptFunctionState() {
+	_clear_stack();
 
+<<<<<<< HEAD
 	_clear_stack();
 #ifndef NO_THREADS
 	GDScriptLanguage::singleton->lock->lock();
@@ -1971,4 +1989,11 @@ GDScriptFunctionState::~GDScriptFunctionState() {
 #ifndef NO_THREADS
 	GDScriptLanguage::singleton->lock->unlock();
 #endif
+=======
+	{
+		MutexLock lock(GDScriptLanguage::singleton->lock);
+		scripts_list.remove_from_list();
+		instances_list.remove_from_list();
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }

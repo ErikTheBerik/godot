@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,6 +31,7 @@
 #ifndef CSG_H
 #define CSG_H
 
+<<<<<<< HEAD
 #include "core/list.h"
 #include "core/map.h"
 #include "core/math/aabb.h"
@@ -42,31 +43,46 @@
 #include "core/pool_vector.h"
 #include "core/reference.h"
 #include "core/vector.h"
+=======
+#include "core/math/aabb.h"
+#include "core/math/plane.h"
+#include "core/math/transform_3d.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/object/reference.h"
+#include "core/templates/list.h"
+#include "core/templates/map.h"
+#include "core/templates/oa_hash_map.h"
+#include "core/templates/vector.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #include "scene/resources/material.h"
 
 struct CSGBrush {
-
 	struct Face {
 		Vector3 vertices[3];
 		Vector2 uvs[3];
 		AABB aabb;
-		bool smooth;
-		bool invert;
-		int material;
+		bool smooth = false;
+		bool invert = false;
+		int material = 0;
 	};
 
 	Vector<Face> faces;
-	Vector<Ref<Material> > materials;
+	Vector<Ref<Material>> materials;
 
 	inline void _regen_face_aabbs();
 
 	// Create a brush from faces.
+<<<<<<< HEAD
 	void build_from_faces(const PoolVector<Vector3> &p_vertices, const PoolVector<Vector2> &p_uvs, const PoolVector<bool> &p_smooth, const PoolVector<Ref<Material> > &p_materials, const PoolVector<bool> &p_invert_faces);
 	void copy_from(const CSGBrush &p_brush, const Transform &p_xform);
+=======
+	void build_from_faces(const Vector<Vector3> &p_vertices, const Vector<Vector2> &p_uvs, const Vector<bool> &p_smooth, const Vector<Ref<Material>> &p_materials, const Vector<bool> &p_invert_faces);
+	void copy_from(const CSGBrush &p_brush, const Transform3D &p_xform);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 };
 
 struct CSGBrushOperation {
-
 	enum Operation {
 		OPERATION_UNION,
 		OPERATION_INTERSECTION,
@@ -76,7 +92,17 @@ struct CSGBrushOperation {
 	void merge_brushes(Operation p_operation, const CSGBrush &p_brush_a, const CSGBrush &p_brush_b, CSGBrush &r_merged_brush, float p_vertex_snap);
 
 	struct MeshMerge {
+		struct Face {
+			bool from_b = false;
+			bool inside = false;
+			int points[3] = {};
+			Vector2 uvs[3];
+			bool smooth = false;
+			bool invert = false;
+			int material_idx = 0;
+		};
 
+<<<<<<< HEAD
 		struct Face {
 			bool from_b;
 			bool inside;
@@ -92,6 +118,13 @@ struct CSGBrushOperation {
 			int left;
 			int right;
 			int next;
+=======
+		struct FaceBVH {
+			int face = 0;
+			int left = 0;
+			int right = 0;
+			int next = 0;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			Vector3 center;
 			AABB aabb;
 		};
@@ -146,7 +179,11 @@ struct CSGBrushOperation {
 		Map<Ref<Material>, int> materials;
 		Map<Vector3, int> vertex_map;
 		OAHashMap<VertexKey, int, VertexKeyHash> snap_cache;
+<<<<<<< HEAD
 		float vertex_snap;
+=======
+		float vertex_snap = 0.0;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		inline void _add_distance(List<real_t> &r_intersectionsA, List<real_t> &r_intersectionsB, bool p_from_B, real_t p_distance) const;
 		inline bool _bvh_inside(FaceBVH *facebvhptr, int p_max_depth, int p_bvh_first, int p_face_idx) const;
@@ -157,22 +194,35 @@ struct CSGBrushOperation {
 	};
 
 	struct Build2DFaces {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		struct Vertex2D {
 			Vector2 point;
 			Vector2 uv;
 		};
 
 		struct Face2D {
+<<<<<<< HEAD
 			int vertex_idx[3];
+=======
+			int vertex_idx[3] = {};
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		};
 
 		Vector<Vertex2D> vertices;
 		Vector<Face2D> faces;
 		Plane plane;
+<<<<<<< HEAD
 		Transform to_2D;
 		Transform to_3D;
 		float vertex_snap2;
+=======
+		Transform3D to_2D;
+		Transform3D to_3D;
+		float vertex_snap2 = 0.0;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		inline int _get_point_idx(const Vector2 &p_point);
 		inline int _add_vertex(const Vertex2D &p_vertex);

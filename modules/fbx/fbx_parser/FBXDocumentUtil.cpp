@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -78,7 +83,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "FBXParser.h"
 #include "FBXProperties.h"
 #include "FBXUtil.h"
+<<<<<<< HEAD
 #include "core/print_string.h"
+=======
+#include "core/string/print_string.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 namespace FBXDocParser {
 namespace Util {
@@ -95,14 +104,22 @@ void DOMError(const std::string &message, const std::shared_ptr<Token> token) {
 	print_error("[FBX-DOM]" + String(message.c_str()) + ";" + String(token->StringContents().c_str()));
 }
 
+<<<<<<< HEAD
 void DOMError(const std::string &message, const Element *element /*= NULL*/) {
+=======
+void DOMError(const std::string &message, const Element *element /*= nullptr*/) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (element) {
 		DOMError(message, element->KeyToken());
 	}
 	print_error("[FBX-DOM] " + String(message.c_str()));
 }
 
+<<<<<<< HEAD
 void DOMError(const std::string &message, const std::shared_ptr<Element> element /*= NULL*/) {
+=======
+void DOMError(const std::string &message, const std::shared_ptr<Element> element /*= nullptr*/) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (element) {
 		DOMError(message, element->KeyToken());
 	}
@@ -117,7 +134,11 @@ void DOMWarning(const std::string &message, const Token *token) {
 	print_verbose("[FBX-DOM] warning:" + String(message.c_str()) + ";" + String(token->StringContents().c_str()));
 }
 
+<<<<<<< HEAD
 void DOMWarning(const std::string &message, const Element *element /*= NULL*/) {
+=======
+void DOMWarning(const std::string &message, const Element *element /*= nullptr*/) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (element) {
 		DOMWarning(message, element->KeyToken());
 		return;
@@ -129,7 +150,11 @@ void DOMWarning(const std::string &message, const std::shared_ptr<Token> token) 
 	print_verbose("[FBX-DOM] warning:" + String(message.c_str()) + ";" + String(token->StringContents().c_str()));
 }
 
+<<<<<<< HEAD
 void DOMWarning(const std::string &message, const std::shared_ptr<Element> element /*= NULL*/) {
+=======
+void DOMWarning(const std::string &message, const std::shared_ptr<Element> element /*= nullptr*/) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (element) {
 		DOMWarning(message, element->KeyToken());
 		return;
@@ -137,6 +162,7 @@ void DOMWarning(const std::string &message, const std::shared_ptr<Element> eleme
 	print_verbose("[FBX-DOM] warning:" + String(message.c_str()));
 }
 
+<<<<<<< HEAD
 // ------------------------------------------------------------------------------------------------
 // fetch a property table and the corresponding property template
 const PropertyTable *GetPropertyTable(const Document &doc,
@@ -168,5 +194,7 @@ const PropertyTable *GetPropertyTable(const Document &doc,
 
 	return new PropertyTable(Properties70, templateProps);
 }
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace Util
 } // namespace FBXDocParser

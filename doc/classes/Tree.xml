@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Tree" inherits="Control" version="3.2">
+<class name="Tree" inherits="Control" version="4.0">
 	<brief_description>
 		Control to show a tree of items.
 	</brief_description>
 	<description>
 		This shows a tree of items that can be selected, expanded and collapsed. The tree can have multiple columns with custom controls like text editing, buttons and popups. It can be useful for structured displays and interactions.
 		Trees are built via code, using [TreeItem] objects to create the structure. They have a single root but multiple roots can be simulated if a dummy hidden root is added.
-		[codeblock]
+		[codeblocks]
+		[gdscript]
 		func _ready():
 		    var tree = Tree.new()
 		    var root = tree.create_item()
-		    tree.set_hide_root(true)
+		    tree.hide_root = true
 		    var child1 = tree.create_item(root)
 		    var child2 = tree.create_item(root)
 		    var subchild1 = tree.create_item(child1)
 		    subchild1.set_text(0, "Subchild1")
+<<<<<<< HEAD
 		[/codeblock]
 		To iterate over all the [TreeItem] objects in a [Tree] object, use [method TreeItem.get_next] and [method TreeItem.get_children] after getting the root through [method get_root]. You can use [method Object.free] on a [TreeItem] to remove it from the [Tree].
+=======
+		[/gdscript]
+		[csharp]
+		public override void _Ready()
+		{
+		    var tree = new Tree();
+		    TreeItem root = tree.CreateItem();
+		    tree.HideRoot = true;
+		    TreeItem child1 = tree.CreateItem(root);
+		    TreeItem child2 = tree.CreateItem(root);
+		    TreeItem subchild1 = tree.CreateItem(child1);
+		    subchild1.SetText(0, "Subchild1");
+		}
+		[/csharp]
+		[/codeblocks]
+		To iterate over all the [TreeItem] objects in a [Tree] object, use [method TreeItem.get_next] and [method TreeItem.get_first_child] after getting the root through [method get_root]. You can use [method Object.free] on a [TreeItem] to remove it from the [Tree].
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</description>
 	<tutorials>
 	</tutorials>
@@ -35,6 +54,15 @@
 				Clears the tree. This removes all items.
 			</description>
 		</method>
+		<method name="clear_column_title_opentype_features">
+			<return type="void">
+			</return>
+			<argument index="0" name="column" type="int">
+			</argument>
+			<description>
+				Removes all OpenType features from the item's text.
+			</description>
+		</method>
 		<method name="create_item">
 			<return type="TreeItem">
 			</return>
@@ -46,6 +74,13 @@
 				Creates an item in the tree and adds it as a child of [code]parent[/code].
 				If [code]parent[/code] is [code]null[/code], the root item will be the parent, or the new item will be the root itself if the tree is empty.
 				The new item will be the [code]idx[/code]th child of parent, or it will be the last child if there are not enough siblings.
+			</description>
+		</method>
+		<method name="edit_selected">
+			<return type="bool">
+			</return>
+			<description>
+				Edits the selected tree item as if it was clicked. The item must be set editable with [method TreeItem.set_editable]. Returns [code]true[/code] if the item could be edited. Fails if no item is selected.
 			</description>
 		</method>
 		<method name="ensure_cursor_is_visible">
@@ -73,6 +108,35 @@
 			</argument>
 			<description>
 				Returns the column's title.
+			</description>
+		</method>
+		<method name="get_column_title_direction" qualifiers="const">
+			<return type="int" enum="Control.TextDirection">
+			</return>
+			<argument index="0" name="column" type="int">
+			</argument>
+			<description>
+				Returns column title base writing direction.
+			</description>
+		</method>
+		<method name="get_column_title_language" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="column" type="int">
+			</argument>
+			<description>
+				Returns column title language code.
+			</description>
+		</method>
+		<method name="get_column_title_opentype_feature" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="column" type="int">
+			</argument>
+			<argument index="1" name="tag" type="String">
+			</argument>
+			<description>
+				Returns OpenType feature [code]tag[/code] of the column title.
 			</description>
 		</method>
 		<method name="get_column_width" qualifiers="const">
@@ -107,13 +171,34 @@
 			</return>
 			<description>
 				Returns the currently edited item. Can be used with [signal item_edited] to get the item that was modified.
+<<<<<<< HEAD
 				[codeblock]
+=======
+				[codeblocks]
+				[gdscript]
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				func _ready():
 				    $Tree.item_edited.connect(on_Tree_item_edited)
 
 				func on_Tree_item_edited():
 				    print($Tree.get_edited()) # This item just got edited (e.g. checked).
+<<<<<<< HEAD
 				[/codeblock]
+=======
+				[/gdscript]
+				[csharp]
+				public override void _Ready()
+				{
+				    GetNode&lt;Tree&gt;("Tree").ItemEdited += OnTreeItemEdited;
+				}
+
+				public void OnTreeItemEdited()
+				{
+				    GD.Print(GetNode&lt;Tree&gt;("Tree").GetEdited()); // This item just got edited (e.g. checked).
+				}
+				[/csharp]
+				[/codeblocks]
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			</description>
 		</method>
 		<method name="get_edited_column" qualifiers="const">
@@ -192,6 +277,14 @@
 				To tell whether a column of an item is selected, use [method TreeItem.is_selected].
 			</description>
 		</method>
+		<method name="scroll_to_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="item" type="Object">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="set_column_expand">
 			<return type="void">
 			</return>
@@ -223,6 +316,41 @@
 			</argument>
 			<description>
 				Sets the title of a column.
+			</description>
+		</method>
+		<method name="set_column_title_direction">
+			<return type="void">
+			</return>
+			<argument index="0" name="column" type="int">
+			</argument>
+			<argument index="1" name="direction" type="int" enum="Control.TextDirection">
+			</argument>
+			<description>
+				Sets column title base writing direction.
+			</description>
+		</method>
+		<method name="set_column_title_language">
+			<return type="void">
+			</return>
+			<argument index="0" name="column" type="int">
+			</argument>
+			<argument index="1" name="language" type="String">
+			</argument>
+			<description>
+				Sets language code of column title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+			</description>
+		</method>
+		<method name="set_column_title_opentype_feature">
+			<return type="void">
+			</return>
+			<argument index="0" name="column" type="int">
+			</argument>
+			<argument index="1" name="tag" type="String">
+			</argument>
+			<argument index="2" name="value" type="int">
+			</argument>
+			<description>
+				Sets OpenType feature [code]tag[/code] for the column title.
 			</description>
 		</method>
 		<method name="set_column_titles_visible">
@@ -394,11 +522,22 @@
 		</constant>
 	</constants>
 	<theme_items>
+<<<<<<< HEAD
 		<theme_item name="arrow" type="Texture">
 			The arrow icon used when a foldable item is not collapsed.
 		</theme_item>
 		<theme_item name="arrow_collapsed" type="Texture">
 			The arrow icon used when a foldable item is collapsed.
+=======
+		<theme_item name="arrow" type="Texture2D">
+			The arrow icon used when a foldable item is not collapsed.
+		</theme_item>
+		<theme_item name="arrow_collapsed" type="Texture2D">
+			The arrow icon used when a foldable item is collapsed (for left-to-right layouts).
+		</theme_item>
+		<theme_item name="arrow_collapsed_mirrored" type="Texture2D">
+			The arrow icon used when a foldable item is collapsed (for right-to-left layouts).
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		</theme_item>
 		<theme_item name="bg" type="StyleBox">
 			Default [StyleBox] for the [Tree], i.e. used when the control is not being focused.
@@ -412,9 +551,21 @@
 		<theme_item name="button_pressed" type="StyleBox">
 			[StyleBox] used when a button in the tree is pressed.
 		</theme_item>
+<<<<<<< HEAD
 		<theme_item name="checked" type="Texture">
 			The check icon to display when the [constant TreeItem.CELL_MODE_CHECK] mode cell is checked.
 		</theme_item>
+=======
+		<theme_item name="checked" type="Texture2D">
+			The check icon to display when the [constant TreeItem.CELL_MODE_CHECK] mode cell is checked.
+		</theme_item>
+		<theme_item name="children_hl_line_color" type="Color" default="Color( 0.27, 0.27, 0.27, 1 )">
+			The [Color] of the relationship lines between the selected [TreeItem] and its children.
+		</theme_item>
+		<theme_item name="children_hl_line_width" type="int" default="1">
+			The width of the relationship lines between the selected [TreeItem] and its children.
+		</theme_item>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		<theme_item name="cursor" type="StyleBox">
 			[StyleBox] used for the cursor, when the [Tree] is being focused.
 		</theme_item>
@@ -447,9 +598,21 @@
 		</theme_item>
 		<theme_item name="font_color" type="Color" default="Color( 0.69, 0.69, 0.69, 1 )">
 			Default text [Color] of the item.
+<<<<<<< HEAD
 		</theme_item>
 		<theme_item name="font_color_selected" type="Color" default="Color( 1, 1, 1, 1 )">
 			Text [Color] used when the item is selected.
+=======
+		</theme_item>
+		<theme_item name="font_outline_color" type="Color" default="Color( 1, 1, 1, 1 )">
+			The tint of text outline of the item.
+		</theme_item>
+		<theme_item name="font_selected_color" type="Color" default="Color( 1, 1, 1, 1 )">
+			Text [Color] used when the item is selected.
+		</theme_item>
+		<theme_item name="font_size" type="int">
+			Font size of the item's text.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		</theme_item>
 		<theme_item name="guide_color" type="Color" default="Color( 0, 0, 0, 0.1 )">
 			[Color] of the guideline.
@@ -459,9 +622,30 @@
 		</theme_item>
 		<theme_item name="item_margin" type="int" default="12">
 			The horizontal margin at the start of an item. This is used when folding is enabled for the item.
+<<<<<<< HEAD
 		</theme_item>
 		<theme_item name="relationship_line_color" type="Color" default="Color( 0.27, 0.27, 0.27, 1 )">
 			[Color] of the relationship lines.
+=======
+		</theme_item>
+		<theme_item name="outline_size" type="int" default="0">
+			The size of the text outline.
+		</theme_item>
+		<theme_item name="parent_hl_line_color" type="Color" default="Color( 0.27, 0.27, 0.27, 1 )">
+			The [Color] of the relationship lines between the selected [TreeItem] and its parents.
+		</theme_item>
+		<theme_item name="parent_hl_line_margin" type="int" default="0">
+			The space between the parent relationship lines for the selected [TreeItem] and the relationship lines to its siblings that are not selected.
+		</theme_item>
+		<theme_item name="parent_hl_line_width" type="int" default="1">
+			The width of the relationship lines between the selected [TreeItem] and its parents.
+		</theme_item>
+		<theme_item name="relationship_line_color" type="Color" default="Color( 0.27, 0.27, 0.27, 1 )">
+			The default [Color] of the relationship lines.
+		</theme_item>
+		<theme_item name="relationship_line_width" type="int" default="1">
+			The default width of the relationship lines.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		</theme_item>
 		<theme_item name="scroll_border" type="int" default="4">
 			The maximum distance between the mouse cursor and the control's border to trigger border scrolling when dragging.
@@ -469,7 +653,11 @@
 		<theme_item name="scroll_speed" type="int" default="12">
 			The speed of border scrolling.
 		</theme_item>
+<<<<<<< HEAD
 		<theme_item name="select_arrow" type="Texture">
+=======
+		<theme_item name="select_arrow" type="Texture2D">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			The arrow icon to display for the [constant TreeItem.CELL_MODE_RANGE] mode cell.
 		</theme_item>
 		<theme_item name="selected" type="StyleBox">
@@ -493,10 +681,17 @@
 		<theme_item name="title_button_pressed" type="StyleBox">
 			[StyleBox] used when the title button is being pressed.
 		</theme_item>
+<<<<<<< HEAD
 		<theme_item name="unchecked" type="Texture">
 			The check icon to display when the [constant TreeItem.CELL_MODE_CHECK] mode cell is unchecked.
 		</theme_item>
 		<theme_item name="updown" type="Texture">
+=======
+		<theme_item name="unchecked" type="Texture2D">
+			The check icon to display when the [constant TreeItem.CELL_MODE_CHECK] mode cell is unchecked.
+		</theme_item>
+		<theme_item name="updown" type="Texture2D">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			The updown arrow icon to display for the [constant TreeItem.CELL_MODE_RANGE] mode cell.
 		</theme_item>
 		<theme_item name="vseparation" type="int" default="4">

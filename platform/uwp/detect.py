@@ -30,7 +30,6 @@ def get_opts():
 
 
 def get_flags():
-
     return [
         ("tools", False),
         ("xaudio2", True),
@@ -39,7 +38,6 @@ def get_flags():
 
 
 def configure(env):
-
     env.msvc = True
 
     if env["bits"] != "default":
@@ -56,6 +54,7 @@ def configure(env):
     ## Build type
 
     if env["target"] == "release":
+<<<<<<< HEAD
         env.Append(CCFLAGS=["/O2", "/GL"])
         env.Append(CCFLAGS=["/MD"])
         env.Append(LINKFLAGS=["/SUBSYSTEM:WINDOWS", "/LTCG"])
@@ -65,12 +64,31 @@ def configure(env):
         env.Append(CCFLAGS=["/MD"])
         env.Append(CPPDEFINES=["DEBUG_ENABLED"])
         env.Append(LINKFLAGS=["/SUBSYSTEM:CONSOLE"])
+=======
+        env.Append(CCFLAGS=["/MD"])
+        env.Append(LINKFLAGS=["/SUBSYSTEM:WINDOWS"])
+        if env["optimize"] != "none":
+            env.Append(CCFLAGS=["/O2", "/GL"])
+            env.Append(LINKFLAGS=["/LTCG"])
+
+    elif env["target"] == "release_debug":
+        env.Append(CCFLAGS=["/MD"])
+        env.Append(LINKFLAGS=["/SUBSYSTEM:CONSOLE"])
+        env.AppendUnique(CPPDEFINES=["WINDOWS_SUBSYSTEM_CONSOLE"])
+        env.Append(CPPDEFINES=["DEBUG_ENABLED"])
+        if env["optimize"] != "none":
+            env.Append(CCFLAGS=["/O2", "/Zi"])
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
     elif env["target"] == "debug":
         env.Append(CCFLAGS=["/Zi"])
         env.Append(CCFLAGS=["/MDd"])
         env.Append(CPPDEFINES=["DEBUG_ENABLED"])
         env.Append(LINKFLAGS=["/SUBSYSTEM:CONSOLE"])
+<<<<<<< HEAD
+=======
+        env.AppendUnique(CPPDEFINES=["WINDOWS_SUBSYSTEM_CONSOLE"])
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         env.Append(LINKFLAGS=["/DEBUG"])
 
     ## Compiler configuration
@@ -123,7 +141,13 @@ def configure(env):
             print("Compiled program architecture will be a x86 executable. (forcing bits=32).")
         else:
             print(
+<<<<<<< HEAD
                 "Failed to detect MSVC compiler architecture version... Defaulting to 32-bit executable settings (forcing bits=32). Compilation attempt will continue, but SCons can not detect for what architecture this build is compiled for. You should check your settings/compilation setup."
+=======
+                "Failed to detect MSVC compiler architecture version... Defaulting to 32-bit executable settings"
+                " (forcing bits=32). Compilation attempt will continue, but SCons can not detect for what architecture"
+                " this build is compiled for. You should check your settings/compilation setup."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             )
             env["bits"] = "32"
 
@@ -163,7 +187,14 @@ def configure(env):
     env.Append(CPPFLAGS=["/AI", vc_base_path + "lib/x86/store/references"])
 
     env.Append(
+<<<<<<< HEAD
         CCFLAGS='/FS /MP /GS /wd"4453" /wd"28204" /wd"4291" /Zc:wchar_t /Gm- /fp:precise /errorReport:prompt /WX- /Zc:forScope /Gd /EHsc /nologo'.split()
+=======
+        CCFLAGS=(
+            '/FS /MP /GS /wd"4453" /wd"28204" /wd"4291" /Zc:wchar_t /Gm- /fp:precise /errorReport:prompt /WX-'
+            " /Zc:forScope /Gd /EHsc /nologo".split()
+        )
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     )
     env.Append(CPPDEFINES=["_UNICODE", "UNICODE", ("WINAPI_FAMILY", "WINAPI_FAMILY_APP")])
     env.Append(CXXFLAGS=["/ZW"])

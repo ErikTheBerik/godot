@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -29,6 +29,7 @@
 /*************************************************************************/
 
 #import "view_controller.h"
+<<<<<<< HEAD
 
 #include "core/project_settings.h"
 #import "godot_view.h"
@@ -85,15 +86,81 @@
 	// Initialize view controller values.
 }
 
+=======
+#include "core/config/project_settings.h"
+#include "display_server_iphone.h"
+#import "godot_view.h"
+#import "godot_view_renderer.h"
+#import "keyboard_input_view.h"
+#include "os_iphone.h"
+
+#import <AVFoundation/AVFoundation.h>
+#import <GameController/GameController.h>
+
+@interface ViewController () <GodotViewDelegate>
+
+@property(strong, nonatomic) GodotViewRenderer *renderer;
+@property(strong, nonatomic) GodotKeyboardInputView *keyboardView;
+
+@property(strong, nonatomic) UIView *godotLoadingOverlay;
+
+@end
+
+@implementation ViewController
+
+- (GodotView *)godotView {
+	return (GodotView *)self.view;
+}
+
+- (void)loadView {
+	GodotView *view = [[GodotView alloc] init];
+	GodotViewRenderer *renderer = [[GodotViewRenderer alloc] init];
+
+	self.renderer = renderer;
+	self.view = view;
+
+	view.renderer = self.renderer;
+	view.delegate = self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+
+	if (self) {
+		[self godot_commonInit];
+	}
+
+	return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+	self = [super initWithCoder:coder];
+
+	if (self) {
+		[self godot_commonInit];
+	}
+
+	return self;
+}
+
+- (void)godot_commonInit {
+	// Initialize view controller values.
+}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 - (void)didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning];
 	printf("*********** did receive memory warning!\n");
-};
+}
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
 	[self observeKeyboard];
+<<<<<<< HEAD
+=======
+	[self displayLoadingOverlay];
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	if (@available(iOS 11.0, *)) {
 		[self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
@@ -101,6 +168,13 @@
 }
 
 - (void)observeKeyboard {
+<<<<<<< HEAD
+=======
+	printf("******** setting up keyboard input view\n");
+	self.keyboardView = [GodotKeyboardInputView new];
+	[self.view addSubview:self.keyboardView];
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	printf("******** adding observer for keyboard show/hide\n");
 	[[NSNotificationCenter defaultCenter]
 			addObserver:self
@@ -114,6 +188,7 @@
 				 object:nil];
 }
 
+<<<<<<< HEAD
 - (void)dealloc {
 	[self.videoView stopVideo];
 	self.videoView = nil;
@@ -121,6 +196,43 @@
 	self.videoView = nil;
 	self.renderer = nil;
 
+=======
+- (void)displayLoadingOverlay {
+	NSBundle *bundle = [NSBundle mainBundle];
+	NSString *storyboardName = @"Launch Screen";
+
+	if ([bundle pathForResource:storyboardName ofType:@"storyboardc"] == nil) {
+		return;
+	}
+
+	UIStoryboard *launchStoryboard = [UIStoryboard storyboardWithName:storyboardName bundle:bundle];
+
+	UIViewController *controller = [launchStoryboard instantiateInitialViewController];
+	self.godotLoadingOverlay = controller.view;
+	self.godotLoadingOverlay.frame = self.view.bounds;
+	self.godotLoadingOverlay.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+
+	[self.view addSubview:self.godotLoadingOverlay];
+}
+
+- (BOOL)godotViewFinishedSetup:(GodotView *)view {
+	[self.godotLoadingOverlay removeFromSuperview];
+	self.godotLoadingOverlay = nil;
+
+	return YES;
+}
+
+- (void)dealloc {
+	self.keyboardView = nil;
+
+	self.renderer = nil;
+
+	if (self.godotLoadingOverlay) {
+		[self.godotLoadingOverlay removeFromSuperview];
+		self.godotLoadingOverlay = nil;
+	}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -131,6 +243,7 @@
 }
 
 - (BOOL)shouldAutorotate {
+<<<<<<< HEAD
 	if (!OSIPhone::get_singleton()) {
 		return NO;
 	}
@@ -139,6 +252,16 @@
 		case OS::SCREEN_SENSOR:
 		case OS::SCREEN_SENSOR_LANDSCAPE:
 		case OS::SCREEN_SENSOR_PORTRAIT:
+=======
+	if (!DisplayServerIPhone::get_singleton()) {
+		return NO;
+	}
+
+	switch (DisplayServerIPhone::get_singleton()->screen_get_orientation(DisplayServer::SCREEN_OF_MAIN_WINDOW)) {
+		case DisplayServer::SCREEN_SENSOR:
+		case DisplayServer::SCREEN_SENSOR_LANDSCAPE:
+		case DisplayServer::SCREEN_SENSOR_PORTRAIT:
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			return YES;
 		default:
 			return NO;
@@ -146,24 +269,33 @@
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+<<<<<<< HEAD
 	if (!OSIPhone::get_singleton()) {
 		return UIInterfaceOrientationMaskAll;
 	}
 
 	switch (OS::get_singleton()->get_screen_orientation()) {
 		case OS::SCREEN_PORTRAIT:
+=======
+	if (!DisplayServerIPhone::get_singleton()) {
+		return UIInterfaceOrientationMaskAll;
+	}
+
+	switch (DisplayServerIPhone::get_singleton()->screen_get_orientation(DisplayServer::SCREEN_OF_MAIN_WINDOW)) {
+		case DisplayServer::SCREEN_PORTRAIT:
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			return UIInterfaceOrientationMaskPortrait;
-		case OS::SCREEN_REVERSE_LANDSCAPE:
+		case DisplayServer::SCREEN_REVERSE_LANDSCAPE:
 			return UIInterfaceOrientationMaskLandscapeRight;
-		case OS::SCREEN_REVERSE_PORTRAIT:
+		case DisplayServer::SCREEN_REVERSE_PORTRAIT:
 			return UIInterfaceOrientationMaskPortraitUpsideDown;
-		case OS::SCREEN_SENSOR_LANDSCAPE:
+		case DisplayServer::SCREEN_SENSOR_LANDSCAPE:
 			return UIInterfaceOrientationMaskLandscape;
-		case OS::SCREEN_SENSOR_PORTRAIT:
+		case DisplayServer::SCREEN_SENSOR_PORTRAIT:
 			return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
-		case OS::SCREEN_SENSOR:
+		case DisplayServer::SCREEN_SENSOR:
 			return UIInterfaceOrientationMaskAll;
-		case OS::SCREEN_LANDSCAPE:
+		case DisplayServer::SCREEN_LANDSCAPE:
 			return UIInterfaceOrientationMaskLandscapeLeft;
 	}
 }
@@ -189,12 +321,18 @@
 	CGRect rawFrame = [value CGRectValue];
 	CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
 
+<<<<<<< HEAD
 	if (OSIPhone::get_singleton()) {
 		OSIPhone::get_singleton()->set_virtual_keyboard_height(keyboardFrame.size.height);
+=======
+	if (DisplayServerIPhone::get_singleton()) {
+		DisplayServerIPhone::get_singleton()->virtual_keyboard_set_height(keyboardFrame.size.height);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 }
 
 - (void)keyboardHidden:(NSNotification *)notification {
+<<<<<<< HEAD
 	if (OSIPhone::get_singleton()) {
 		OSIPhone::get_singleton()->set_virtual_keyboard_height(0);
 	}
@@ -223,7 +361,11 @@
 	//[gameCenterViewController dismissViewControllerAnimated:YES completion:^{GameCenter::get_singleton()->game_center_closed();}];//version for signaling when overlay is completely gone
 	GameCenter::get_singleton()->game_center_closed();
 	[gameCenterViewController dismissViewControllerAnimated:YES completion:nil];
+=======
+	if (DisplayServerIPhone::get_singleton()) {
+		DisplayServerIPhone::get_singleton()->virtual_keyboard_set_height(0);
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
-#endif
 
 @end

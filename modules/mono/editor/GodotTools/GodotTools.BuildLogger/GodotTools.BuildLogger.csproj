@@ -4,10 +4,15 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="16.5.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GodotTools.Core\GodotTools.Core.csproj" />
+=======
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.5.0" />
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
   </ItemGroup>
 </Project>

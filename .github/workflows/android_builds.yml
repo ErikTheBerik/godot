@@ -3,9 +3,16 @@ on: [push, pull_request]
 
 # Global Settings
 env:
+<<<<<<< HEAD
   GODOT_BASE_BRANCH: 3.2
   SCONSFLAGS: platform=android verbose=yes warnings=all werror=yes --jobs=2
   SCONS_CACHE_LIMIT: 4096
+=======
+  GODOT_BASE_BRANCH: master
+  SCONSFLAGS: platform=android verbose=yes warnings=extra werror=yes debug_symbols=no --jobs=2 module_text_server_fb_enabled=yes
+  SCONS_CACHE_LIMIT: 4096
+  ANDROID_NDK_VERSION: 21.4.7075529
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 jobs:
   android-template:
@@ -28,6 +35,13 @@ jobs:
         with:
           java-version: 8
 
+<<<<<<< HEAD
+=======
+      - name: Install Android NDK
+        run: |
+          sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install 'ndk;${{env.ANDROID_NDK_VERSION}}'
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       # Upload cache on completion and check it out now
       - name: Load .scons_cache directory
         id: android-template-cache
@@ -59,7 +73,11 @@ jobs:
       - name: Compilation
         env:
           SCONS_CACHE: ${{github.workspace}}/.scons_cache/
+<<<<<<< HEAD
           ANDROID_NDK_ROOT: /usr/local/lib/android/sdk/ndk-bundle
+=======
+          ANDROID_NDK_ROOT: /usr/local/lib/android/sdk/ndk/${{env.ANDROID_NDK_VERSION}}/
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         run: |
           scons target=release tools=no android_arch=armv7
           scons target=release tools=no android_arch=arm64v8

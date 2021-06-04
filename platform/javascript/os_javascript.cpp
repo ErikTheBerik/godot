@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,6 +30,7 @@
 
 #include "os_javascript.h"
 
+<<<<<<< HEAD
 #include "core/io/file_access_buffered_fa.h"
 #include "core/io/json.h"
 #include "drivers/gles2/rasterizer_gles2.h"
@@ -41,11 +42,25 @@
 #ifndef NO_THREADS
 #include "servers/visual/visual_server_wrap_mt.h"
 #endif
+=======
+#include "core/debugger/engine_debugger.h"
+#include "core/io/json.h"
+#include "drivers/unix/dir_access_unix.h"
+#include "drivers/unix/file_access_unix.h"
+#include "main/main.h"
+#include "modules/modules_enabled.gen.h"
+#include "platform/javascript/display_server_javascript.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
+#ifdef MODULE_WEBSOCKET_ENABLED
+#include "modules/websocket/remote_debugger_peer_websocket.h"
+#endif
+
+#include <dlfcn.h>
 #include <emscripten.h>
-#include <png.h>
 #include <stdlib.h>
 
+<<<<<<< HEAD
 #include "dom_keys.inc"
 #include "godot_js.h"
 
@@ -808,15 +823,14 @@ String OS_JavaScript::get_clipboard() const {
 	godot_js_display_clipboard_get(update_clipboard_callback);
 	return this->OS::get_clipboard();
 }
+=======
+#include "godot_js.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 // Lifecycle
-int OS_JavaScript::get_current_video_driver() const {
-	return video_driver_index;
-}
-
-void OS_JavaScript::initialize_core() {
-
+void OS_JavaScript::initialize() {
 	OS_Unix::initialize_core();
+<<<<<<< HEAD
 	FileAccess::make_default<FileAccessBufferedFA<FileAccessUnix> >(FileAccess::ACCESS_RESOURCES);
 }
 
@@ -958,6 +972,20 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 	visual_server->init();
 
 	return OK;
+=======
+	DisplayServerJavaScript::register_javascript_driver();
+
+#ifdef MODULE_WEBSOCKET_ENABLED
+	EngineDebugger::register_uri_handler("ws://", RemoteDebuggerPeerWebSocket::create);
+	EngineDebugger::register_uri_handler("wss://", RemoteDebuggerPeerWebSocket::create);
+#endif
+}
+
+void OS_JavaScript::resume_audio() {
+	if (audio_driver_javascript) {
+		audio_driver_javascript->resume();
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 bool OS_JavaScript::get_swap_ok_cancel() {
@@ -969,27 +997,28 @@ void OS_JavaScript::swap_buffers() {
 }
 
 void OS_JavaScript::set_main_loop(MainLoop *p_main_loop) {
-
 	main_loop = p_main_loop;
-	input->set_main_loop(p_main_loop);
 }
 
 MainLoop *OS_JavaScript::get_main_loop() const {
-
 	return main_loop;
 }
 
+<<<<<<< HEAD
 void OS_JavaScript::resume_audio() {
 	if (audio_driver_javascript) {
 		audio_driver_javascript->resume();
 	}
 }
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 void OS_JavaScript::fs_sync_callback() {
 	get_singleton()->idb_is_syncing = false;
 }
 
 bool OS_JavaScript::main_loop_iterate() {
+<<<<<<< HEAD
 
 	if (is_userfs_persistent() && idb_needs_sync && !idb_is_syncing) {
 		idb_is_syncing = true;
@@ -1022,11 +1051,21 @@ bool OS_JavaScript::main_loop_iterate() {
 		windowed_size.width = canvas[0];
 		windowed_size.height = canvas[1];
 	}
+=======
+	if (is_userfs_persistent() && idb_needs_sync && !idb_is_syncing) {
+		idb_is_syncing = true;
+		idb_needs_sync = false;
+		godot_js_os_fs_sync(&fs_sync_callback);
+	}
+
+	DisplayServer::get_singleton()->process_events();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	return Main::iteration();
 }
 
 void OS_JavaScript::delete_main_loop() {
+<<<<<<< HEAD
 
 	memdelete(main_loop);
 	main_loop = NULL;
@@ -1041,42 +1080,72 @@ void OS_JavaScript::finalize() {
 	emscripten_webgl_destroy_context(webgl_ctx);
 	if (audio_driver_javascript) {
 		memdelete(audio_driver_javascript);
+=======
+	if (main_loop) {
+		memdelete(main_loop);
+	}
+	main_loop = nullptr;
+}
+
+void OS_JavaScript::finalize() {
+	delete_main_loop();
+	if (audio_driver_javascript) {
+		memdelete(audio_driver_javascript);
+		audio_driver_javascript = nullptr;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 }
 
 // Miscellaneous
 
-Error OS_JavaScript::execute(const String &p_path, const List<String> &p_arguments, bool p_blocking, ProcessID *r_child_id, String *r_pipe, int *r_exitcode, bool read_stderr, Mutex *p_pipe_mutex) {
+Error OS_JavaScript::execute(const String &p_path, const List<String> &p_arguments, String *r_pipe, int *r_exitcode, bool read_stderr, Mutex *p_pipe_mutex) {
+	return create_process(p_path, p_arguments);
+}
 
+<<<<<<< HEAD
+=======
+Error OS_JavaScript::create_process(const String &p_path, const List<String> &p_arguments, ProcessID *r_child_id) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	Array args;
 	for (const List<String>::Element *E = p_arguments.front(); E; E = E->next()) {
 		args.push_back(E->get());
 	}
 	String json_args = JSON::print(args);
 	int failed = godot_js_os_execute(json_args.utf8().get_data());
+<<<<<<< HEAD
 	ERR_FAIL_COND_V_MSG(failed, ERR_UNAVAILABLE, "OS::execute() must be implemented in Javascript via 'engine.setOnExecute' if required.");
+=======
+	ERR_FAIL_COND_V_MSG(failed, ERR_UNAVAILABLE, "OS::execute() or create_process() must be implemented in JavaScript via 'engine.setOnExecute' if required.");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return OK;
 }
 
 Error OS_JavaScript::kill(const ProcessID &p_pid) {
-
 	ERR_FAIL_V_MSG(ERR_UNAVAILABLE, "OS::kill() is not available on the HTML5 platform.");
 }
 
 int OS_JavaScript::get_process_id() const {
-
 	ERR_FAIL_V_MSG(0, "OS::get_process_id() is not available on the HTML5 platform.");
 }
 
-bool OS_JavaScript::_check_internal_feature_support(const String &p_feature) {
+<<<<<<< HEAD
+=======
+int OS_JavaScript::get_processor_count() const {
+	return godot_js_os_hw_concurrency_get();
+}
 
-	if (p_feature == "HTML5" || p_feature == "web")
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
+bool OS_JavaScript::_check_internal_feature_support(const String &p_feature) {
+	if (p_feature == "HTML5" || p_feature == "web") {
 		return true;
+	}
 
 #ifdef JAVASCRIPT_EVAL_ENABLED
-	if (p_feature == "JavaScript")
+	if (p_feature == "JavaScript") {
 		return true;
+	}
 #endif
+<<<<<<< HEAD
 
 	return false;
 }
@@ -1096,13 +1165,20 @@ void OS_JavaScript::set_icon(const Ref<Image> &p_icon) {
 	if (icon->is_compressed()) {
 		icon = icon->duplicate();
 		ERR_FAIL_COND(icon->decompress() != OK);
+=======
+#ifndef NO_THREADS
+	if (p_feature == "threads") {
+		return true;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
-	if (icon->get_format() != Image::FORMAT_RGBA8) {
-		if (icon == p_icon)
-			icon = icon->duplicate();
-		icon->convert(Image::FORMAT_RGBA8);
+#endif
+#if WASM_GDNATIVE
+	if (p_feature == "wasm32") {
+		return true;
 	}
+#endif
 
+<<<<<<< HEAD
 	png_image png_meta;
 	memset(&png_meta, 0, sizeof png_meta);
 	png_meta.version = PNG_IMAGE_VERSION;
@@ -1122,36 +1198,31 @@ void OS_JavaScript::set_icon(const Ref<Image> &p_icon) {
 
 	r = png.read();
 	godot_js_display_window_icon_set(r.ptr(), len);
+=======
+	return false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 String OS_JavaScript::get_executable_path() const {
-
 	return OS::get_executable_path();
 }
 
 Error OS_JavaScript::shell_open(String p_uri) {
-
 	// Open URI in a new tab, browser will deal with it by protocol.
 	godot_js_os_shell_open(p_uri.utf8().get_data());
 	return OK;
 }
 
 String OS_JavaScript::get_name() const {
-
 	return "HTML5";
 }
 
-bool OS_JavaScript::can_draw() const {
-
-	return true; // Always?
-}
-
 String OS_JavaScript::get_user_data_dir() const {
-
 	return "/userfs";
 };
 
 String OS_JavaScript::get_cache_path() const {
+<<<<<<< HEAD
 
 	return "/home/web_user/.cache";
 }
@@ -1189,6 +1260,22 @@ void OS_JavaScript::file_access_close_callback(const String &p_file, int p_flags
 	OS_JavaScript *os = get_singleton();
 
 	if (!(os->is_userfs_persistent() && p_flags & FileAccess::WRITE)) {
+=======
+	return "/home/web_user/.cache";
+}
+
+String OS_JavaScript::get_config_path() const {
+	return "/home/web_user/.config";
+}
+
+String OS_JavaScript::get_data_path() const {
+	return "/home/web_user/.local/share";
+}
+
+void OS_JavaScript::file_access_close_callback(const String &p_file, int p_flags) {
+	OS_JavaScript *os = OS_JavaScript::get_singleton();
+	if (!(os->is_userfs_persistent() && (p_flags & FileAccess::WRITE))) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		return; // FS persistence is not working or we are not writing.
 	}
 	bool is_file_persistent = p_file.begins_with("/userfs");
@@ -1202,15 +1289,21 @@ void OS_JavaScript::file_access_close_callback(const String &p_file, int p_flags
 }
 
 bool OS_JavaScript::is_userfs_persistent() const {
-
 	return idb_available;
 }
 
-OS_JavaScript *OS_JavaScript::get_singleton() {
+Error OS_JavaScript::open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path) {
+	String path = p_path.get_file();
+	p_library_handle = dlopen(path.utf8().get_data(), RTLD_NOW);
+	ERR_FAIL_COND_V_MSG(!p_library_handle, ERR_CANT_OPEN, "Can't open dynamic library: " + p_path + ". Error: " + dlerror());
+	return OK;
+}
 
+OS_JavaScript *OS_JavaScript::get_singleton() {
 	return static_cast<OS_JavaScript *>(OS::get_singleton());
 }
 
+<<<<<<< HEAD
 OS_JavaScript::OS_JavaScript() {
 	// Expose method for requesting quit.
 	godot_js_os_request_quit_cb(&request_quit_callback);
@@ -1245,6 +1338,22 @@ OS_JavaScript::OS_JavaScript() {
 		audio_driver_javascript = memnew(AudioDriverJavaScript);
 		AudioDriverManager::add_driver(audio_driver_javascript);
 	}
+=======
+void OS_JavaScript::initialize_joypads() {
+}
+
+OS_JavaScript::OS_JavaScript() {
+	char locale_ptr[16];
+	godot_js_config_locale_get(locale_ptr, 16);
+	setenv("LANG", locale_ptr, true);
+
+	if (AudioDriverJavaScript::is_available()) {
+		audio_driver_javascript = memnew(AudioDriverJavaScript);
+		AudioDriverManager::add_driver(audio_driver_javascript);
+	}
+
+	idb_available = godot_js_os_fs_is_persistent();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	Vector<Logger *> loggers;
 	loggers.push_back(memnew(StdLogger));

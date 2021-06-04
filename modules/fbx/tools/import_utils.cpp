@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -85,7 +90,10 @@ Quat ImportUtils::EulerToQuaternion(FBXDocParser::Model::RotOrder mode, const Ve
 }
 
 Vector3 ImportUtils::BasisToEuler(FBXDocParser::Model::RotOrder mode, const Basis &p_rotation) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// FBX is using intrinsic euler, we can convert intrinsic to extrinsic (the one used in godot
 	// by simply invert its order: https://www.cs.utexas.edu/~theshark/courses/cs354/lectures/cs354-14.pdf
 	switch (mode) {
@@ -122,14 +130,24 @@ Vector3 ImportUtils::QuaternionToEuler(FBXDocParser::Model::RotOrder mode, const
 	return BasisToEuler(mode, p_rotation);
 }
 
+<<<<<<< HEAD
 Transform get_unscaled_transform(const Transform &p_initial, real_t p_scale) {
 	Transform unscaled = Transform(p_initial.basis, p_initial.origin * p_scale);
 	ERR_FAIL_COND_V_MSG(unscaled.basis.determinant() == 0, Transform(), "det is zero unscaled?");
+=======
+Transform3D get_unscaled_transform(const Transform3D &p_initial, real_t p_scale) {
+	Transform3D unscaled = Transform3D(p_initial.basis, p_initial.origin * p_scale);
+	ERR_FAIL_COND_V_MSG(unscaled.basis.determinant() == 0, Transform3D(), "det is zero unscaled?");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return unscaled;
 }
 
 Vector3 get_poly_normal(const std::vector<Vector3> &p_vertices) {
+<<<<<<< HEAD
 	ERR_FAIL_COND_V_MSG(p_vertices.size() < 3, Vector3(0, 0, 0), "At least 3 vertices are necesary");
+=======
+	ERR_FAIL_COND_V_MSG(p_vertices.size() < 3, Vector3(0, 0, 0), "At least 3 vertices are necessary");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// Using long double to make sure that normal is computed for even really tiny objects.
 	typedef long double ldouble;
 	ldouble x = 0.0;

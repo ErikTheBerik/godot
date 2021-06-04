@@ -1,7 +1,4 @@
 // Gradle build config for Godot Engine's Android port.
-//
-// Do not remove/modify comments ending with BEGIN/END, they are used to inject
-// addon-specific configuration.
 apply from: 'config.gradle'
 
 buildscript {
@@ -10,14 +7,15 @@ buildscript {
     repositories {
         google()
         jcenter()
-//CHUNK_BUILDSCRIPT_REPOSITORIES_BEGIN
-//CHUNK_BUILDSCRIPT_REPOSITORIES_END
     }
     dependencies {
         classpath libraries.androidGradlePlugin
         classpath libraries.kotlinGradlePlugin
+<<<<<<< HEAD
 //CHUNK_BUILDSCRIPT_DEPENDENCIES_BEGIN
 //CHUNK_BUILDSCRIPT_DEPENDENCIES_END
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     }
 }
 
@@ -28,8 +26,11 @@ allprojects {
         mavenCentral()
         google()
         jcenter()
+<<<<<<< HEAD
 //CHUNK_ALLPROJECTS_REPOSITORIES_BEGIN
 //CHUNK_ALLPROJECTS_REPOSITORIES_END
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
         // Godot user plugins custom maven repos
         String[] mavenRepos = getGodotPluginsMavenRepos()
@@ -72,9 +73,12 @@ dependencies {
     if (pluginsBinaries != null && pluginsBinaries.size() > 0) {
         implementation files(pluginsBinaries)
     }
+<<<<<<< HEAD
 
 //CHUNK_DEPENDENCIES_BEGIN
 //CHUNK_DEPENDENCIES_END
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 android {
@@ -89,7 +93,11 @@ android {
     defaultConfig {
         // The default ignore pattern for the 'assets' directory includes hidden files and directories which are used by Godot projects.
         aaptOptions {
+<<<<<<< HEAD
             ignoreAssetsPattern "!.svn:!.git:!.ds_store:!*.scc:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"
+=======
+            ignoreAssetsPattern "!.svn:!.git:!.gitignore:!.ds_store:!*.scc:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         }
 
         ndk {
@@ -97,14 +105,17 @@ android {
             abiFilters export_abi_list
         }
 
+<<<<<<< HEAD
+=======
+        manifestPlaceholders = [godotEditorVersion: getGodotEditorVersion()]
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         // Feel free to modify the application id to your own.
         applicationId getExportPackageName()
         versionCode getExportVersionCode()
         versionName getExportVersionName()
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-//CHUNK_ANDROID_DEFAULTCONFIG_BEGIN
-//CHUNK_ANDROID_DEFAULTCONFIG_END
     }
 
     lintOptions {
@@ -112,10 +123,13 @@ android {
         disable 'MissingTranslation', 'UnusedResources'
     }
 
+    ndkVersion versions.ndkVersion
+
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
 
+<<<<<<< HEAD
         // Should be uncommented for development purpose within Android Studio
         // doNotStrip '**/*.so'
     }
@@ -132,6 +146,26 @@ android {
         }
     }
 
+=======
+        // 'doNotStrip' is enabled for development within Android Studio
+        if (shouldNotStrip()) {
+            doNotStrip '**/*.so'
+        }
+    }
+
+    signingConfigs {
+        release {
+            File keystoreFile = new File(getReleaseKeystoreFile())
+            if (keystoreFile.isFile()) {
+                storeFile keystoreFile
+                storePassword getReleaseKeystorePassword()
+                keyAlias getReleaseKeyAlias()
+                keyPassword getReleaseKeystorePassword()
+            }
+        }
+    }
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     buildTypes {
 
         debug {
@@ -160,6 +194,7 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
+<<<<<<< HEAD
             java.srcDirs = [
                 'src'
 //DIR_SRC_BEGIN
@@ -191,6 +226,15 @@ android {
 //DIR_JNI_RELEASE_BEGIN
 //DIR_JNI_RELEASE_END
         ]
+=======
+            java.srcDirs = ['src']
+            res.srcDirs = ['res']
+            aidl.srcDirs = ['aidl']
+            assets.srcDirs = ['assets']
+        }
+        debug.jniLibs.srcDirs = ['libs/debug', 'libs/debug/vulkan_validation_layers']
+        release.jniLibs.srcDirs = ['libs/release']
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     }
 
     applicationVariants.all { variant ->
@@ -223,6 +267,9 @@ task copyAndRenameReleaseAab(type: Copy) {
     into getExportPath()
     rename "build-release.aab", getExportFilename()
 }
+<<<<<<< HEAD
 
 //CHUNK_GLOBAL_BEGIN
 //CHUNK_GLOBAL_END
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45

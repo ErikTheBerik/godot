@@ -11,16 +11,25 @@ doc/_build/
 # CLion
 cmake-build-debug
 
+# clangd
+.clangd/
+
 # Android specific
 .gradle
 local.properties
 *.iml
-.idea
 .gradletasknamecache
 project.properties
+<<<<<<< HEAD
 platform/android/java/app/libs/*
 platform/android/java/libs/*
 platform/android/java/lib/.cxx/
+=======
+platform/android/java/lib/.cxx/
+platform/android/java/libs/*
+platform/android/java/app/libs/*
+platform/android/java/lib/.cxx/*
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 platform/android/java/nativeSrcsConfigs/.cxx/
 
 # General c++ generated files
@@ -265,8 +274,11 @@ __pycache__/
 # KDE
 .directory
 
-#Kdevelop project files
+# Kdevelop project files
 *.kdev4
+
+# Kate swap files
+*.kate-swp
 
 # Xcode
 xcuserdata/
@@ -361,6 +373,32 @@ compile_commands.json
 
 # Cppcheck
 *.cppcheck
+<<<<<<< HEAD
 
 # https://clangd.llvm.org/ cache folder
 .clangd/
+=======
+cppcheck-cppcheck-build-dir/
+
+# Gcov and Lcov code coverage
+*.gcno
+*.gcda
+*.gcov.html
+*.func.html
+*.func-sort-c.html
+*index-sort-f.html
+*index-sort-l.html
+*index.html
+godot.info
+amber.png
+emerald.png
+glass.png
+ruby.png
+snow.png
+updown.png
+gcov.css
+
+# https://clangd.llvm.org/ cache folder
+.clangd/
+.cache/
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45

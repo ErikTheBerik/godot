@@ -20,9 +20,12 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
+<<<<<<< HEAD
 
         // Should be uncommented for development purpose within Android Studio
         // doNotStrip '**/*.so'
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     }
 
     sourceSets {
@@ -31,6 +34,11 @@ android {
         }
     }
 
+<<<<<<< HEAD
+=======
+    ndkVersion versions.ndkVersion
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"

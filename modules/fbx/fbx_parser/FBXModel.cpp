@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -98,12 +103,16 @@ Model::Model(uint64_t id, const ElementPtr element, const Document &doc, const s
 		culling = ParseTokenAsString(GetRequiredToken(Culling, 0));
 	}
 
+<<<<<<< HEAD
 	props = GetPropertyTable(doc, "Model.FbxNode", element, sc);
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ResolveLinks(element, doc);
 }
 
 // ------------------------------------------------------------------------------------------------
 Model::~Model() {
+<<<<<<< HEAD
 	if (props != nullptr) {
 		delete props;
 		props = nullptr;
@@ -114,6 +123,12 @@ ModelLimbNode::ModelLimbNode(uint64_t id, const ElementPtr element, const Docume
 		Model(id, element, doc, name){
 
 		};
+=======
+}
+
+ModelLimbNode::ModelLimbNode(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name) :
+		Model(id, element, doc, name){};
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 ModelLimbNode::~ModelLimbNode() {
 }
@@ -129,7 +144,10 @@ void Model::ResolveLinks(const ElementPtr element, const Document &doc) {
 	geometry.reserve(conns.size());
 	attributes.reserve(conns.size());
 	for (const Connection *con : conns) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// material and geometry links should be Object-Object connections
 		if (con->PropertyName().length()) {
 			continue;
@@ -168,7 +186,10 @@ void Model::ResolveLinks(const ElementPtr element, const Document &doc) {
 bool Model::IsNull() const {
 	const std::vector<const NodeAttribute *> &attrs = GetAttributes();
 	for (const NodeAttribute *att : attrs) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		const Null *null_tag = dynamic_cast<const Null *>(att);
 		if (null_tag) {
 			return true;
@@ -177,5 +198,8 @@ bool Model::IsNull() const {
 
 	return false;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser

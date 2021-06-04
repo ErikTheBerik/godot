@@ -48,4 +48,21 @@ if file_contents.find("ObjectDB instances leaked at exit") != -1:
     print("ERROR: Memory leak was found")
     sys.exit(1)
 
+<<<<<<< HEAD
+=======
+# In test project may be put several assert functions which will control if
+# project is executed with right parameters etc. which normally will not stop
+# execution of project
+
+if file_contents.find("Assertion failed") != -1:
+    print("ERROR: Assertion failed in project, check execution log for more info")
+    sys.exit(1)
+
+# For now Godot leaks a lot of rendering stuff so for now we just show info
+# about it and this needs to be re-enabled after fixing this memory leaks.
+
+if file_contents.find("were leaked") != -1 or file_contents.find("were never freed") != -1:
+    print("WARNING: Memory leak was found")
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 sys.exit(0)

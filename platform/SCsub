@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
+<<<<<<< HEAD
 from compat import open_utf8
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 Import("env")
 
 env.platform_sources = []
@@ -21,7 +24,11 @@ reg_apis += "}\n\n"
 unreg_apis += "}\n"
 
 # NOTE: It is safe to generate this file here, since this is still execute serially
+<<<<<<< HEAD
 with open_utf8("register_platform_apis.gen.cpp", "w") as f:
+=======
+with open("register_platform_apis.gen.cpp", "w", encoding="utf-8") as f:
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     f.write(reg_apis_inc)
     f.write(reg_apis)
     f.write(unreg_apis)

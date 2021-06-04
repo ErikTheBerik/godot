@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TextureLayered" inherits="Resource" version="3.2">
+<class name="TextureLayered" inherits="Texture" version="4.0">
 	<brief_description>
 		Base class for 3D texture types.
 	</brief_description>
 	<description>
+<<<<<<< HEAD
 		Base class for [Texture3D] and [TextureArray]. Cannot be used directly, but contains all the functions necessary for accessing and using [Texture3D] and [TextureArray]. Data is set on a per-layer basis. For [Texture3D]s, the layer specifies the depth or Z-index, they can be treated as a bunch of 2D slices. Similarly, for [TextureArray]s, the layer specifies the array layer.
+=======
+		Base class for [Texture2DArray], [Cubemap] and [CubemapArray]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. Data is set on a per-layer basis. For [Texture2DArray]s, the layer specifies the array layer.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</description>
 	<tutorials>
 	</tutorials>
 	<methods>
+<<<<<<< HEAD
 		<method name="create">
 			<return type="void">
 			</return>
@@ -33,6 +38,8 @@
 				Returns the depth of the texture. Depth is the 3rd dimension (typically Z-axis).
 			</description>
 		</method>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		<method name="get_format" qualifiers="const">
 			<return type="int" enum="Image.Format">
 			</return>
@@ -56,42 +63,39 @@
 				Returns an [Image] resource with the data from specified [code]layer[/code].
 			</description>
 		</method>
-		<method name="get_width" qualifiers="const">
+		<method name="get_layered_type" qualifiers="const">
+			<return type="int" enum="TextureLayered.LayeredType">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_layers" qualifiers="const">
 			<return type="int">
 			</return>
 			<description>
 				Returns the width of the texture. Width is typically represented by the X-axis.
 			</description>
 		</method>
-		<method name="set_data_partial">
-			<return type="void">
+		<method name="get_width" qualifiers="const">
+			<return type="int">
 			</return>
-			<argument index="0" name="image" type="Image">
-			</argument>
-			<argument index="1" name="x_offset" type="int">
-			</argument>
-			<argument index="2" name="y_offset" type="int">
-			</argument>
-			<argument index="3" name="layer" type="int">
-			</argument>
-			<argument index="4" name="mipmap" type="int" default="0">
-			</argument>
 			<description>
+<<<<<<< HEAD
 				Partially sets the data for a specified [code]layer[/code] by overwriting using the data of the specified [code]image[/code]. [code]x_offset[/code] and [code]y_offset[/code] determine where the [Image] is "stamped" over the texture. The [code]image[/code] must fit within the texture.
+=======
+				Returns the width of the texture. Width is typically represented by the X-axis.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			</description>
 		</method>
-		<method name="set_layer_data">
-			<return type="void">
+		<method name="has_mipmaps" qualifiers="const">
+			<return type="bool">
 			</return>
-			<argument index="0" name="image" type="Image">
-			</argument>
-			<argument index="1" name="layer" type="int">
-			</argument>
 			<description>
 				Sets the data for the specified layer. Data takes the form of a 2-dimensional [Image] resource.
 			</description>
 		</method>
 	</methods>
+<<<<<<< HEAD
 	<members>
 		<member name="data" type="Dictionary" setter="_set_data" getter="_get_data" default="{&quot;depth&quot;: 0,&quot;flags&quot;: 4,&quot;format&quot;: 37,&quot;height&quot;: 0,&quot;layers&quot;: [  ],&quot;width&quot;: 0}">
 			Returns a dictionary with all the data used by this texture.
@@ -112,6 +116,14 @@
 		</constant>
 		<constant name="FLAGS_DEFAULT" value="4" enum="Flags">
 			Equivalent to [constant FLAG_FILTER].
+=======
+	<constants>
+		<constant name="LAYERED_TYPE_2D_ARRAY" value="0" enum="LayeredType">
+		</constant>
+		<constant name="LAYERED_TYPE_CUBEMAP" value="1" enum="LayeredType">
+		</constant>
+		<constant name="LAYERED_TYPE_CUBEMAP_ARRAY" value="2" enum="LayeredType">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		</constant>
 	</constants>
 </class>

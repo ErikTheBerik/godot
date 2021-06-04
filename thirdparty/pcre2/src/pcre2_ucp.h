@@ -286,7 +286,16 @@ enum {
   ucp_Elymaic,
   ucp_Nandinagari,
   ucp_Nyiakeng_Puachue_Hmong,
+<<<<<<< HEAD
   ucp_Wancho
+=======
+  ucp_Wancho,
+  /* New for Unicode 13.0.0 */
+  ucp_Chorasmian,
+  ucp_Dives_Akuru,
+  ucp_Khitan_Small_Script,
+  ucp_Yezidi
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 };
 
 #endif  /* PCRE2_UCP_H_IDEMPOTENT_GUARD */

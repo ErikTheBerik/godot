@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Directory" inherits="Reference" version="3.2">
+<class name="Directory" inherits="Reference" version="4.0">
 	<brief_description>
 		Type used to handle the filesystem.
 	</brief_description>
 	<description>
 		Directory type. It is used to manage directories and their content (not restricted to the project folder).
-		When creating a new [Directory], its default opened directory will be [code]res://[/code]. This may change in the future, so it is advised to always use [method open] to initialize your [Directory] where you want to operate, with explicit error checking.
+		When creating a new [Directory], it must be explicitly opened using [method open] before most methods can be used. However, [method file_exists] and [method dir_exists] can be used without opening a directory. If so, they use a path relative to [code]res://[/code].
+		[b]Note:[/b] Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. Use [ResourceLoader] to access imported resources.
 		Here is an example on how to iterate through the files of a directory:
-		[codeblock]
+		[codeblocks]
+		[gdscript]
 		func dir_contents(path):
 		    var dir = Directory.new()
 		    if dir.open(path) == OK:
@@ -21,10 +23,42 @@
 		            file_name = dir.get_next()
 		    else:
 		        print("An error occurred when trying to access the path.")
-		[/codeblock]
+		[/gdscript]
+		[csharp]
+		public void DirContents(string path)
+		{
+		    var dir = new Directory();
+		    if (dir.Open(path) == Error.Ok)
+		    {
+		        dir.ListDirBegin();
+		        string fileName = dir.GetNext();
+		        while (fileName != "")
+		        {
+		            if (dir.CurrentIsDir())
+		            {
+		                GD.Print("Found directory: " + fileName);
+		            }
+		            else
+		            {
+		                GD.Print("Found file: " + fileName);
+		            }
+		            fileName = dir.GetNext();
+		        }
+		    }
+		    else
+		    {
+		        GD.Print("An error occurred when trying to access the path.");
+		    }
+		}
+		[/csharp]
+		[/codeblocks]
 	</description>
 	<tutorials>
+<<<<<<< HEAD
 		<link>https://docs.godotengine.org/en/3.2/getting_started/step_by_step/filesystem.html</link>
+=======
+		<link title="File system">https://docs.godotengine.org/en/latest/getting_started/step_by_step/filesystem.html</link>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</tutorials>
 	<methods>
 		<method name="change_dir">
@@ -63,6 +97,7 @@
 			</argument>
 			<description>
 				Returns whether the target directory exists. The argument can be relative to the current directory, or an absolute path.
+				If the [Directory] is not open, the path is relative to [code]res://[/code].
 			</description>
 		</method>
 		<method name="file_exists">
@@ -72,6 +107,7 @@
 			</argument>
 			<description>
 				Returns whether the target file exists. The argument can be relative to the current directory, or an absolute path.
+				If the [Directory] is not open, the path is relative to [code]res://[/code].
 			</description>
 		</method>
 		<method name="get_current_dir">
@@ -94,7 +130,7 @@
 			<argument index="0" name="idx" type="int">
 			</argument>
 			<description>
-				On Windows, returns the name of the drive (partition) passed as an argument (e.g. [code]C:[/code]). On other platforms, or if the requested drive does not existed, the method returns an empty String.
+				On Windows, returns the name of the drive (partition) passed as an argument (e.g. [code]C:[/code]). On other platforms, or if the requested drive does not exist, the method returns an empty String.
 			</description>
 		</method>
 		<method name="get_drive_count">
@@ -122,21 +158,21 @@
 		<method name="list_dir_begin">
 			<return type="int" enum="Error">
 			</return>
-			<argument index="0" name="skip_navigational" type="bool" default="false">
+			<argument index="0" name="show_navigational" type="bool" default="false">
 			</argument>
-			<argument index="1" name="skip_hidden" type="bool" default="false">
+			<argument index="1" name="show_hidden" type="bool" default="false">
 			</argument>
 			<description>
 				Initializes the stream used to list all files and directories using the [method get_next] function, closing the current opened stream if needed. Once the stream has been processed, it should typically be closed with [method list_dir_end].
-				If [code]skip_navigational[/code] is [code]true[/code], [code].[/code] and [code]..[/code] are filtered out.
-				If [code]skip_hidden[/code] is [code]true[/code], hidden files are filtered out.
+				If [code]show_navigational[/code] is [code]true[/code], [code].[/code] and [code]..[/code] are included too.
+				If [code]show_hidden[/code] is [code]true[/code], hidden files are included too.
 			</description>
 		</method>
 		<method name="list_dir_end">
 			<return type="void">
 			</return>
 			<description>
-				Closes the current stream opened with [method list_dir_begin] (whether it has been fully processed with [method get_next] or not does not matter).
+				Closes the current stream opened with [method list_dir_begin] (whether it has been fully processed with [method get_next] does not matter).
 			</description>
 		</method>
 		<method name="make_dir">

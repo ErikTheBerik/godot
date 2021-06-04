@@ -228,7 +228,11 @@ namespace Godot
             if (dot > 0.9995f)
             {
                 // Linearly interpolate to avoid numerical precision issues
+<<<<<<< HEAD
                 v = v1.LinearInterpolate(v2, weight).Normalized();
+=======
+                v = v1.Lerp(v2, weight).Normalized();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             }
             else
             {
@@ -242,8 +246,13 @@ namespace Godot
             Vector2 p2 = transform.origin;
 
             // Construct matrix
+<<<<<<< HEAD
             var res = new Transform2D(Mathf.Atan2(v.y, v.x), p1.LinearInterpolate(p2, weight));
             Vector2 scale = s1.LinearInterpolate(s2, weight);
+=======
+            var res = new Transform2D(Mathf.Atan2(v.y, v.x), p1.Lerp(p2, weight));
+            Vector2 scale = s1.Lerp(s2, weight);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             res.x *= scale;
             res.y *= scale;
 

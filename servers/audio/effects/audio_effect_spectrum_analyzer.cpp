@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -50,7 +50,9 @@ static void smbFft(float *fftBuffer, long fftFrameSize, long sign)
 
 	for (i = 2; i < 2 * fftFrameSize - 2; i += 2) {
 		for (bitm = 2, j = 0; bitm < 2 * fftFrameSize; bitm <<= 1) {
-			if (i & bitm) j++;
+			if (i & bitm) {
+				j++;
+			}
 			j <<= 1;
 		}
 		if (i < j) {
@@ -95,8 +97,8 @@ static void smbFft(float *fftBuffer, long fftFrameSize, long sign)
 		}
 	}
 }
-void AudioEffectSpectrumAnalyzerInstance::process(const AudioFrame *p_src_frames, AudioFrame *p_dst_frames, int p_frame_count) {
 
+void AudioEffectSpectrumAnalyzerInstance::process(const AudioFrame *p_src_frames, AudioFrame *p_dst_frames, int p_frame_count) {
 	uint64_t time = OS::get_singleton()->get_ticks_usec();
 
 	//copy everything over first, since this only really does capture
@@ -108,10 +110,15 @@ void AudioEffectSpectrumAnalyzerInstance::process(const AudioFrame *p_src_frames
 	while (p_frame_count) {
 		int to_fill = fft_size * 2 - temporal_fft_pos;
 		to_fill = MIN(to_fill, p_frame_count);
+		const double to_fill_step = Math_TAU / (double)fft_size;
 
 		float *fftw = temporal_fft.ptrw();
 		for (int i = 0; i < to_fill; i++) { //left and right buffers
+<<<<<<< HEAD
 			float window = -0.5 * Math::cos(2.0 * Math_PI * (double)temporal_fft_pos / (double)fft_size) + 0.5;
+=======
+			float window = -0.5 * Math::cos(to_fill_step * (double)temporal_fft_pos) + 0.5;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			fftw[temporal_fft_pos * 2] = window * p_src_frames->l;
 			fftw[temporal_fft_pos * 2 + 1] = 0;
 			fftw[(temporal_fft_pos + fft_size * 2) * 2] = window * p_src_frames->r;
@@ -147,14 +154,12 @@ void AudioEffectSpectrumAnalyzerInstance::process(const AudioFrame *p_src_frames
 }
 
 void AudioEffectSpectrumAnalyzerInstance::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("get_magnitude_for_frequency_range", "from_hz", "to_hz", "mode"), &AudioEffectSpectrumAnalyzerInstance::get_magnitude_for_frequency_range, DEFVAL(MAGNITUDE_MAX));
 	BIND_ENUM_CONSTANT(MAGNITUDE_AVERAGE);
 	BIND_ENUM_CONSTANT(MAGNITUDE_MAX);
 }
 
 Vector2 AudioEffectSpectrumAnalyzerInstance::get_magnitude_for_frequency_range(float p_begin, float p_end, MagnitudeMode p_mode) const {
-
 	if (last_fft_time == 0) {
 		return Vector2();
 	}
@@ -195,7 +200,6 @@ Vector2 AudioEffectSpectrumAnalyzerInstance::get_magnitude_for_frequency_range(f
 
 		return avg;
 	} else {
-
 		Vector2 max;
 
 		for (int i = begin_pos; i <= end_pos; i++) {
@@ -208,7 +212,6 @@ Vector2 AudioEffectSpectrumAnalyzerInstance::get_magnitude_for_frequency_range(f
 }
 
 Ref<AudioEffectInstance> AudioEffectSpectrumAnalyzer::instance() {
-
 	Ref<AudioEffectSpectrumAnalyzerInstance> ins;
 	ins.instance();
 	ins->base = Ref<AudioEffectSpectrumAnalyzer>(this);
@@ -235,7 +238,6 @@ void AudioEffectSpectrumAnalyzer::set_buffer_length(float p_seconds) {
 }
 
 float AudioEffectSpectrumAnalyzer::get_buffer_length() const {
-
 	return buffer_length;
 }
 
@@ -247,17 +249,16 @@ float AudioEffectSpectrumAnalyzer::get_tap_back_pos() const {
 	return tapback_pos;
 }
 
-void AudioEffectSpectrumAnalyzer::set_fft_size(FFT_Size p_fft_size) {
+void AudioEffectSpectrumAnalyzer::set_fft_size(FFTSize p_fft_size) {
 	ERR_FAIL_INDEX(p_fft_size, FFT_SIZE_MAX);
 	fft_size = p_fft_size;
 }
 
-AudioEffectSpectrumAnalyzer::FFT_Size AudioEffectSpectrumAnalyzer::get_fft_size() const {
+AudioEffectSpectrumAnalyzer::FFTSize AudioEffectSpectrumAnalyzer::get_fft_size() const {
 	return fft_size;
 }
 
 void AudioEffectSpectrumAnalyzer::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("set_buffer_length", "seconds"), &AudioEffectSpectrumAnalyzer::set_buffer_length);
 	ClassDB::bind_method(D_METHOD("get_buffer_length"), &AudioEffectSpectrumAnalyzer::get_buffer_length);
 
@@ -267,8 +268,8 @@ void AudioEffectSpectrumAnalyzer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_fft_size", "size"), &AudioEffectSpectrumAnalyzer::set_fft_size);
 	ClassDB::bind_method(D_METHOD("get_fft_size"), &AudioEffectSpectrumAnalyzer::get_fft_size);
 
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "buffer_length", PROPERTY_HINT_RANGE, "0.1,4,0.1"), "set_buffer_length", "get_buffer_length");
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "tap_back_pos", PROPERTY_HINT_RANGE, "0.1,4,0.1"), "set_tap_back_pos", "get_tap_back_pos");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "buffer_length", PROPERTY_HINT_RANGE, "0.1,4,0.1"), "set_buffer_length", "get_buffer_length");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "tap_back_pos", PROPERTY_HINT_RANGE, "0.1,4,0.1"), "set_tap_back_pos", "get_tap_back_pos");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fft_size", PROPERTY_HINT_ENUM, "256,512,1024,2048,4096"), "set_fft_size", "get_fft_size");
 
 	BIND_ENUM_CONSTANT(FFT_SIZE_256);

@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -77,7 +82,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ByteSwapper.h"
 #include "FBXTokenizer.h"
+<<<<<<< HEAD
 #include "core/print_string.h"
+=======
+#include "core/string/print_string.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #include <stdint.h>
 
@@ -130,6 +139,10 @@ Token::Token(const char *sbegin, const char *send, TokenType type, size_t offset
 		line(offset),
 		column(BINARY_MARKER) {
 #ifdef DEBUG_ENABLED
+<<<<<<< HEAD
+=======
+	// contents is bad.. :/
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	contents = std::string(sbegin, static_cast<size_t>(send - sbegin));
 #endif
 	// calc length
@@ -232,9 +245,17 @@ unsigned int ReadString(const char *&sbegin_out, const char *&send_out, const ch
 }
 
 // ------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
 void ReadData(const char *&sbegin_out, const char *&send_out, const char *input, const char *&cursor, const char *end) {
 	if (Offset(cursor, end) < 1) {
 		TokenizeError("cannot ReadData, out of bounds reading length", input, cursor);
+=======
+void ReadData(const char *&sbegin_out, const char *&send_out, const char *input, const char *&cursor, const char *end, bool &corrupt) {
+	if (Offset(cursor, end) < 1) {
+		TokenizeError("cannot ReadData, out of bounds reading length", input, cursor);
+		corrupt = true;
+		return;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	const char type = *cursor;
@@ -328,9 +349,13 @@ void ReadData(const char *&sbegin_out, const char *&send_out, const char *input,
 			}
 			cursor += comp_len;
 			break;
+<<<<<<< HEAD
 		}
 
 			// string
+=======
+		} // string
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		case 'S': {
 			const char *sb, *se;
 			// 0 characters can legally happen in such strings
@@ -338,11 +363,23 @@ void ReadData(const char *&sbegin_out, const char *&send_out, const char *input,
 			break;
 		}
 		default:
+<<<<<<< HEAD
 			TokenizeError("cannot ReadData, unexpected type code: " + std::string(&type, 1), input, cursor);
 	}
 
 	if (cursor > end) {
 		TokenizeError("cannot ReadData, the remaining size is too small for the data type: " + std::string(&type, 1), input, cursor);
+=======
+			corrupt = true; // must exit
+			TokenizeError("cannot ReadData, unexpected type code: " + std::string(&type, 1), input, cursor);
+			return;
+	}
+
+	if (cursor > end) {
+		corrupt = true; // must exit
+		TokenizeError("cannot ReadData, the remaining size is too small for the data type: " + std::string(&type, 1), input, cursor);
+		return;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	// the type code is contained in the returned range
@@ -350,7 +387,11 @@ void ReadData(const char *&sbegin_out, const char *&send_out, const char *input,
 }
 
 // ------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
 bool ReadScope(TokenList &output_tokens, const char *input, const char *&cursor, const char *end, bool const is64bits) {
+=======
+bool ReadScope(TokenList &output_tokens, const char *input, const char *&cursor, const char *end, bool const is64bits, bool &corrupt) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// the first word contains the offset at which this block ends
 	const uint64_t end_offset = is64bits ? ReadDoubleWord(input, cursor, end) : ReadWord(input, cursor, end);
 
@@ -364,8 +405,17 @@ bool ReadScope(TokenList &output_tokens, const char *input, const char *&cursor,
 
 	if (end_offset > Offset(input, end)) {
 		TokenizeError("block offset is out of range", input, cursor);
+<<<<<<< HEAD
 	} else if (end_offset < Offset(input, cursor)) {
 		TokenizeError("block offset is negative out of range", input, cursor);
+=======
+		corrupt = true;
+		return false;
+	} else if (end_offset < Offset(input, cursor)) {
+		TokenizeError("block offset is negative out of range", input, cursor);
+		corrupt = true;
+		return false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	// the second data word contains the number of properties in the scope
@@ -375,7 +425,11 @@ bool ReadScope(TokenList &output_tokens, const char *input, const char *&cursor,
 	const uint64_t prop_length = is64bits ? ReadDoubleWord(input, cursor, end) : ReadWord(input, cursor, end);
 
 	// now comes the name of the scope/key
+<<<<<<< HEAD
 	const char *sbeg, *send;
+=======
+	const char *sbeg = nullptr, *send = nullptr;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ReadString(sbeg, send, input, cursor, end);
 
 	output_tokens.push_back(new_Token(sbeg, send, TokenType_KEY, Offset(input, cursor)));
@@ -383,7 +437,14 @@ bool ReadScope(TokenList &output_tokens, const char *input, const char *&cursor,
 	// now come the individual properties
 	const char *begin_cursor = cursor;
 	for (unsigned int i = 0; i < prop_count; ++i) {
+<<<<<<< HEAD
 		ReadData(sbeg, send, input, cursor, begin_cursor + prop_length);
+=======
+		ReadData(sbeg, send, input, cursor, begin_cursor + prop_length, corrupt);
+		if (corrupt) {
+			return false;
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		output_tokens.push_back(new_Token(sbeg, send, TokenType_DATA, Offset(input, cursor)));
 
@@ -394,6 +455,11 @@ bool ReadScope(TokenList &output_tokens, const char *input, const char *&cursor,
 
 	if (Offset(begin_cursor, cursor) != prop_length) {
 		TokenizeError("property length not reached, something is wrong", input, cursor);
+<<<<<<< HEAD
+=======
+		corrupt = true;
+		return false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	// at the end of each nested block, there is a NUL record to indicate
@@ -410,13 +476,25 @@ bool ReadScope(TokenList &output_tokens, const char *input, const char *&cursor,
 
 		// XXX this is vulnerable to stack overflowing ..
 		while (Offset(input, cursor) < end_offset - sentinel_block_length) {
+<<<<<<< HEAD
 			ReadScope(output_tokens, input, cursor, input + end_offset - sentinel_block_length, is64bits);
+=======
+			ReadScope(output_tokens, input, cursor, input + end_offset - sentinel_block_length, is64bits, corrupt);
+			if (corrupt) {
+				return false;
+			}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
 		output_tokens.push_back(new_Token(cursor, cursor + 1, TokenType_CLOSE_BRACKET, Offset(input, cursor)));
 
 		for (unsigned int i = 0; i < sentinel_block_length; ++i) {
 			if (cursor[i] != '\0') {
 				TokenizeError("failed to read nested block sentinel, expected all bytes to be 0", input, cursor);
+<<<<<<< HEAD
+=======
+				corrupt = true;
+				return false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			}
 		}
 		cursor += sentinel_block_length;
@@ -424,17 +502,29 @@ bool ReadScope(TokenList &output_tokens, const char *input, const char *&cursor,
 
 	if (Offset(input, cursor) != end_offset) {
 		TokenizeError("scope length not reached, something is wrong", input, cursor);
+<<<<<<< HEAD
+=======
+		corrupt = true;
+		return false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	return true;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // anonymous namespace
 
 // ------------------------------------------------------------------------------------------------
 // TODO: Test FBX Binary files newer than the 7500 version to check if the 64 bits address behaviour is consistent
+<<<<<<< HEAD
 void TokenizeBinary(TokenList &output_tokens, const char *input, size_t length) {
 
+=======
+void TokenizeBinary(TokenList &output_tokens, const char *input, size_t length, bool &corrupt) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (length < 0x1b) {
 		//TokenizeError("file is too short",0);
 	}
@@ -461,10 +551,17 @@ void TokenizeBinary(TokenList &output_tokens, const char *input, size_t length) 
 	const bool is64bits = version >= 7500;
 	const char *end = input + length;
 	while (cursor < end) {
+<<<<<<< HEAD
 		if (!ReadScope(output_tokens, input, cursor, input + length, is64bits)) {
+=======
+		if (!ReadScope(output_tokens, input, cursor, input + length, is64bits, corrupt)) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			break;
 		}
 	}
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser

@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -72,11 +77,23 @@ const GodotRuntime = {
 			return p_heap.subarray(p_ptr / bytes, p_ptr / bytes + p_len);
 		},
 
+<<<<<<< HEAD
 		heapCopy: function (p_heap, p_ptr, p_len) {
+=======
+		heapSlice: function (p_heap, p_ptr, p_len) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			const bytes = p_heap.BYTES_PER_ELEMENT;
 			return p_heap.slice(p_ptr / bytes, p_ptr / bytes + p_len);
 		},
 
+<<<<<<< HEAD
+=======
+		heapCopy: function (p_dst, p_src, p_ptr) {
+			const bytes = p_src.BYTES_PER_ELEMENT;
+			return p_dst.set(p_src, p_ptr / bytes);
+		},
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		/*
 		 * Strings
 		 */
@@ -84,6 +101,18 @@ const GodotRuntime = {
 			return UTF8ToString(p_ptr); // eslint-disable-line no-undef
 		},
 
+<<<<<<< HEAD
+=======
+		parseStringArray: function (p_ptr, p_size) {
+			const strings = [];
+			const ptrs = GodotRuntime.heapSub(HEAP32, p_ptr, p_size); // TODO wasm64
+			ptrs.forEach(function (ptr) {
+				strings.push(GodotRuntime.parseString(ptr));
+			});
+			return strings;
+		},
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		strlen: function (p_str) {
 			return lengthBytesUTF8(p_str); // eslint-disable-line no-undef
 		},

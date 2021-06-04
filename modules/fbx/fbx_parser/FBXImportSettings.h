@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -80,30 +85,44 @@ namespace FBXDocParser {
 
 /** FBX import settings, parts of which are publicly accessible via their corresponding AI_CONFIG constants */
 struct ImportSettings {
+<<<<<<< HEAD
 	ImportSettings() :
 			strictMode(true), readAllLayers(true), readAllMaterials(true), readMaterials(true), readTextures(true), readCameras(true), readLights(true), readAnimations(true), readWeights(true), preservePivots(true), optimizeEmptyAnimationCurves(true), useLegacyEmbeddedTextureNaming(false), removeEmptyBones(true), convertToMeters(false) {
 		// empty
 	}
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	/** enable strict mode:
      *   - only accept fbx 2012, 2013 files
      *   - on the slightest error, give up.
      *
      *  Basically, strict mode means that the fbx file will actually
+<<<<<<< HEAD
      *  be validated. Strict mode is off by default. */
 	bool strictMode;
+=======
+     *  be validated.*/
+	bool strictMode = true;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	/** specifies whether all geometry layers are read and scanned for
       * usable data channels. The FBX spec indicates that many readers
       * will only read the first channel and that this is in some way
       * the recommended way- in reality, however, it happens a lot that
+<<<<<<< HEAD
       * vertex data is spread among multiple layers. The default
       * value for this option is true.*/
 	bool readAllLayers;
+=======
+      * vertex data is spread among multiple layers.*/
+	bool readAllLayers = true;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	/** specifies whether all materials are read, or only those that
      *  are referenced by at least one mesh. Reading all materials
      *  may make FBX reading a lot slower since all objects
+<<<<<<< HEAD
      *  need to be processed .
      *  This bit is ignored unless readMaterials=true*/
 	bool readAllMaterials;
@@ -128,12 +147,41 @@ struct ImportSettings {
 	/** read bones (vertex weights and deform info).
      *  Default value is true. */
 	bool readWeights;
+=======
+     *  need to be processed.
+     *  This bit is ignored unless readMaterials=true.*/
+	bool readAllMaterials = true;
+
+	/** import materials (true) or skip them and assign a default
+     *  material.*/
+	bool readMaterials = true;
+
+	/** import embedded textures?*/
+	bool readTextures = true;
+
+	/** import cameras?*/
+	bool readCameras = true;
+
+	/** import light sources?*/
+	bool readLights = true;
+
+	/** import animations (i.e. animation curves, the node
+     *  skeleton is always imported).*/
+	bool readAnimations = true;
+
+	/** read bones (vertex weights and deform info).*/
+	bool readWeights = true;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	/** preserve transformation pivots and offsets. Since these can
      *  not directly be represented in assimp, additional dummy
      *  nodes will be generated. Note that settings this to false
+<<<<<<< HEAD
      *  can make animation import a lot slower. The default value
      *  is true.
+=======
+     *  can make animation import a lot slower.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
      *
      *  The naming scheme for the generated nodes is:
      *    <OriginalName>_$AssimpFbx$_<TransformName>
@@ -149,6 +197,7 @@ struct ImportSettings {
      *    Scaling
      *    Rotation
      **/
+<<<<<<< HEAD
 	bool preservePivots;
 
 	/** do not import animation curves that specify a constant
@@ -169,6 +218,24 @@ struct ImportSettings {
 	bool convertToMeters;
 };
 
+=======
+	bool preservePivots = true;
+
+	/** do not import animation curves that specify a constant
+     *  values matching the corresponding node transformation.*/
+	bool optimizeEmptyAnimationCurves = true;
+
+	/** use legacy naming for embedded textures eg: (*0, *1, *2).*/
+	bool useLegacyEmbeddedTextureNaming = false;
+
+	/** Empty bones shall be removed.*/
+	bool removeEmptyBones = true;
+
+	/** Set to true to perform a conversion from cm to meter after
+	 *  the import.*/
+	bool convertToMeters = false;
+};
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser
 
 #endif // FBX_IMPORT_SETTINGS_H

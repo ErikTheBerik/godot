@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -33,66 +33,41 @@
 
 #include "audio_driver_jandroid.h"
 #include "audio_driver_opensl.h"
-#include "core/os/input.h"
 #include "core/os/main_loop.h"
 #include "drivers/unix/os_unix.h"
-#include "main/input_default.h"
-//#include "power_android.h"
 #include "servers/audio_server.h"
-#include "servers/visual/rasterizer.h"
 
 class GodotJavaWrapper;
 class GodotIOJavaWrapper;
 
+struct ANativeWindow;
+
 class OS_Android : public OS_Unix {
-public:
-	struct TouchPos {
-		int id;
-		Point2 pos;
-	};
-
-	enum {
-		JOY_EVENT_BUTTON = 0,
-		JOY_EVENT_AXIS = 1,
-		JOY_EVENT_HAT = 2
-	};
-
-	struct JoypadEvent {
-
-		int device;
-		int type;
-		int index;
-		bool pressed;
-		float value;
-		int hat;
-	};
-
 private:
-	Vector<TouchPos> touch;
-	Point2 hover_prev_pos; // needed to calculate the relative position on hover events
-	Point2 scroll_prev_pos; // needed to calculate the relative position on scroll events
+	Size2i display_size;
 
-	bool use_gl2;
 	bool use_apk_expansion;
 
+#if defined(OPENGL_ENABLED)
 	bool use_16bits_fbo;
+	const char *gl_extensions;
+#endif
 
-	VisualServer *visual_server;
+#if defined(VULKAN_ENABLED)
+	ANativeWindow *native_window;
+#endif
 
 	mutable String data_dir_cache;
 
 	//AudioDriverAndroid audio_driver_android;
 	AudioDriverOpenSL audio_driver_android;
 
-	const char *gl_extensions;
-
-	InputDefault *input;
-	VideoMode default_videomode;
 	MainLoop *main_loop;
 
 	GodotJavaWrapper *godot_java;
 	GodotIOJavaWrapper *godot_io_java;
 
+<<<<<<< HEAD
 	//PowerAndroid *power_manager_func;
 
 	int video_driver_index;
@@ -112,37 +87,32 @@ private:
 
 	void _wheel_button_click(int event_buttons_mask, const Ref<InputEventMouseButton> &ev, int wheel_button, float factor);
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 public:
-	// functions used by main to initialize/deinitialize the OS
-	virtual int get_video_driver_count() const;
-	virtual const char *get_video_driver_name(int p_driver) const;
+	virtual void initialize_core() override;
+	virtual void initialize() override;
 
-	virtual int get_audio_driver_count() const;
-	virtual const char *get_audio_driver_name(int p_driver) const;
+	virtual void initialize_joypads() override;
 
-	virtual int get_current_video_driver() const;
+	virtual void set_main_loop(MainLoop *p_main_loop) override;
+	virtual void delete_main_loop() override;
 
-	virtual void initialize_core();
-	virtual Error initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver);
-
-	virtual void set_main_loop(MainLoop *p_main_loop);
-	virtual void delete_main_loop();
-
-	virtual void finalize();
+	virtual void finalize() override;
 
 	typedef int64_t ProcessID;
 
-	static OS *get_singleton();
+	static OS_Android *get_singleton();
 	GodotJavaWrapper *get_godot_java();
 	GodotIOJavaWrapper *get_godot_io_java();
 
-	virtual void alert(const String &p_alert, const String &p_title = "ALERT!");
-	virtual bool request_permission(const String &p_name);
-	virtual bool request_permissions();
-	virtual Vector<String> get_granted_permissions() const;
+	virtual bool request_permission(const String &p_name) override;
+	virtual bool request_permissions() override;
+	virtual Vector<String> get_granted_permissions() const override;
 
-	virtual Error open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path = false);
+	virtual Error open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path = false) override;
 
+<<<<<<< HEAD
 	virtual void set_mouse_show(bool p_show);
 	virtual void set_mouse_grab(bool p_grab);
 	virtual bool is_mouse_grab_enabled() const;
@@ -163,6 +133,10 @@ public:
 	virtual MainLoop *get_main_loop() const;
 
 	virtual bool can_draw() const;
+=======
+	virtual String get_name() const override;
+	virtual MainLoop *get_main_loop() const override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	void main_loop_begin();
 	bool main_loop_iterate();
@@ -171,18 +145,37 @@ public:
 	void main_loop_focusout();
 	void main_loop_focusin();
 
+<<<<<<< HEAD
 	virtual bool has_touchscreen_ui_hint() const;
 
 	virtual bool has_virtual_keyboard() const;
 	virtual void show_virtual_keyboard(const String &p_existing_text, const Rect2 &p_screen_rect = Rect2(), bool p_multiline = false, int p_max_input_length = -1, int p_cursor_start = -1, int p_cursor_end = -1);
 	virtual void hide_virtual_keyboard();
 	virtual int get_virtual_keyboard_height() const;
-
-	void set_opengl_extensions(const char *p_gl_extensions);
-	void set_display_size(Size2 p_size);
+=======
+	void set_display_size(const Size2i &p_size);
+	Size2i get_display_size() const;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	void set_context_is_16_bits(bool p_is_16);
+	void set_opengl_extensions(const char *p_gl_extensions);
 
+	void set_native_window(ANativeWindow *p_native_window);
+	ANativeWindow *get_native_window() const;
+
+	virtual Error shell_open(String p_uri) override;
+	virtual String get_user_data_dir() const override;
+	virtual String get_resource_dir() const override;
+	virtual String get_locale() const override;
+	virtual String get_model_name() const override;
+
+	virtual String get_unique_id() const override;
+
+	virtual String get_system_dir(SystemDir p_dir) const override;
+
+	void vibrate_handheld(int p_duration_ms) override;
+
+<<<<<<< HEAD
 	virtual void set_screen_orientation(ScreenOrientation p_orientation);
 	virtual ScreenOrientation get_screen_orientation() const;
 
@@ -224,6 +217,9 @@ public:
 	void vibrate_handheld(int p_duration_ms);
 
 	virtual bool _check_internal_feature_support(const String &p_feature);
+=======
+	virtual bool _check_internal_feature_support(const String &p_feature) override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	OS_Android(GodotJavaWrapper *p_godot_java, GodotIOJavaWrapper *p_godot_io_java, bool p_use_apk_expansion);
 	~OS_Android();
 };

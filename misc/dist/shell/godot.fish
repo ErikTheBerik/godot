@@ -2,8 +2,13 @@
 # To use it, install this file in `~/.config/fish/completions` then restart your shell.
 # You can also `source` this file directly in your shell startup file.
 #
+<<<<<<< HEAD
 # Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.
 # Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).
+=======
+# Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.
+# Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +30,11 @@
 
 function godot_video_driver_args
     # Use a function instead of a fixed string to customize the argument descriptions.
+<<<<<<< HEAD
     echo -e "GLES3\tOpenGL ES 2.0 renderer"
+=======
+    echo -e "Vulkan\tVulkan renderer"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     echo -e "GLES2\tOpenGL ES 2.0 renderer"
 end
 

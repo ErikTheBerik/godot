@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,12 +31,15 @@
 #include "gdnative/vector2.h"
 
 #include "core/math/vector2.h"
-#include "core/variant.h"
+
+static_assert(sizeof(godot_vector2) == sizeof(Vector2), "Vector2 size mismatch");
+static_assert(sizeof(godot_vector2i) == sizeof(Vector2i), "Vector2i size mismatch");
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+<<<<<<< HEAD
 static_assert(sizeof(godot_vector2) == sizeof(Vector2), "Vector2 size mismatch");
 
 void GDAPI godot_vector2_new(godot_vector2 *r_dest, const godot_real p_x, const godot_real p_y) {
@@ -259,54 +262,42 @@ godot_vector2 GDAPI godot_vector2_operator_divide_vector(const godot_vector2 *p_
 	const Vector2 *b = (const Vector2 *)p_b;
 	*dest = *self / *b;
 	return raw_dest;
+=======
+void GDAPI godot_vector2_new(godot_vector2 *p_self) {
+	memnew_placement(p_self, Vector2);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
-godot_vector2 GDAPI godot_vector2_operator_divide_scalar(const godot_vector2 *p_self, const godot_real p_b) {
-	godot_vector2 raw_dest;
-	Vector2 *dest = (Vector2 *)&raw_dest;
-	const Vector2 *self = (const Vector2 *)p_self;
-	*dest = *self / p_b;
-	return raw_dest;
+void GDAPI godot_vector2_new_copy(godot_vector2 *r_dest, const godot_vector2 *p_src) {
+	memnew_placement(r_dest, Vector2(*(Vector2 *)p_src));
 }
 
-godot_bool GDAPI godot_vector2_operator_equal(const godot_vector2 *p_self, const godot_vector2 *p_b) {
-	const Vector2 *self = (const Vector2 *)p_self;
-	const Vector2 *b = (const Vector2 *)p_b;
-	return *self == *b;
+void GDAPI godot_vector2i_new(godot_vector2i *p_self) {
+	memnew_placement(p_self, Vector2i);
 }
 
-godot_bool GDAPI godot_vector2_operator_less(const godot_vector2 *p_self, const godot_vector2 *p_b) {
-	const Vector2 *self = (const Vector2 *)p_self;
-	const Vector2 *b = (const Vector2 *)p_b;
-	return *self < *b;
+void GDAPI godot_vector2i_new_copy(godot_vector2i *r_dest, const godot_vector2i *p_src) {
+	memnew_placement(r_dest, Vector2i(*(Vector2i *)p_src));
 }
 
-godot_vector2 GDAPI godot_vector2_operator_neg(const godot_vector2 *p_self) {
-	godot_vector2 raw_dest;
-	Vector2 *dest = (Vector2 *)&raw_dest;
-	const Vector2 *self = (const Vector2 *)p_self;
-	*dest = -(*self);
-	return raw_dest;
-}
-
-void GDAPI godot_vector2_set_x(godot_vector2 *p_self, const godot_real p_x) {
+godot_real_t GDAPI *godot_vector2_operator_index(godot_vector2 *p_self, godot_int p_index) {
 	Vector2 *self = (Vector2 *)p_self;
-	self->x = p_x;
+	return (godot_real_t *)&self->operator[](p_index);
 }
 
-void GDAPI godot_vector2_set_y(godot_vector2 *p_self, const godot_real p_y) {
-	Vector2 *self = (Vector2 *)p_self;
-	self->y = p_y;
-}
-
-godot_real GDAPI godot_vector2_get_x(const godot_vector2 *p_self) {
+const godot_real_t GDAPI *godot_vector2_operator_index_const(const godot_vector2 *p_self, godot_int p_index) {
 	const Vector2 *self = (const Vector2 *)p_self;
-	return self->x;
+	return (const godot_real_t *)&self->operator[](p_index);
 }
 
-godot_real GDAPI godot_vector2_get_y(const godot_vector2 *p_self) {
-	const Vector2 *self = (const Vector2 *)p_self;
-	return self->y;
+int32_t GDAPI *godot_vector2i_operator_index(godot_vector2i *p_self, godot_int p_index) {
+	Vector2i *self = (Vector2i *)p_self;
+	return (int32_t *)&self->operator[](p_index);
+}
+
+const int32_t GDAPI *godot_vector2i_operator_index_const(const godot_vector2i *p_self, godot_int p_index) {
+	const Vector2i *self = (const Vector2i *)p_self;
+	return (const int32_t *)&self->operator[](p_index);
 }
 
 #ifdef __cplusplus

@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -44,19 +49,26 @@ import androidx.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+<<<<<<< HEAD
 import java.util.HashSet;
 import java.util.Set;
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Registry used to load and access the registered Godot Android plugins.
  */
 public final class GodotPluginRegistry {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	private static final String TAG = GodotPluginRegistry.class.getSimpleName();
 
 	private static final String GODOT_PLUGIN_V1_NAME_PREFIX = "org.godotengine.plugin.v1.";
 
+<<<<<<< HEAD
 	/**
 	 * Name for the metadata containing the list of Godot plugins to enable.
 	 */
@@ -64,6 +76,8 @@ public final class GodotPluginRegistry {
 
 	private static final String PLUGIN_VALUE_SEPARATOR_REGEX = "\\|";
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	private static GodotPluginRegistry instance;
 	private final ConcurrentHashMap<String, GodotPlugin> registry;
 
@@ -133,6 +147,7 @@ public final class GodotPluginRegistry {
 				return;
 			}
 
+<<<<<<< HEAD
 			// When using the Godot editor for building and exporting the apk, this is used to check
 			// which plugins to enable.
 			// When using a custom process to generate the apk, the metadata is not needed since
@@ -154,16 +169,21 @@ public final class GodotPluginRegistry {
 				enabledPluginsSet = null;
 			}
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			int godotPluginV1NamePrefixLength = GODOT_PLUGIN_V1_NAME_PREFIX.length();
 			for (String metaDataName : metaData.keySet()) {
 				// Parse the meta-data looking for entry with the Godot plugin name prefix.
 				if (metaDataName.startsWith(GODOT_PLUGIN_V1_NAME_PREFIX)) {
 					String pluginName = metaDataName.substring(godotPluginV1NamePrefixLength).trim();
+<<<<<<< HEAD
 					if (enabledPluginsSet != null && !enabledPluginsSet.contains(pluginName)) {
 						Log.w(TAG, "Plugin " + pluginName + " is listed in the dependencies but is not enabled.");
 						continue;
 					}
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 					Log.i(TAG, "Initializing Godot plugin " + pluginName);
 
 					// Retrieve the plugin class full name.
@@ -178,8 +198,12 @@ public final class GodotPluginRegistry {
 																				 .getConstructor(Godot.class);
 							GodotPlugin pluginHandle = pluginConstructor.newInstance(godot);
 
+<<<<<<< HEAD
 							// Load the plugin initializer into the registry using the plugin name
 							// as key.
+=======
+							// Load the plugin initializer into the registry using the plugin name as key.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 							if (!pluginName.equals(pluginHandle.getPluginName())) {
 								Log.w(TAG,
 										"Meta-data plugin name does not match the value returned by the plugin handle: " + pluginName + " =/= " + pluginHandle.getPluginName());

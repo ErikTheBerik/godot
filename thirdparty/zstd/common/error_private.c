@@ -48,6 +48,10 @@ const char* ERR_getErrorString(ERR_enum code)
     case PREFIX(frameIndex_tooLarge): return "Frame index is too large";
     case PREFIX(seekableIO): return "An I/O error occurred when reading/seeking";
     case PREFIX(dstBuffer_wrong): return "Destination buffer is wrong";
+<<<<<<< HEAD
+=======
+    case PREFIX(srcBuffer_wrong): return "Source buffer is wrong";
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     case PREFIX(maxCode):
     default: return notErrorCode;
     }

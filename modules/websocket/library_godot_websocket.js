@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -135,6 +140,10 @@ const GodotWebSocket = {
 		},
 	},
 
+<<<<<<< HEAD
+=======
+	godot_js_websocket_create__sig: 'iiiiiiii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_js_websocket_create: function (p_ref, p_url, p_proto, p_on_open, p_on_message, p_on_error, p_on_close) {
 		const on_open = GodotRuntime.get_func(p_on_open).bind(null, p_ref);
 		const on_message = GodotRuntime.get_func(p_on_message).bind(null, p_ref);
@@ -156,6 +165,10 @@ const GodotWebSocket = {
 		return GodotWebSocket.create(socket, on_open, on_message, on_error, on_close);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_js_websocket_send__sig: 'iiiii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_js_websocket_send: function (p_id, p_buf, p_buf_len, p_raw) {
 		const bytes_array = new Uint8Array(p_buf_len);
 		let i = 0;
@@ -169,12 +182,20 @@ const GodotWebSocket = {
 		return GodotWebSocket.send(p_id, out);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_js_websocket_close__sig: 'viii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_js_websocket_close: function (p_id, p_code, p_reason) {
 		const code = p_code;
 		const reason = GodotRuntime.parseString(p_reason);
 		GodotWebSocket.close(p_id, code, reason);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_js_websocket_destroy__sig: 'vi',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_js_websocket_destroy: function (p_id) {
 		GodotWebSocket.destroy(p_id);
 	},

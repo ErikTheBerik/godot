@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ColorPicker" inherits="BoxContainer" version="3.2">
+<class name="ColorPicker" inherits="BoxContainer" version="4.0">
 	<brief_description>
 		Color picker control.
 	</brief_description>
 	<description>
-		[Control] node displaying a color picker widget. It's useful for selecting a color from an RGB/RGBA colorspace.
+		Displays a color picker widget. Useful for selecting a color from an RGB/RGBA colorspace.
 	</description>
 	<tutorials>
 		<link title="Tween Demo">https://godotengine.org/asset-library/asset/146</link>
@@ -30,7 +30,7 @@
 			</description>
 		</method>
 		<method name="get_presets" qualifiers="const">
-			<return type="PoolColorArray">
+			<return type="PackedColorArray">
 			</return>
 			<description>
 				Returns the list of colors in the presets of the color picker.
@@ -50,6 +50,9 @@
 		<member name="hsv_mode" type="bool" setter="set_hsv_mode" getter="is_hsv_mode" default="false">
 			If [code]true[/code], allows editing the color with Hue/Saturation/Value sliders.
 			[b]Note:[/b] Cannot be enabled if raw mode is on.
+		</member>
+		<member name="picker_shape" type="int" setter="set_picker_shape" getter="get_picker_shape" enum="ColorPicker.PickerShapeType" default="0">
+			The shape of the color space view. See [enum PickerShapeType].
 		</member>
 		<member name="presets_enabled" type="bool" setter="set_presets_enabled" getter="are_presets_enabled" default="true">
 			If [code]true[/code], the "add preset" button is enabled.
@@ -86,15 +89,34 @@
 		</signal>
 	</signals>
 	<constants>
+		<constant name="SHAPE_HSV_RECTANGLE" value="0" enum="PickerShapeType">
+			HSV Color Model rectangle color space.
+		</constant>
+		<constant name="SHAPE_HSV_WHEEL" value="1" enum="PickerShapeType">
+			HSV Color Model rectangle color space with a wheel.
+		</constant>
+		<constant name="SHAPE_VHS_CIRCLE" value="2" enum="PickerShapeType">
+			HSV Color Model circle color space. Use Saturation as a radius.
+		</constant>
 	</constants>
 	<theme_items>
+<<<<<<< HEAD
 		<theme_item name="add_preset" type="Texture">
 			The icon for the "Add Preset" button.
 		</theme_item>
 		<theme_item name="color_hue" type="Texture">
+=======
+		<theme_item name="add_preset" type="Texture2D">
+			The icon for the "Add Preset" button.
+		</theme_item>
+		<theme_item name="bar_arrow" type="Texture2D">
+			The texture for the arrow grabber.
+		</theme_item>
+		<theme_item name="color_hue" type="Texture2D">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			Custom texture for the hue selection slider on the right.
 		</theme_item>
-		<theme_item name="color_sample" type="Texture">
+		<theme_item name="color_sample" type="Texture2D">
 		</theme_item>
 		<theme_item name="h_width" type="int" default="30">
 			The width of the hue selection slider.
@@ -103,13 +125,25 @@
 		</theme_item>
 		<theme_item name="margin" type="int" default="4">
 			The margin around the [ColorPicker].
+<<<<<<< HEAD
 		</theme_item>
 		<theme_item name="overbright_indicator" type="Texture">
 			The indicator used to signalize that the color value is outside the 0-1 range.
+=======
 		</theme_item>
-		<theme_item name="preset_bg" type="Texture">
+		<theme_item name="overbright_indicator" type="Texture2D">
+			The indicator used to signalize that the color value is outside the 0-1 range.
 		</theme_item>
+		<theme_item name="picker_cursor" type="Texture2D">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
+		</theme_item>
+		<theme_item name="preset_bg" type="Texture2D">
+		</theme_item>
+<<<<<<< HEAD
 		<theme_item name="screen_picker" type="Texture">
+=======
+		<theme_item name="screen_picker" type="Texture2D">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			The icon for the screen color picker button.
 		</theme_item>
 		<theme_item name="sv_height" type="int" default="256">

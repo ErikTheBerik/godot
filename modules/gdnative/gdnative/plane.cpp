@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,12 +31,14 @@
 #include "gdnative/plane.h"
 
 #include "core/math/plane.h"
-#include "core/variant.h"
+
+static_assert(sizeof(godot_plane) == sizeof(Plane), "Plane size mismatch");
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+<<<<<<< HEAD
 static_assert(sizeof(godot_plane) == sizeof(Plane), "Plane size mismatch");
 
 void GDAPI godot_plane_new_with_reals(godot_plane *r_dest, const godot_real p_a, const godot_real p_b, const godot_real p_c, const godot_real p_d) {
@@ -167,11 +169,14 @@ godot_vector3 GDAPI godot_plane_get_normal(const godot_plane *p_self) {
 godot_real GDAPI godot_plane_get_d(const godot_plane *p_self) {
 	const Plane *self = (const Plane *)p_self;
 	return self->d;
+=======
+void GDAPI godot_plane_new(godot_plane *p_self) {
+	memnew_placement(p_self, Plane);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
-void GDAPI godot_plane_set_d(godot_plane *p_self, const godot_real p_d) {
-	Plane *self = (Plane *)p_self;
-	self->d = p_d;
+void GDAPI godot_plane_new_copy(godot_plane *r_dest, const godot_plane *p_src) {
+	memnew_placement(r_dest, Plane(*(Plane *)p_src));
 }
 
 #ifdef __cplusplus

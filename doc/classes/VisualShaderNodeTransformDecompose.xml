@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="VisualShaderNodeTransformDecompose" inherits="VisualShaderNode" version="3.2">
+<class name="VisualShaderNodeTransformDecompose" inherits="VisualShaderNode" version="4.0">
 	<brief_description>
+<<<<<<< HEAD
 		Decomposes a [Transform] into four [Vector3]s within the visual shader graph.
+=======
+		Decomposes a [Transform3D] into four [Vector3]s within the visual shader graph.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</brief_description>
 	<description>
 		Takes a 4x4 transform matrix and decomposes it into four [code]vec3[/code] values, one from each row of the matrix.

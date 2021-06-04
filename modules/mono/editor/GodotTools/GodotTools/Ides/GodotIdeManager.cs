@@ -111,7 +111,11 @@ namespace GodotTools.Ides
                 {
                     MonoDevelop.Instance GetMonoDevelopInstance(string solutionPath)
                     {
+<<<<<<< HEAD
                         if (Utils.OS.IsOSX && editorId == ExternalEditorId.VisualStudioForMac)
+=======
+                        if (Utils.OS.IsMacOS && editorId == ExternalEditorId.VisualStudioForMac)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                         {
                             vsForMacInstance = (vsForMacInstance?.IsDisposed ?? true ? null : vsForMacInstance) ??
                                                new MonoDevelop.Instance(solutionPath, MonoDevelop.EditorId.VisualStudioForMac);
@@ -157,7 +161,11 @@ namespace GodotTools.Ides
             }
         }
 
+<<<<<<< HEAD
         public struct EditorPick
+=======
+        public readonly struct EditorPick
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         {
             private readonly string identity;
 

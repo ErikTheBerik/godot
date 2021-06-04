@@ -4,10 +4,17 @@ on: [push, pull_request]
 # Global Settings
 # SCONS_CACHE for windows must be set in the build environment
 env:
+<<<<<<< HEAD
   GODOT_BASE_BRANCH: 3.2
   SCONSFLAGS: platform=windows verbose=yes warnings=all werror=yes --jobs=2
   SCONS_CACHE_MSVC_CONFIG: true
   SCONS_CACHE_LIMIT: 4096
+=======
+  GODOT_BASE_BRANCH: master
+  SCONSFLAGS: platform=windows verbose=yes warnings=all werror=yes debug_symbols=no --jobs=2 module_text_server_fb_enabled=yes
+  SCONS_CACHE_MSVC_CONFIG: true
+  SCONS_CACHE_LIMIT: 3072
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 jobs:
   windows-editor:
@@ -15,7 +22,11 @@ jobs:
     runs-on: "windows-latest"
 
     # Windows Editor - checkout with the plugin
+<<<<<<< HEAD
     name: Editor (target=release_debug, tools=yes)
+=======
+    name: Editor (target=release_debug, tools=yes, tests=yes)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
     steps:
     - uses: actions/checkout@v2
@@ -24,7 +35,11 @@ jobs:
       # Editing this is pretty dangerous for Windows since it can break and needs to be properly tested with a fresh cache.
     - name: Load .scons_cache directory
       id: windows-editor-cache
+<<<<<<< HEAD
       uses: RevoluPowered/cache@v2.1
+=======
+      uses: actions/cache@v2
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       with:
         path: /.scons_cache/
         key: ${{github.job}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
@@ -46,7 +61,11 @@ jobs:
     - name: Configuring Python packages
       run: |
         python -c "import sys; print(sys.version)"
+<<<<<<< HEAD
         python -m pip install scons pywin32
+=======
+        python -m pip install scons
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         python --version
         scons --version
 
@@ -55,9 +74,20 @@ jobs:
       env:
         SCONS_CACHE: /.scons_cache/
       run: |
+<<<<<<< HEAD
         scons tools=yes target=release_debug
         ls -l bin/
 
+=======
+        scons tools=yes tests=yes target=release_debug
+        ls -l bin/
+
+    # Execute unit tests for the editor
+    - name: Unit Tests
+      run: |
+        ./bin/godot.windows.opt.tools.64.exe --test
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ github.job }}
@@ -97,7 +127,11 @@ jobs:
     - name: Configuring Python packages
       run: |
         python -c "import sys; print(sys.version)"
+<<<<<<< HEAD
         python -m pip install scons pywin32
+=======
+        python -m pip install scons
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         python --version
         scons --version
 
@@ -105,7 +139,11 @@ jobs:
       env:
         SCONS_CACHE: /.scons_cache/
       run: |
+<<<<<<< HEAD
         scons target=release tools=no debug_symbols=no
+=======
+        scons target=release tools=no
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         ls -l bin/
 
     - uses: actions/upload-artifact@v2

@@ -12,7 +12,10 @@ def get_name():
 
 
 def can_build():
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     if sys.platform == "darwin" or ("OSXCROSS_ROOT" in os.environ):
         return True
 
@@ -23,6 +26,7 @@ def get_opts():
     from SCons.Variables import BoolVariable, EnumVariable
 
     return [
+<<<<<<< HEAD
         ("osxcross_sdk", "OSXCross SDK version", "darwin14"),
         ("MACOS_SDK_PATH", "Path to the macOS SDK", ""),
         EnumVariable("debug_symbols", "Add debugging symbols to release/release_debug builds", "yes", ("yes", "no")),
@@ -30,15 +34,35 @@ def get_opts():
         BoolVariable("use_ubsan", "Use LLVM/GCC compiler undefined behavior sanitizer (UBSAN)", False),
         BoolVariable("use_asan", "Use LLVM/GCC compiler address sanitizer (ASAN))", False),
         BoolVariable("use_tsan", "Use LLVM/GCC compiler thread sanitizer (TSAN))", False),
+=======
+        ("osxcross_sdk", "OSXCross SDK version", "darwin16"),
+        ("MACOS_SDK_PATH", "Path to the macOS SDK", ""),
+        BoolVariable(
+            "use_static_mvk",
+            "Link MoltenVK statically as Level-0 driver (better portability) or use Vulkan ICD loader (enables"
+            " validation layers)",
+            False,
+        ),
+        EnumVariable("macports_clang", "Build using Clang from MacPorts", "no", ("no", "5.0", "devel")),
+        BoolVariable("debug_symbols", "Add debugging symbols to release/release_debug builds", True),
+        BoolVariable("separate_debug_symbols", "Create a separate file containing debugging symbols", False),
+        BoolVariable("use_ubsan", "Use LLVM/GCC compiler undefined behavior sanitizer (UBSAN)", False),
+        BoolVariable("use_asan", "Use LLVM/GCC compiler address sanitizer (ASAN)", False),
+        BoolVariable("use_tsan", "Use LLVM/GCC compiler thread sanitizer (TSAN)", False),
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     ]
 
 
 def get_flags():
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     return []
 
 
 def configure(env):
+<<<<<<< HEAD
 
     ## Build type
 
@@ -64,6 +88,28 @@ def configure(env):
         env.Prepend(CPPDEFINES=["DEBUG_ENABLED"])
 
         if env["debug_symbols"] == "yes":
+=======
+    ## Build type
+
+    if env["target"] == "release":
+        if env["optimize"] == "speed":  # optimize for speed (default)
+            env.Prepend(CCFLAGS=["-O3", "-fomit-frame-pointer", "-ftree-vectorize"])
+        elif env["optimize"] == "size":  # optimize for size
+            env.Prepend(CCFLAGS=["-Os", "-ftree-vectorize"])
+        if env["arch"] != "arm64":
+            env.Prepend(CCFLAGS=["-msse2"])
+
+        if env["debug_symbols"]:
+            env.Prepend(CCFLAGS=["-g2"])
+
+    elif env["target"] == "release_debug":
+        if env["optimize"] == "speed":  # optimize for speed (default)
+            env.Prepend(CCFLAGS=["-O2"])
+        elif env["optimize"] == "size":  # optimize for size
+            env.Prepend(CCFLAGS=["-Os"])
+        env.Prepend(CPPDEFINES=["DEBUG_ENABLED"])
+        if env["debug_symbols"]:
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             env.Prepend(CCFLAGS=["-g2"])
 
     elif env["target"] == "debug":
@@ -88,9 +134,15 @@ def configure(env):
         env.Append(CCFLAGS=["-arch", "arm64", "-mmacosx-version-min=10.15"])
         env.Append(LINKFLAGS=["-arch", "arm64", "-mmacosx-version-min=10.15"])
     else:
+<<<<<<< HEAD
         print("Building for macOS 10.9+, platform x86-64.")
         env.Append(CCFLAGS=["-arch", "x86_64", "-mmacosx-version-min=10.9"])
         env.Append(LINKFLAGS=["-arch", "x86_64", "-mmacosx-version-min=10.9"])
+=======
+        print("Building for macOS 10.12+, platform x86-64.")
+        env.Append(CCFLAGS=["-arch", "x86_64", "-mmacosx-version-min=10.12"])
+        env.Append(LINKFLAGS=["-arch", "x86_64", "-mmacosx-version-min=10.12"])
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
     if not "osxcross" in env:  # regular native build
         if env["macports_clang"] != "no":
@@ -135,11 +187,24 @@ def configure(env):
         env.extra_suffix += "s"
 
         if env["use_ubsan"]:
+<<<<<<< HEAD
             env.Append(CCFLAGS=["-fsanitize=undefined"])
             env.Append(LINKFLAGS=["-fsanitize=undefined"])
 
         if env["use_asan"]:
             env.Append(CCFLAGS=["-fsanitize=address"])
+=======
+            env.Append(
+                CCFLAGS=[
+                    "-fsanitize=undefined,shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr,pointer-overflow,builtin"
+                ]
+            )
+            env.Append(LINKFLAGS=["-fsanitize=undefined"])
+            env.Append(CCFLAGS=["-fsanitize=nullability-return,nullability-arg,function,nullability-assign"])
+
+        if env["use_asan"]:
+            env.Append(CCFLAGS=["-fsanitize=address,pointer-subtract,pointer-compare"])
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             env.Append(LINKFLAGS=["-fsanitize=address"])
 
         if env["use_tsan"]:
@@ -155,6 +220,7 @@ def configure(env):
     ## Flags
 
     env.Prepend(CPPPATH=["#platform/osx"])
+<<<<<<< HEAD
     env.Append(
         CPPDEFINES=[
             "OSX_ENABLED",
@@ -166,6 +232,9 @@ def configure(env):
             "GL_SILENCE_DEPRECATION",
         ]
     )
+=======
+    env.Append(CPPDEFINES=["OSX_ENABLED", "UNIX_ENABLED", "APPLE_STYLE_KEYS", "COREAUDIO_ENABLED", "COREMIDI_ENABLED"])
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     env.Append(
         LINKFLAGS=[
             "-framework",
@@ -173,21 +242,28 @@ def configure(env):
             "-framework",
             "Carbon",
             "-framework",
+<<<<<<< HEAD
             "OpenGL",
             "-framework",
             "AGL",
             "-framework",
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             "AudioUnit",
             "-framework",
             "CoreAudio",
             "-framework",
             "CoreMIDI",
+<<<<<<< HEAD
             "-lz",
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             "-framework",
             "IOKit",
             "-framework",
             "ForceFeedback",
             "-framework",
+<<<<<<< HEAD
             "AVFoundation",
             "-framework",
             "CoreMedia",
@@ -196,3 +272,23 @@ def configure(env):
         ]
     )
     env.Append(LIBS=["pthread"])
+=======
+            "CoreVideo",
+            "-framework",
+            "AVFoundation",
+            "-framework",
+            "CoreMedia",
+        ]
+    )
+    env.Append(LIBS=["pthread", "z"])
+
+    env.Append(CPPDEFINES=["VULKAN_ENABLED"])
+    env.Append(LINKFLAGS=["-framework", "Metal", "-framework", "QuartzCore", "-framework", "IOSurface"])
+    if env["use_static_mvk"]:
+        env.Append(LINKFLAGS=["-framework", "MoltenVK"])
+        env["builtin_vulkan"] = False
+    elif not env["builtin_vulkan"]:
+        env.Append(LIBS=["vulkan"])
+
+    # env.Append(CPPDEFINES=['GLES_ENABLED', 'OPENGL_ENABLED'])
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45

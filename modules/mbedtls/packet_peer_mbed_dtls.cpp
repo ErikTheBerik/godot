@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -35,12 +40,22 @@
 #include "core/os/file_access.h"
 
 int PacketPeerMbedDTLS::bio_send(void *ctx, const unsigned char *buf, size_t len) {
+<<<<<<< HEAD
 
 	if (buf == NULL || len <= 0) return 0;
 
 	PacketPeerMbedDTLS *sp = (PacketPeerMbedDTLS *)ctx;
 
 	ERR_FAIL_COND_V(sp == NULL, 0);
+=======
+	if (buf == nullptr || len <= 0) {
+		return 0;
+	}
+
+	PacketPeerMbedDTLS *sp = (PacketPeerMbedDTLS *)ctx;
+
+	ERR_FAIL_COND_V(sp == nullptr, 0);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	Error err = sp->base->put_packet((const uint8_t *)buf, len);
 	if (err == ERR_BUSY) {
@@ -52,12 +67,22 @@ int PacketPeerMbedDTLS::bio_send(void *ctx, const unsigned char *buf, size_t len
 }
 
 int PacketPeerMbedDTLS::bio_recv(void *ctx, unsigned char *buf, size_t len) {
+<<<<<<< HEAD
 
 	if (buf == NULL || len <= 0) return 0;
 
 	PacketPeerMbedDTLS *sp = (PacketPeerMbedDTLS *)ctx;
 
 	ERR_FAIL_COND_V(sp == NULL, 0);
+=======
+	if (buf == nullptr || len <= 0) {
+		return 0;
+	}
+
+	PacketPeerMbedDTLS *sp = (PacketPeerMbedDTLS *)ctx;
+
+	ERR_FAIL_COND_V(sp == nullptr, 0);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	int pc = sp->base->get_available_packet_count();
 	if (pc == 0) {
@@ -72,12 +97,19 @@ int PacketPeerMbedDTLS::bio_recv(void *ctx, unsigned char *buf, size_t len) {
 	if (err != OK) {
 		return MBEDTLS_ERR_SSL_INTERNAL_ERROR;
 	}
+<<<<<<< HEAD
 	copymem(buf, buffer, buffer_size);
+=======
+	memcpy(buf, buffer, buffer_size);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return buffer_size;
 }
 
 void PacketPeerMbedDTLS::_cleanup() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ssl_ctx->clear();
 	base = Ref<PacketPeer>();
 	status = STATUS_DISCONNECTED;
@@ -86,10 +118,17 @@ void PacketPeerMbedDTLS::_cleanup() {
 int PacketPeerMbedDTLS::_set_cookie() {
 	// Setup DTLS session cookie for this client
 	uint8_t client_id[18];
+<<<<<<< HEAD
 	IP_Address addr = base->get_packet_address();
 	uint16_t port = base->get_packet_port();
 	copymem(client_id, addr.get_ipv6(), 16);
 	copymem(&client_id[16], (uint8_t *)&port, 2);
+=======
+	IPAddress addr = base->get_packet_address();
+	uint16_t port = base->get_packet_port();
+	memcpy(client_id, addr.get_ipv6(), 16);
+	memcpy(&client_id[16], (uint8_t *)&port, 2);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return mbedtls_ssl_set_client_transport_id(ssl_ctx->get_context(), client_id, 18);
 }
 
@@ -114,7 +153,10 @@ Error PacketPeerMbedDTLS::_do_handshake() {
 }
 
 Error PacketPeerMbedDTLS::connect_to_peer(Ref<PacketPeerUDP> p_base, bool p_validate_certs, const String &p_for_hostname, Ref<X509Certificate> p_ca_certs) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ERR_FAIL_COND_V(!p_base.is_valid() || !p_base->is_connected_to_host(), ERR_INVALID_PARAMETER);
 
 	base = p_base;
@@ -125,7 +167,11 @@ Error PacketPeerMbedDTLS::connect_to_peer(Ref<PacketPeerUDP> p_base, bool p_vali
 	ERR_FAIL_COND_V(err != OK, err);
 
 	mbedtls_ssl_set_hostname(ssl_ctx->get_context(), p_for_hostname.utf8().get_data());
+<<<<<<< HEAD
 	mbedtls_ssl_set_bio(ssl_ctx->get_context(), this, bio_send, bio_recv, NULL);
+=======
+	mbedtls_ssl_set_bio(ssl_ctx->get_context(), this, bio_send, bio_recv, nullptr);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	mbedtls_ssl_set_timer_cb(ssl_ctx->get_context(), &timer, mbedtls_timing_set_delay, mbedtls_timing_get_delay);
 
 	status = STATUS_HANDSHAKING;
@@ -139,7 +185,10 @@ Error PacketPeerMbedDTLS::connect_to_peer(Ref<PacketPeerUDP> p_base, bool p_vali
 }
 
 Error PacketPeerMbedDTLS::accept_peer(Ref<PacketPeerUDP> p_base, Ref<CryptoKey> p_key, Ref<X509Certificate> p_cert, Ref<X509Certificate> p_ca_chain, Ref<CookieContextMbedTLS> p_cookies) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	Error err = ssl_ctx->init_server(MBEDTLS_SSL_TRANSPORT_DATAGRAM, MBEDTLS_SSL_VERIFY_NONE, p_key, p_cert, p_cookies);
 	ERR_FAIL_COND_V(err != OK, err);
 
@@ -154,7 +203,11 @@ Error PacketPeerMbedDTLS::accept_peer(Ref<PacketPeerUDP> p_base, Ref<CryptoKey> 
 		ERR_FAIL_V_MSG(FAILED, "Error setting DTLS client cookie");
 	}
 
+<<<<<<< HEAD
 	mbedtls_ssl_set_bio(ssl_ctx->get_context(), this, bio_send, bio_recv, NULL);
+=======
+	mbedtls_ssl_set_bio(ssl_ctx->get_context(), this, bio_send, bio_recv, nullptr);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	mbedtls_ssl_set_timer_cb(ssl_ctx->get_context(), &timer, mbedtls_timing_set_delay, mbedtls_timing_get_delay);
 
 	status = STATUS_HANDSHAKING;
@@ -168,11 +221,19 @@ Error PacketPeerMbedDTLS::accept_peer(Ref<PacketPeerUDP> p_base, Ref<CryptoKey> 
 }
 
 Error PacketPeerMbedDTLS::put_packet(const uint8_t *p_buffer, int p_bytes) {
+<<<<<<< HEAD
 
 	ERR_FAIL_COND_V(status != STATUS_CONNECTED, ERR_UNCONFIGURED);
 
 	if (p_bytes == 0)
 		return OK;
+=======
+	ERR_FAIL_COND_V(status != STATUS_CONNECTED, ERR_UNCONFIGURED);
+
+	if (p_bytes == 0) {
+		return OK;
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	int ret = mbedtls_ssl_write(ssl_ctx->get_context(), p_buffer, p_bytes);
 	if (ret == MBEDTLS_ERR_SSL_WANT_READ || ret == MBEDTLS_ERR_SSL_WANT_WRITE) {
@@ -187,7 +248,10 @@ Error PacketPeerMbedDTLS::put_packet(const uint8_t *p_buffer, int p_bytes) {
 }
 
 Error PacketPeerMbedDTLS::get_packet(const uint8_t **r_buffer, int &r_bytes) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ERR_FAIL_COND_V(status != STATUS_CONNECTED, ERR_UNCONFIGURED);
 
 	r_bytes = 0;
@@ -213,7 +277,10 @@ Error PacketPeerMbedDTLS::get_packet(const uint8_t **r_buffer, int &r_bytes) {
 }
 
 void PacketPeerMbedDTLS::poll() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (status == STATUS_HANDSHAKING) {
 		_do_handshake();
 		return;
@@ -223,7 +290,11 @@ void PacketPeerMbedDTLS::poll() {
 
 	ERR_FAIL_COND(!base.is_valid());
 
+<<<<<<< HEAD
 	int ret = mbedtls_ssl_read(ssl_ctx->get_context(), NULL, 0);
+=======
+	int ret = mbedtls_ssl_read(ssl_ctx->get_context(), nullptr, 0);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	if (ret < 0 && ret != MBEDTLS_ERR_SSL_WANT_READ && ret != MBEDTLS_ERR_SSL_WANT_WRITE) {
 		if (ret == MBEDTLS_ERR_SSL_PEER_CLOSE_NOTIFY) {
@@ -238,21 +309,31 @@ void PacketPeerMbedDTLS::poll() {
 }
 
 int PacketPeerMbedDTLS::get_available_packet_count() const {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ERR_FAIL_COND_V(status != STATUS_CONNECTED, 0);
 
 	return mbedtls_ssl_get_bytes_avail(&(ssl_ctx->ssl)) > 0 ? 1 : 0;
 }
 
 int PacketPeerMbedDTLS::get_max_packet_size() const {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return 488; // 512 (UDP in Godot) - 24 (DTLS header)
 }
 
 PacketPeerMbedDTLS::PacketPeerMbedDTLS() {
+<<<<<<< HEAD
 
 	ssl_ctx.instance();
 	status = STATUS_DISCONNECTED;
+=======
+	ssl_ctx.instance();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 PacketPeerMbedDTLS::~PacketPeerMbedDTLS() {
@@ -260,38 +341,63 @@ PacketPeerMbedDTLS::~PacketPeerMbedDTLS() {
 }
 
 void PacketPeerMbedDTLS::disconnect_from_peer() {
+<<<<<<< HEAD
 
 	if (status != STATUS_CONNECTED && status != STATUS_HANDSHAKING)
 		return;
+=======
+	if (status != STATUS_CONNECTED && status != STATUS_HANDSHAKING) {
+		return;
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	if (status == STATUS_CONNECTED) {
 		int ret = 0;
 		// Send SSL close notification, blocking, but ignore other errors.
+<<<<<<< HEAD
 		do
 			ret = mbedtls_ssl_close_notify(ssl_ctx->get_context());
 		while (ret == MBEDTLS_ERR_SSL_WANT_WRITE);
+=======
+		do {
+			ret = mbedtls_ssl_close_notify(ssl_ctx->get_context());
+		} while (ret == MBEDTLS_ERR_SSL_WANT_WRITE);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	_cleanup();
 }
 
 PacketPeerMbedDTLS::Status PacketPeerMbedDTLS::get_status() const {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return status;
 }
 
 PacketPeerDTLS *PacketPeerMbedDTLS::_create_func() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return memnew(PacketPeerMbedDTLS);
 }
 
 void PacketPeerMbedDTLS::initialize_dtls() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	_create = _create_func;
 	available = true;
 }
 
 void PacketPeerMbedDTLS::finalize_dtls() {
+<<<<<<< HEAD
 	_create = NULL;
+=======
+	_create = nullptr;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	available = false;
 }

@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -33,23 +33,19 @@
 
 #include "os_windows.h"
 
+#include "core/debugger/engine_debugger.h"
+#include "core/debugger/script_debugger.h"
 #include "core/io/marshalls.h"
 #include "core/math/geometry.h"
 #include "core/version_generated.gen.h"
-#include "drivers/gles2/rasterizer_gles2.h"
-#include "drivers/gles3/rasterizer_gles3.h"
 #include "drivers/windows/dir_access_windows.h"
 #include "drivers/windows/file_access_windows.h"
-#include "drivers/windows/mutex_windows.h"
-#include "drivers/windows/rw_lock_windows.h"
-#include "drivers/windows/semaphore_windows.h"
-#include "drivers/windows/thread_windows.h"
 #include "joypad_windows.h"
 #include "lang_table.h"
 #include "main/main.h"
+#include "platform/windows/display_server_windows.h"
 #include "servers/audio_server.h"
-#include "servers/visual/visual_server_raster.h"
-#include "servers/visual/visual_server_wrap_mt.h"
+#include "servers/rendering/rendering_server_default.h"
 #include "windows_terminal_logger.h"
 
 #include <avrt.h>
@@ -76,38 +72,13 @@ __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 #define GetProcAddress (void *)GetProcAddress
 #endif
 
-typedef struct {
-	int count;
-	int screen;
-	Size2 size;
-} EnumSizeData;
-
-typedef struct {
-	int count;
-	int screen;
-	Point2 pos;
-} EnumPosData;
-
-static BOOL CALLBACK _MonitorEnumProcSize(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData) {
-
-	EnumSizeData *data = (EnumSizeData *)dwData;
-	if (data->count == data->screen) {
-		data->size.x = lprcMonitor->right - lprcMonitor->left;
-		data->size.y = lprcMonitor->bottom - lprcMonitor->top;
-	}
-
-	data->count++;
-	return TRUE;
-}
-
 #ifdef DEBUG_ENABLED
 static String format_error_message(DWORD id) {
-
-	LPWSTR messageBuffer = NULL;
+	LPWSTR messageBuffer = nullptr;
 	size_t size = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-			NULL, id, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&messageBuffer, 0, NULL);
+			nullptr, id, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&messageBuffer, 0, nullptr);
 
-	String msg = "Error " + itos(id) + ": " + String(messageBuffer, size);
+	String msg = "Error " + itos(id) + ": " + String::utf16((const char16_t *)messageBuffer, size);
 
 	LocalFree(messageBuffer);
 
@@ -115,10 +86,7 @@ static String format_error_message(DWORD id) {
 }
 #endif // DEBUG_ENABLED
 
-extern HINSTANCE godot_hinstance;
-
 void RedirectIOToConsole() {
-
 	int hConHandle;
 
 	intptr_t lStdHandle;
@@ -133,15 +101,11 @@ void RedirectIOToConsole() {
 
 	// set the screen buffer to be big enough to let us scroll text
 
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),
-
-			&coninfo);
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &coninfo);
 
 	coninfo.dwSize.Y = MAX_CONSOLE_LINES;
 
-	SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE),
-
-			coninfo.dwSize);
+	SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), coninfo.dwSize);
 
 	// redirect unbuffered STDOUT to the console
 
@@ -153,7 +117,7 @@ void RedirectIOToConsole() {
 
 	*stdout = *fp;
 
-	setvbuf(stdout, NULL, _IONBF, 0);
+	setvbuf(stdout, nullptr, _IONBF, 0);
 
 	// redirect unbuffered STDIN to the console
 
@@ -165,7 +129,7 @@ void RedirectIOToConsole() {
 
 	*stdin = *fp;
 
-	setvbuf(stdin, NULL, _IONBF, 0);
+	setvbuf(stdin, nullptr, _IONBF, 0);
 
 	// redirect unbuffered STDERR to the console
 
@@ -177,7 +141,7 @@ void RedirectIOToConsole() {
 
 	*stderr = *fp;
 
-	setvbuf(stderr, NULL, _IONBF, 0);
+	setvbuf(stderr, nullptr, _IONBF, 0);
 
 	// make cout, wcout, cin, wcin, wcerr, cerr, wclog and clog
 
@@ -185,19 +149,20 @@ void RedirectIOToConsole() {
 }
 
 BOOL WINAPI HandlerRoutine(_In_ DWORD dwCtrlType) {
-	if (ScriptDebugger::get_singleton() == NULL)
+	if (!EngineDebugger::is_active())
 		return FALSE;
 
 	switch (dwCtrlType) {
 		case CTRL_C_EVENT:
-			ScriptDebugger::get_singleton()->set_depth(-1);
-			ScriptDebugger::get_singleton()->set_lines_left(1);
+			EngineDebugger::get_script_debugger()->set_depth(-1);
+			EngineDebugger::get_script_debugger()->set_lines_left(1);
 			return TRUE;
 		default:
 			return FALSE;
 	}
 }
 
+<<<<<<< HEAD
 // WinTab API
 bool OS_Windows::wintab_available = false;
 WTOpenPtr OS_Windows::wintab_WTOpen = nullptr;
@@ -211,31 +176,20 @@ bool OS_Windows::winink_available = false;
 GetPointerTypePtr OS_Windows::win8p_GetPointerType = NULL;
 GetPointerPenInfoPtr OS_Windows::win8p_GetPointerPenInfo = NULL;
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 void OS_Windows::initialize_debugging() {
-
 	SetConsoleCtrlHandler(HandlerRoutine, TRUE);
 }
 
-void OS_Windows::initialize_core() {
-
+void OS_Windows::initialize() {
 	crash_handler.initialize();
 
-	last_button_state = 0;
-
 	//RedirectIOToConsole();
-	maximized = false;
-	minimized = false;
-	borderless = false;
-
-	ThreadWindows::make_default();
-	SemaphoreWindows::make_default();
-	MutexWindows::make_default();
-	RWLockWindows::make_default();
 
 	FileAccess::make_default<FileAccessWindows>(FileAccess::ACCESS_RESOURCES);
 	FileAccess::make_default<FileAccessWindows>(FileAccess::ACCESS_USERDATA);
 	FileAccess::make_default<FileAccessWindows>(FileAccess::ACCESS_FILESYSTEM);
-	//FileAccessBufferedFA<FileAccessWindows>::make_default();
 	DirAccess::make_default<DirAccessWindows>(DirAccess::ACCESS_RESOURCES);
 	DirAccess::make_default<DirAccessWindows>(DirAccess::ACCESS_USERDATA);
 	DirAccess::make_default<DirAccessWindows>(DirAccess::ACCESS_FILESYSTEM);
@@ -262,65 +216,19 @@ void OS_Windows::initialize_core() {
 	current_pi.pi = current_pi_pi;
 	current_pi.pi.hProcess = GetCurrentProcess();
 	process_map->insert(GetCurrentProcessId(), current_pi);
+<<<<<<< HEAD
 
 	IP_Unix::make_default();
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	cursor_shape = CURSOR_ARROW;
+	IPUnix::make_default();
+	main_loop = nullptr;
 }
 
-bool OS_Windows::can_draw() const {
-
-	return !minimized;
-};
-
-#define MI_WP_SIGNATURE 0xFF515700
-#define SIGNATURE_MASK 0xFFFFFF00
-// Keeping the name suggested by Microsoft, but this macro really answers:
-// Is this mouse event emulated from touch or pen input?
-#define IsPenEvent(dw) (((dw)&SIGNATURE_MASK) == MI_WP_SIGNATURE)
-// This one tells whether the event comes from touchscreen (and not from pen)
-#define IsTouchEvent(dw) (IsPenEvent(dw) && ((dw)&0x80))
-
-void OS_Windows::_touch_event(bool p_pressed, float p_x, float p_y, int idx) {
-
-	// Defensive
-	if (touch_state.has(idx) == p_pressed)
-		return;
-
-	if (p_pressed) {
-		touch_state.insert(idx, Vector2(p_x, p_y));
-	} else {
-		touch_state.erase(idx);
-	}
-
-	Ref<InputEventScreenTouch> event;
-	event.instance();
-	event->set_index(idx);
-	event->set_pressed(p_pressed);
-	event->set_position(Vector2(p_x, p_y));
-
-	if (main_loop) {
-		input->accumulate_input_event(event);
-	}
-};
-
-void OS_Windows::_drag_event(float p_x, float p_y, int idx) {
-
-	Map<int, Vector2>::Element *curr = touch_state.find(idx);
-	// Defensive
-	if (!curr)
-		return;
-
-	if (curr->get() == Vector2(p_x, p_y))
-		return;
-
-	Ref<InputEventScreenDrag> event;
-	event.instance();
-	event->set_index(idx);
-	event->set_position(Vector2(p_x, p_y));
-	event->set_relative(Vector2(p_x, p_y) - curr->get());
-
+void OS_Windows::delete_main_loop() {
 	if (main_loop)
+<<<<<<< HEAD
 		input->accumulate_input_event(event);
 
 	curr->get() = Vector2(p_x, p_y);
@@ -1236,17 +1144,17 @@ LRESULT OS_Windows::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	}
 
 	return DefWindowProcW(hWnd, uMsg, wParam, lParam);
+=======
+		memdelete(main_loop);
+	main_loop = nullptr;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-
-	OS_Windows *os_win = static_cast<OS_Windows *>(OS::get_singleton());
-	if (os_win)
-		return os_win->WndProc(hWnd, uMsg, wParam, lParam);
-	else
-		return DefWindowProcW(hWnd, uMsg, wParam, lParam);
+void OS_Windows::set_main_loop(MainLoop *p_main_loop) {
+	main_loop = p_main_loop;
 }
 
+<<<<<<< HEAD
 void OS_Windows::process_key_events() {
 
 	for (int i = 0; i < key_event_pos; i++) {
@@ -1314,29 +1222,23 @@ void OS_Windows::process_key_events() {
 				k->set_echo((ke.uMsg == WM_KEYDOWN && (ke.lParam & (1 << 30))));
 
 				input->accumulate_input_event(k);
+=======
+void OS_Windows::finalize() {
+#ifdef WINMIDI_ENABLED
+	driver_midi.close();
+#endif
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-			} break;
-		}
-	}
+	if (main_loop)
+		memdelete(main_loop);
 
-	key_event_pos = 0;
+	main_loop = nullptr;
 }
 
-enum _MonitorDpiType {
-	MDT_Effective_DPI = 0,
-	MDT_Angular_DPI = 1,
-	MDT_Raw_DPI = 2,
-	MDT_Default = MDT_Effective_DPI
-};
+void OS_Windows::finalize_core() {
+	timeEndPeriod(1);
 
-static int QueryDpiForMonitor(HMONITOR hmon, _MonitorDpiType dpiType = MDT_Default) {
-
-	int dpiX = 96, dpiY = 96;
-
-	static HMODULE Shcore = NULL;
-	typedef HRESULT(WINAPI * GetDPIForMonitor_t)(HMONITOR hmonitor, _MonitorDpiType dpiType, UINT * dpiX, UINT * dpiY);
-	static GetDPIForMonitor_t getDPIForMonitor = NULL;
-
+<<<<<<< HEAD
 	if (Shcore == NULL) {
 		Shcore = LoadLibraryW(L"Shcore.dll");
 		getDPIForMonitor = Shcore ? (GetDPIForMonitor_t)GetProcAddress(Shcore, "GetDpiForMonitor") : NULL;
@@ -2413,6 +2315,13 @@ void OS_Windows::_update_window_style(bool p_repaint, bool p_maximized) {
 
 Error OS_Windows::open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path) {
 
+=======
+	memdelete(process_map);
+	NetSocketPosix::cleanup();
+}
+
+Error OS_Windows::open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	String path = p_path.replace("/", "\\");
 
 	if (!FileAccess::exists(path)) {
@@ -2426,14 +2335,14 @@ Error OS_Windows::open_dynamic_library(const String p_path, void *&p_library_han
 	PAddDllDirectory add_dll_directory = (PAddDllDirectory)GetProcAddress(GetModuleHandle("kernel32.dll"), "AddDllDirectory");
 	PRemoveDllDirectory remove_dll_directory = (PRemoveDllDirectory)GetProcAddress(GetModuleHandle("kernel32.dll"), "RemoveDllDirectory");
 
-	bool has_dll_directory_api = ((add_dll_directory != NULL) && (remove_dll_directory != NULL));
-	DLL_DIRECTORY_COOKIE cookie = NULL;
+	bool has_dll_directory_api = ((add_dll_directory != nullptr) && (remove_dll_directory != nullptr));
+	DLL_DIRECTORY_COOKIE cookie = nullptr;
 
 	if (p_also_set_library_path && has_dll_directory_api) {
-		cookie = add_dll_directory(path.get_base_dir().c_str());
+		cookie = add_dll_directory((LPCWSTR)(path.get_base_dir().utf16().get_data()));
 	}
 
-	p_library_handle = (void *)LoadLibraryExW(path.c_str(), NULL, (p_also_set_library_path && has_dll_directory_api) ? LOAD_LIBRARY_SEARCH_DEFAULT_DIRS : 0);
+	p_library_handle = (void *)LoadLibraryExW((LPCWSTR)(path.utf16().get_data()), nullptr, (p_also_set_library_path && has_dll_directory_api) ? LOAD_LIBRARY_SEARCH_DEFAULT_DIRS : 0);
 	ERR_FAIL_COND_V_MSG(!p_library_handle, ERR_CANT_OPEN, "Can't open dynamic library: " + p_path + ", error: " + format_error_message(GetLastError()) + ".");
 
 	if (cookie) {
@@ -2462,6 +2371,7 @@ Error OS_Windows::get_dynamic_library_symbol_handle(void *p_library_handle, cons
 	return OK;
 }
 
+<<<<<<< HEAD
 void OS_Windows::request_attention() {
 
 	FLASHWINFO info;
@@ -2484,13 +2394,13 @@ void *OS_Windows::get_native_handle(int p_handle_type) {
 	}
 }
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 String OS_Windows::get_name() const {
-
 	return "Windows";
 }
 
 OS::Date OS_Windows::get_date(bool utc) const {
-
 	SYSTEMTIME systemtime;
 	if (utc)
 		GetSystemTime(&systemtime);
@@ -2505,8 +2415,8 @@ OS::Date OS_Windows::get_date(bool utc) const {
 	date.dst = false;
 	return date;
 }
-OS::Time OS_Windows::get_time(bool utc) const {
 
+OS::Time OS_Windows::get_time(bool utc) const {
 	SYSTEMTIME systemtime;
 	if (utc)
 		GetSystemTime(&systemtime);
@@ -2534,79 +2444,42 @@ OS::TimeZoneInfo OS_Windows::get_time_zone_info() const {
 	}
 
 	// Bias value returned by GetTimeZoneInformation is inverted of what we expect
-	// For example on GMT-3 GetTimeZoneInformation return a Bias of 180, so invert the value to get -180
+	// For example, on GMT-3 GetTimeZoneInformation return a Bias of 180, so invert the value to get -180
 	ret.bias = -info.Bias;
 	return ret;
 }
 
-uint64_t OS_Windows::get_unix_time() const {
-
-	FILETIME ft;
-	SYSTEMTIME st;
-	GetSystemTime(&st);
-	SystemTimeToFileTime(&st, &ft);
-
-	SYSTEMTIME ep;
-	ep.wYear = 1970;
-	ep.wMonth = 1;
-	ep.wDayOfWeek = 4;
-	ep.wDay = 1;
-	ep.wHour = 0;
-	ep.wMinute = 0;
-	ep.wSecond = 0;
-	ep.wMilliseconds = 0;
-	FILETIME fep;
-	SystemTimeToFileTime(&ep, &fep);
-
-	// Type punning through unions (rather than pointer cast) as per:
-	// https://docs.microsoft.com/en-us/windows/desktop/api/minwinbase/ns-minwinbase-filetime#remarks
-	ULARGE_INTEGER ft_punning;
-	ft_punning.LowPart = ft.dwLowDateTime;
-	ft_punning.HighPart = ft.dwHighDateTime;
-
-	ULARGE_INTEGER fep_punning;
-	fep_punning.LowPart = fep.dwLowDateTime;
-	fep_punning.HighPart = fep.dwHighDateTime;
-
-	return (ft_punning.QuadPart - fep_punning.QuadPart) / 10000000;
-};
-
-uint64_t OS_Windows::get_system_time_secs() const {
-
-	return get_system_time_msecs() / 1000;
-}
-
-uint64_t OS_Windows::get_system_time_msecs() const {
-
-	const uint64_t WINDOWS_TICK = 10000;
-	const uint64_t MSEC_TO_UNIX_EPOCH = 11644473600000LL;
+double OS_Windows::get_unix_time() const {
+	// 1 Windows tick is 100ns
+	const uint64_t WINDOWS_TICKS_PER_SECOND = 10000000;
+	const uint64_t TICKS_TO_UNIX_EPOCH = 116444736000000000LL;
 
 	SYSTEMTIME st;
 	GetSystemTime(&st);
 	FILETIME ft;
 	SystemTimeToFileTime(&st, &ft);
-	uint64_t ret;
-	ret = ft.dwHighDateTime;
-	ret <<= 32;
-	ret |= ft.dwLowDateTime;
+	uint64_t ticks_time;
+	ticks_time = ft.dwHighDateTime;
+	ticks_time <<= 32;
+	ticks_time |= ft.dwLowDateTime;
 
-	return (uint64_t)(ret / WINDOWS_TICK - MSEC_TO_UNIX_EPOCH);
+	return (double)(ticks_time - TICKS_TO_UNIX_EPOCH) / WINDOWS_TICKS_PER_SECOND;
 }
 
 void OS_Windows::delay_usec(uint32_t p_usec) const {
-
 	if (p_usec < 1000)
 		Sleep(1);
 	else
 		Sleep(p_usec / 1000);
 }
-uint64_t OS_Windows::get_ticks_usec() const {
 
+uint64_t OS_Windows::get_ticks_usec() const {
 	uint64_t ticks;
 
 	// This is the number of clock ticks since start
 	if (!QueryPerformanceCounter((LARGE_INTEGER *)&ticks))
 		ticks = (UINT64)timeGetTime();
+<<<<<<< HEAD
 
 	// Divide by frequency to get the time in seconds
 	// original calculation shown below is subject to overflow
@@ -2653,184 +2526,44 @@ void OS_Windows::process_events() {
 }
 
 void OS_Windows::set_cursor_shape(CursorShape p_shape) {
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	ERR_FAIL_INDEX(p_shape, CURSOR_MAX);
+	// Divide by frequency to get the time in seconds
+	// original calculation shown below is subject to overflow
+	// with high ticks_per_second and a number of days since the last reboot.
+	// time = ticks * 1000000L / ticks_per_second;
 
-	if (cursor_shape == p_shape)
-		return;
+	// we can prevent this by either using 128 bit math
+	// or separating into a calculation for seconds, and the fraction
+	uint64_t seconds = ticks / ticks_per_second;
 
-	if (mouse_mode != MOUSE_MODE_VISIBLE && mouse_mode != MOUSE_MODE_CONFINED) {
-		cursor_shape = p_shape;
-		return;
-	}
+	// compiler will optimize these two into one divide
+	uint64_t leftover = ticks % ticks_per_second;
 
-	static const LPCTSTR win_cursors[CURSOR_MAX] = {
-		IDC_ARROW,
-		IDC_IBEAM,
-		IDC_HAND, //finger
-		IDC_CROSS,
-		IDC_WAIT,
-		IDC_APPSTARTING,
-		IDC_ARROW,
-		IDC_ARROW,
-		IDC_NO,
-		IDC_SIZENS,
-		IDC_SIZEWE,
-		IDC_SIZENESW,
-		IDC_SIZENWSE,
-		IDC_SIZEALL,
-		IDC_SIZENS,
-		IDC_SIZEWE,
-		IDC_HELP
-	};
+	// remainder
+	uint64_t time = (leftover * 1000000L) / ticks_per_second;
 
-	if (cursors[p_shape] != NULL) {
-		SetCursor(cursors[p_shape]);
-	} else {
-		SetCursor(LoadCursor(hInstance, win_cursors[p_shape]));
-	}
+	// seconds
+	time += seconds * 1000000L;
 
-	cursor_shape = p_shape;
+	// Subtract the time at game start to get
+	// the time since the game started
+	time -= ticks_start;
+	return time;
 }
 
-OS::CursorShape OS_Windows::get_cursor_shape() const {
-
-	return cursor_shape;
-}
-
-void OS_Windows::set_custom_mouse_cursor(const RES &p_cursor, CursorShape p_shape, const Vector2 &p_hotspot) {
-
-	if (p_cursor.is_valid()) {
-
-		Map<CursorShape, Vector<Variant> >::Element *cursor_c = cursors_cache.find(p_shape);
-
-		if (cursor_c) {
-			if (cursor_c->get()[0] == p_cursor && cursor_c->get()[1] == p_hotspot) {
-				set_cursor_shape(p_shape);
-				return;
-			}
-
-			cursors_cache.erase(p_shape);
+String OS_Windows::_quote_command_line_argument(const String &p_text) const {
+	for (int i = 0; i < p_text.size(); i++) {
+		char32_t c = p_text[i];
+		if (c == ' ' || c == '&' || c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || c == '}' || c == '^' || c == '=' || c == ';' || c == '!' || c == '\'' || c == '+' || c == ',' || c == '`' || c == '~') {
+			return "\"" + p_text + "\"";
 		}
-
-		Ref<Texture> texture = p_cursor;
-		Ref<AtlasTexture> atlas_texture = p_cursor;
-		Ref<Image> image;
-		Size2 texture_size;
-		Rect2 atlas_rect;
-
-		if (texture.is_valid()) {
-			image = texture->get_data();
-		}
-
-		if (!image.is_valid() && atlas_texture.is_valid()) {
-			texture = atlas_texture->get_atlas();
-
-			atlas_rect.size.width = texture->get_width();
-			atlas_rect.size.height = texture->get_height();
-			atlas_rect.position.x = atlas_texture->get_region().position.x;
-			atlas_rect.position.y = atlas_texture->get_region().position.y;
-
-			texture_size.width = atlas_texture->get_region().size.x;
-			texture_size.height = atlas_texture->get_region().size.y;
-		} else if (image.is_valid()) {
-			texture_size.width = texture->get_width();
-			texture_size.height = texture->get_height();
-		}
-
-		ERR_FAIL_COND(!texture.is_valid());
-		ERR_FAIL_COND(p_hotspot.x < 0 || p_hotspot.y < 0);
-		ERR_FAIL_COND(texture_size.width > 256 || texture_size.height > 256);
-		ERR_FAIL_COND(p_hotspot.x > texture_size.width || p_hotspot.y > texture_size.height);
-
-		image = texture->get_data();
-
-		ERR_FAIL_COND(!image.is_valid());
-
-		UINT image_size = texture_size.width * texture_size.height;
-
-		// Create the BITMAP with alpha channel
-		COLORREF *buffer = (COLORREF *)memalloc(sizeof(COLORREF) * image_size);
-
-		image->lock();
-		for (UINT index = 0; index < image_size; index++) {
-			int row_index = floor(index / texture_size.width) + atlas_rect.position.y;
-			int column_index = (index % int(texture_size.width)) + atlas_rect.position.x;
-
-			if (atlas_texture.is_valid()) {
-				column_index = MIN(column_index, atlas_rect.size.width - 1);
-				row_index = MIN(row_index, atlas_rect.size.height - 1);
-			}
-
-			*(buffer + index) = image->get_pixel(column_index, row_index).to_argb32();
-		}
-		image->unlock();
-
-		// Using 4 channels, so 4 * 8 bits
-		HBITMAP bitmap = CreateBitmap(texture_size.width, texture_size.height, 1, 4 * 8, buffer);
-		COLORREF clrTransparent = -1;
-
-		// Create the AND and XOR masks for the bitmap
-		HBITMAP hAndMask = NULL;
-		HBITMAP hXorMask = NULL;
-
-		GetMaskBitmaps(bitmap, clrTransparent, hAndMask, hXorMask);
-
-		if (NULL == hAndMask || NULL == hXorMask) {
-			memfree(buffer);
-			DeleteObject(bitmap);
-			return;
-		}
-
-		// Finally, create the icon
-		ICONINFO iconinfo;
-		iconinfo.fIcon = FALSE;
-		iconinfo.xHotspot = p_hotspot.x;
-		iconinfo.yHotspot = p_hotspot.y;
-		iconinfo.hbmMask = hAndMask;
-		iconinfo.hbmColor = hXorMask;
-
-		if (cursors[p_shape])
-			DestroyIcon(cursors[p_shape]);
-
-		cursors[p_shape] = CreateIconIndirect(&iconinfo);
-
-		Vector<Variant> params;
-		params.push_back(p_cursor);
-		params.push_back(p_hotspot);
-		cursors_cache.insert(p_shape, params);
-
-		if (p_shape == cursor_shape) {
-			if (mouse_mode == MOUSE_MODE_VISIBLE || mouse_mode == MOUSE_MODE_CONFINED) {
-				SetCursor(cursors[p_shape]);
-			}
-		}
-
-		if (hAndMask != NULL) {
-			DeleteObject(hAndMask);
-		}
-
-		if (hXorMask != NULL) {
-			DeleteObject(hXorMask);
-		}
-
-		memfree(buffer);
-		DeleteObject(bitmap);
-	} else {
-		// Reset to default system cursor
-		if (cursors[p_shape]) {
-			DestroyIcon(cursors[p_shape]);
-			cursors[p_shape] = NULL;
-		}
-
-		CursorShape c = cursor_shape;
-		cursor_shape = CURSOR_MAX;
-		set_cursor_shape(c);
-
-		cursors_cache.erase(p_shape);
 	}
+	return p_text;
 }
 
+<<<<<<< HEAD
 void OS_Windows::GetMaskBitmaps(HBITMAP hSourceBitmap, COLORREF clrTransparent, OUT HBITMAP &hAndMaskBitmap, OUT HBITMAP &hXorMaskBitmap) {
 
 	// Get the system display DC
@@ -2900,18 +2633,36 @@ Error OS_Windows::execute(const String &p_path, const List<String> &p_arguments,
 			argss += " " + _quote_command_line_argument(E->get());
 		}
 
+=======
+Error OS_Windows::execute(const String &p_path, const List<String> &p_arguments, String *r_pipe, int *r_exitcode, bool read_stderr, Mutex *p_pipe_mutex) {
+	String path = p_path.replace("/", "\\");
+	String command = _quote_command_line_argument(path);
+	for (const List<String>::Element *E = p_arguments.front(); E; E = E->next()) {
+		command += " " + _quote_command_line_argument(E->get());
+	}
+
+	if (r_pipe) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		if (read_stderr) {
-			argss += " 2>&1"; // Read stderr too
+			command += " 2>&1"; // Include stderr
 		}
+<<<<<<< HEAD
 		// Note: _wpopen is calling command as "cmd.exe /c argss", instead of executing it directly, add extra quotes around full command, to prevent it from stripping quotes in the command.
 		argss = _quote_command_line_argument(argss);
 
 		FILE *f = _wpopen(argss.c_str(), L"r");
 		ERR_FAIL_COND_V(!f, ERR_CANT_OPEN);
 
+=======
+		// Add extra quotes around the full command, to prevent it from stripping quotes in the command,
+		// because _wpopen calls command as "cmd.exe /c command", instead of executing it directly
+		command = _quote_command_line_argument(command);
+
+		FILE *f = _wpopen((LPCWSTR)(command.utf16().get_data()), L"r");
+		ERR_FAIL_COND_V_MSG(!f, ERR_CANT_OPEN, "Cannot create pipe from command: " + command);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		char buf[65535];
 		while (fgets(buf, 65535, f)) {
-
 			if (p_pipe_mutex) {
 				p_pipe_mutex->lock();
 			}
@@ -2920,20 +2671,54 @@ Error OS_Windows::execute(const String &p_path, const List<String> &p_arguments,
 				p_pipe_mutex->unlock();
 			}
 		}
-
 		int rv = _pclose(f);
+<<<<<<< HEAD
 		if (r_exitcode) {
 			*r_exitcode = rv;
 		}
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
+		if (r_exitcode) {
+			*r_exitcode = rv;
+		}
 		return OK;
 	}
 
+<<<<<<< HEAD
 	String cmdline = _quote_command_line_argument(path);
 	const List<String>::Element *I = p_arguments.front();
 	while (I) {
 		cmdline += " " + _quote_command_line_argument(I->get());
 		I = I->next();
+=======
+	ProcessInfo pi;
+	ZeroMemory(&pi.si, sizeof(pi.si));
+	pi.si.cb = sizeof(pi.si);
+	ZeroMemory(&pi.pi, sizeof(pi.pi));
+	LPSTARTUPINFOW si_w = (LPSTARTUPINFOW)&pi.si;
+
+	int ret = CreateProcessW(nullptr, (LPWSTR)(command.utf16().ptrw()), nullptr, nullptr, false, NORMAL_PRIORITY_CLASS & CREATE_NO_WINDOW, nullptr, nullptr, si_w, &pi.pi);
+	ERR_FAIL_COND_V_MSG(ret == 0, ERR_CANT_FORK, "Could not create child process: " + command);
+
+	WaitForSingleObject(pi.pi.hProcess, INFINITE);
+	if (r_exitcode) {
+		DWORD ret2;
+		GetExitCodeProcess(pi.pi.hProcess, &ret2);
+		*r_exitcode = ret2;
+	}
+	CloseHandle(pi.pi.hProcess);
+	CloseHandle(pi.pi.hThread);
+
+	return OK;
+};
+
+Error OS_Windows::create_process(const String &p_path, const List<String> &p_arguments, ProcessID *r_child_id) {
+	String path = p_path.replace("/", "\\");
+	String command = _quote_command_line_argument(path);
+	for (const List<String>::Element *E = p_arguments.front(); E; E = E->next()) {
+		command += " " + _quote_command_line_argument(E->get());
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	ProcessInfo pi;
@@ -2942,6 +2727,7 @@ Error OS_Windows::execute(const String &p_path, const List<String> &p_arguments,
 	ZeroMemory(&pi.pi, sizeof(pi.pi));
 	LPSTARTUPINFOW si_w = (LPSTARTUPINFOW)&pi.si;
 
+<<<<<<< HEAD
 	Vector<CharType> modstr; // Windows wants to change this no idea why.
 	modstr.resize(cmdline.size());
 	for (int i = 0; i < cmdline.size(); i++) {
@@ -2969,11 +2755,21 @@ Error OS_Windows::execute(const String &p_path, const List<String> &p_arguments,
 		}
 		process_map->insert(pid, pi);
 	}
+=======
+	int ret = CreateProcessW(nullptr, (LPWSTR)(command.utf16().ptrw()), nullptr, nullptr, false, NORMAL_PRIORITY_CLASS & CREATE_NO_WINDOW, nullptr, nullptr, si_w, &pi.pi);
+	ERR_FAIL_COND_V_MSG(ret == 0, ERR_CANT_FORK, "Could not create child process: " + command);
+
+	ProcessID pid = pi.pi.dwProcessId;
+	if (r_child_id) {
+		*r_child_id = pid;
+	}
+	process_map->insert(pid, pi);
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return OK;
 };
 
 Error OS_Windows::kill(const ProcessID &p_pid) {
-
 	ERR_FAIL_COND_V(!process_map->has(p_pid), FAILED);
 
 	const PROCESS_INFORMATION pi = (*process_map)[p_pid].pi;
@@ -2992,197 +2788,54 @@ int OS_Windows::get_process_id() const {
 }
 
 Error OS_Windows::set_cwd(const String &p_cwd) {
-
-	if (_wchdir(p_cwd.c_str()) != 0)
+	if (_wchdir((LPCWSTR)(p_cwd.utf16().get_data())) != 0)
 		return ERR_CANT_OPEN;
 
 	return OK;
 }
 
 String OS_Windows::get_executable_path() const {
+<<<<<<< HEAD
 
 	wchar_t bufname[4096];
 	GetModuleFileNameW(NULL, bufname, 4096);
 	String s = bufname;
 	return s.replace("\\", "/");
-}
-
-void OS_Windows::set_native_icon(const String &p_filename) {
-
-	FileAccess *f = FileAccess::open(p_filename, FileAccess::READ);
-	ERR_FAIL_COND_MSG(!f, "Cannot open file with icon '" + p_filename + "'.");
-
-	ICONDIR *icon_dir = (ICONDIR *)memalloc(sizeof(ICONDIR));
-	int pos = 0;
-
-	icon_dir->idReserved = f->get_32();
-	pos += sizeof(WORD);
-	f->seek(pos);
-
-	icon_dir->idType = f->get_32();
-	pos += sizeof(WORD);
-	f->seek(pos);
-
-	ERR_FAIL_COND_MSG(icon_dir->idType != 1, "Invalid icon file format!");
-
-	icon_dir->idCount = f->get_32();
-	pos += sizeof(WORD);
-	f->seek(pos);
-
-	icon_dir = (ICONDIR *)memrealloc(icon_dir, 3 * sizeof(WORD) + icon_dir->idCount * sizeof(ICONDIRENTRY));
-	f->get_buffer((uint8_t *)&icon_dir->idEntries[0], icon_dir->idCount * sizeof(ICONDIRENTRY));
-
-	int small_icon_index = -1; // Select 16x16 with largest color count
-	int small_icon_cc = 0;
-	int big_icon_index = -1; // Select largest
-	int big_icon_width = 16;
-	int big_icon_cc = 0;
-
-	for (int i = 0; i < icon_dir->idCount; i++) {
-		int colors = (icon_dir->idEntries[i].bColorCount == 0) ? 32768 : icon_dir->idEntries[i].bColorCount;
-		int width = (icon_dir->idEntries[i].bWidth == 0) ? 256 : icon_dir->idEntries[i].bWidth;
-		if (width == 16) {
-			if (colors >= small_icon_cc) {
-				small_icon_index = i;
-				small_icon_cc = colors;
-			}
-		}
-		if (width >= big_icon_width) {
-			if (colors >= big_icon_cc) {
-				big_icon_index = i;
-				big_icon_width = width;
-				big_icon_cc = colors;
-			}
-		}
-	}
-
-	ERR_FAIL_COND_MSG(big_icon_index == -1, "No valid icons found!");
-
-	if (small_icon_index == -1) {
-		WARN_PRINTS("No small icon found, reusing " + itos(big_icon_width) + "x" + itos(big_icon_width) + " @" + itos(big_icon_cc) + " icon!");
-		small_icon_index = big_icon_index;
-		small_icon_cc = big_icon_cc;
-	}
-
-	// Read the big icon
-	DWORD bytecount_big = icon_dir->idEntries[big_icon_index].dwBytesInRes;
-	Vector<uint8_t> data_big;
-	data_big.resize(bytecount_big);
-	pos = icon_dir->idEntries[big_icon_index].dwImageOffset;
-	f->seek(pos);
-	f->get_buffer((uint8_t *)&data_big.write[0], bytecount_big);
-	HICON icon_big = CreateIconFromResource((PBYTE)&data_big.write[0], bytecount_big, TRUE, 0x00030000);
-	ERR_FAIL_COND_MSG(!icon_big, "Could not create " + itos(big_icon_width) + "x" + itos(big_icon_width) + " @" + itos(big_icon_cc) + " icon, error: " + format_error_message(GetLastError()) + ".");
-
-	// Read the small icon
-	DWORD bytecount_small = icon_dir->idEntries[small_icon_index].dwBytesInRes;
-	Vector<uint8_t> data_small;
-	data_small.resize(bytecount_small);
-	pos = icon_dir->idEntries[small_icon_index].dwImageOffset;
-	f->seek(pos);
-	f->get_buffer((uint8_t *)&data_small.write[0], bytecount_small);
-	HICON icon_small = CreateIconFromResource((PBYTE)&data_small.write[0], bytecount_small, TRUE, 0x00030000);
-	ERR_FAIL_COND_MSG(!icon_small, "Could not create 16x16 @" + itos(small_icon_cc) + " icon, error: " + format_error_message(GetLastError()) + ".");
-
-	// Online tradition says to be sure last error is cleared and set the small icon first
-	int err = 0;
-	SetLastError(err);
-
-	SendMessage(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)icon_small);
-	err = GetLastError();
-	ERR_FAIL_COND_MSG(err, "Error setting ICON_SMALL: " + format_error_message(err) + ".");
-
-	SendMessage(hWnd, WM_SETICON, ICON_BIG, (LPARAM)icon_big);
-	err = GetLastError();
-	ERR_FAIL_COND_MSG(err, "Error setting ICON_BIG: " + format_error_message(err) + ".");
-
-	memdelete(f);
-	memdelete(icon_dir);
-}
-
-void OS_Windows::set_icon(const Ref<Image> &p_icon) {
-
-	ERR_FAIL_COND(!p_icon.is_valid());
-	Ref<Image> icon = p_icon->duplicate();
-	if (icon->get_format() != Image::FORMAT_RGBA8)
-		icon->convert(Image::FORMAT_RGBA8);
-	int w = icon->get_width();
-	int h = icon->get_height();
-
-	/* Create temporary bitmap buffer */
-	int icon_len = 40 + h * w * 4;
-	Vector<BYTE> v;
-	v.resize(icon_len);
-	BYTE *icon_bmp = v.ptrw();
-
-	encode_uint32(40, &icon_bmp[0]);
-	encode_uint32(w, &icon_bmp[4]);
-	encode_uint32(h * 2, &icon_bmp[8]);
-	encode_uint16(1, &icon_bmp[12]);
-	encode_uint16(32, &icon_bmp[14]);
-	encode_uint32(BI_RGB, &icon_bmp[16]);
-	encode_uint32(w * h * 4, &icon_bmp[20]);
-	encode_uint32(0, &icon_bmp[24]);
-	encode_uint32(0, &icon_bmp[28]);
-	encode_uint32(0, &icon_bmp[32]);
-	encode_uint32(0, &icon_bmp[36]);
-
-	uint8_t *wr = &icon_bmp[40];
-	PoolVector<uint8_t>::Read r = icon->get_data().read();
-
-	for (int i = 0; i < h; i++) {
-
-		for (int j = 0; j < w; j++) {
-
-			const uint8_t *rpx = &r[((h - i - 1) * w + j) * 4];
-			uint8_t *wpx = &wr[(i * w + j) * 4];
-			wpx[0] = rpx[2];
-			wpx[1] = rpx[1];
-			wpx[2] = rpx[0];
-			wpx[3] = rpx[3];
-		}
-	}
-
-	HICON hicon = CreateIconFromResource(icon_bmp, icon_len, TRUE, 0x00030000);
-
-	/* Set the icon for the window */
-	SendMessage(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hicon);
-
-	/* Set the icon in the task manager (should we do this?) */
-	SendMessage(hWnd, WM_SETICON, ICON_BIG, (LPARAM)hicon);
+=======
+	WCHAR bufname[4096];
+	GetModuleFileNameW(nullptr, bufname, 4096);
+	String s = String::utf16((const char16_t *)bufname).replace("\\", "/");
+	return s;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 bool OS_Windows::has_environment(const String &p_var) const {
-
 #ifdef MINGW_ENABLED
-	return _wgetenv(p_var.c_str()) != NULL;
+	return _wgetenv((LPCWSTR)(p_var.utf16().get_data())) != nullptr;
 #else
-	wchar_t *env;
+	WCHAR *env;
 	size_t len;
-	_wdupenv_s(&env, &len, p_var.c_str());
-	const bool has_env = env != NULL;
+	_wdupenv_s(&env, &len, (LPCWSTR)(p_var.utf16().get_data()));
+	const bool has_env = env != nullptr;
 	free(env);
 	return has_env;
 #endif
 };
 
 String OS_Windows::get_environment(const String &p_var) const {
-
-	wchar_t wval[0x7Fff]; // MSDN says 32767 char is the maximum
-	int wlen = GetEnvironmentVariableW(p_var.c_str(), wval, 0x7Fff);
+	WCHAR wval[0x7fff]; // MSDN says 32767 char is the maximum
+	int wlen = GetEnvironmentVariableW((LPCWSTR)(p_var.utf16().get_data()), wval, 0x7fff);
 	if (wlen > 0) {
-		return wval;
+		return String::utf16((const char16_t *)wval);
 	}
 	return "";
 }
 
 bool OS_Windows::set_environment(const String &p_var, const String &p_value) const {
-
-	return (bool)SetEnvironmentVariableW(p_var.c_str(), p_value.c_str());
+	return (bool)SetEnvironmentVariableW((LPCWSTR)(p_var.utf16().get_data()), (LPCWSTR)(p_value.utf16().get_data()));
 }
 
 String OS_Windows::get_stdin_string(bool p_block) {
-
 	if (p_block) {
 		char buff[1024];
 		return fgets(buff, 1024, stdin);
@@ -3191,44 +2844,31 @@ String OS_Windows::get_stdin_string(bool p_block) {
 	return String();
 }
 
-void OS_Windows::enable_for_stealing_focus(ProcessID pid) {
-
-	AllowSetForegroundWindow(pid);
-}
-
-void OS_Windows::move_window_to_foreground() {
-
-	SetForegroundWindow(hWnd);
-}
-
 Error OS_Windows::shell_open(String p_uri) {
-
-	ShellExecuteW(NULL, NULL, p_uri.c_str(), NULL, NULL, SW_SHOWNORMAL);
+	ShellExecuteW(nullptr, nullptr, (LPCWSTR)(p_uri.utf16().get_data()), nullptr, nullptr, SW_SHOWNORMAL);
 	return OK;
 }
 
 String OS_Windows::get_locale() const {
-
 	const _WinLocale *wl = &_win_locales[0];
 
 	LANGID langid = GetUserDefaultUILanguage();
 	String neutral;
-	int lang = langid & ((1 << 9) - 1);
-	int sublang = langid & ~((1 << 9) - 1);
+	int lang = PRIMARYLANGID(langid);
+	int sublang = SUBLANGID(langid);
 
 	while (wl->locale) {
-
 		if (wl->main_lang == lang && wl->sublang == SUBLANG_NEUTRAL)
 			neutral = wl->locale;
 
 		if (lang == wl->main_lang && sublang == wl->sublang)
-			return wl->locale;
+			return String(wl->locale).replace("-", "_");
 
 		wl++;
 	}
 
 	if (neutral != "")
-		return neutral;
+		return String(neutral).replace("-", "_");
 
 	return "en";
 }
@@ -3263,6 +2903,7 @@ int OS_Windows::get_processor_count() const {
 	return sysinfo.dwNumberOfProcessors;
 }
 
+<<<<<<< HEAD
 OS::LatinKeyboardVariant OS_Windows::get_latin_keyboard_variant() const {
 
 	unsigned long azerty[] = {
@@ -3439,67 +3080,75 @@ void OS_Windows::force_process_input() {
 	process_events(); // get rid of pending events
 }
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 void OS_Windows::run() {
-
 	if (!main_loop)
 		return;
 
-	main_loop->init();
+	main_loop->initialize();
 
 	while (!force_quit) {
-
-		process_events(); // get rid of pending events
+		DisplayServer::get_singleton()->process_events(); // get rid of pending events
 		if (Main::iteration())
 			break;
 	};
 
-	main_loop->finish();
+	main_loop->finalize();
 }
 
 MainLoop *OS_Windows::get_main_loop() const {
-
 	return main_loop;
 }
 
 String OS_Windows::get_config_path() const {
-
-	if (has_environment("XDG_CONFIG_HOME")) { // unlikely, but after all why not?
-		return get_environment("XDG_CONFIG_HOME");
-	} else if (has_environment("APPDATA")) {
-		return get_environment("APPDATA");
-	} else {
-		return ".";
+	// The XDG Base Directory specification technically only applies on Linux/*BSD, but it doesn't hurt to support it on Windows as well.
+	if (has_environment("XDG_CONFIG_HOME")) {
+		if (get_environment("XDG_CONFIG_HOME").is_abs_path()) {
+			return get_environment("XDG_CONFIG_HOME");
+		} else {
+			WARN_PRINT_ONCE("`XDG_CONFIG_HOME` is a relative path. Ignoring its value and falling back to `%APPDATA%` or `.` per the XDG Base Directory specification.");
+		}
 	}
+	if (has_environment("APPDATA")) {
+		return get_environment("APPDATA");
+	}
+	return ".";
 }
 
 String OS_Windows::get_data_path() const {
-
+	// The XDG Base Directory specification technically only applies on Linux/*BSD, but it doesn't hurt to support it on Windows as well.
 	if (has_environment("XDG_DATA_HOME")) {
-		return get_environment("XDG_DATA_HOME");
-	} else {
-		return get_config_path();
+		if (get_environment("XDG_DATA_HOME").is_abs_path()) {
+			return get_environment("XDG_DATA_HOME");
+		} else {
+			WARN_PRINT_ONCE("`XDG_DATA_HOME` is a relative path. Ignoring its value and falling back to `get_config_path()` per the XDG Base Directory specification.");
+		}
 	}
+	return get_config_path();
 }
 
 String OS_Windows::get_cache_path() const {
-
+	// The XDG Base Directory specification technically only applies on Linux/*BSD, but it doesn't hurt to support it on Windows as well.
 	if (has_environment("XDG_CACHE_HOME")) {
-		return get_environment("XDG_CACHE_HOME");
-	} else if (has_environment("TEMP")) {
-		return get_environment("TEMP");
-	} else {
-		return get_config_path();
+		if (get_environment("XDG_CACHE_HOME").is_abs_path()) {
+			return get_environment("XDG_CACHE_HOME");
+		} else {
+			WARN_PRINT_ONCE("`XDG_CACHE_HOME` is a relative path. Ignoring its value and falling back to `%TEMP%` or `get_config_path()` per the XDG Base Directory specification.");
+		}
 	}
+	if (has_environment("TEMP")) {
+		return get_environment("TEMP");
+	}
+	return get_config_path();
 }
 
 // Get properly capitalized engine name for system paths
 String OS_Windows::get_godot_dir_name() const {
-
 	return String(VERSION_SHORT_NAME).capitalize();
 }
 
 String OS_Windows::get_system_dir(SystemDir p_dir) const {
-
 	KNOWNFOLDERID id;
 
 	switch (p_dir) {
@@ -3530,15 +3179,14 @@ String OS_Windows::get_system_dir(SystemDir p_dir) const {
 	}
 
 	PWSTR szPath;
-	HRESULT res = SHGetKnownFolderPath(id, 0, NULL, &szPath);
+	HRESULT res = SHGetKnownFolderPath(id, 0, nullptr, &szPath);
 	ERR_FAIL_COND_V(res != S_OK, String());
-	String path = String(szPath);
+	String path = String::utf16((const char16_t *)szPath);
 	CoTaskMemFree(szPath);
 	return path;
 }
 
 String OS_Windows::get_user_data_dir() const {
-
 	String appname = get_safe_dir_name(ProjectSettings::get_singleton()->get("application/config/name"));
 	if (appname != "") {
 		bool use_custom_dir = ProjectSettings::get_singleton()->get("application/config/use_custom_user_dir");
@@ -3557,75 +3205,12 @@ String OS_Windows::get_user_data_dir() const {
 }
 
 String OS_Windows::get_unique_id() const {
-
 	HW_PROFILE_INFO HwProfInfo;
 	ERR_FAIL_COND_V(!GetCurrentHwProfile(&HwProfInfo), "");
-	return String(HwProfInfo.szHwProfileGuid);
-}
-
-void OS_Windows::set_ime_active(const bool p_active) {
-
-	if (p_active) {
-		ImmAssociateContext(hWnd, im_himc);
-
-		set_ime_position(im_position);
-	} else {
-		ImmAssociateContext(hWnd, (HIMC)0);
-	}
-}
-
-void OS_Windows::set_ime_position(const Point2 &p_pos) {
-
-	im_position = p_pos;
-
-	HIMC himc = ImmGetContext(hWnd);
-	if (himc == (HIMC)0)
-		return;
-
-	COMPOSITIONFORM cps;
-	cps.dwStyle = CFS_FORCE_POSITION;
-	cps.ptCurrentPos.x = im_position.x;
-	cps.ptCurrentPos.y = im_position.y;
-	ImmSetCompositionWindow(himc, &cps);
-	ImmReleaseContext(hWnd, himc);
-}
-
-bool OS_Windows::is_joy_known(int p_device) {
-	return input->is_joy_mapped(p_device);
-}
-
-String OS_Windows::get_joy_guid(int p_device) const {
-	return input->get_joy_guid_remapped(p_device);
-}
-
-void OS_Windows::_set_use_vsync(bool p_enable) {
-
-	if (gl_context)
-		gl_context->set_use_vsync(p_enable);
-}
-/*
-bool OS_Windows::is_vsync_enabled() const {
-
-	if (gl_context)
-		return gl_context->is_using_vsync();
-
-	return true;
-}*/
-
-OS::PowerState OS_Windows::get_power_state() {
-	return power_manager->get_power_state();
-}
-
-int OS_Windows::get_power_seconds_left() {
-	return power_manager->get_power_seconds_left();
-}
-
-int OS_Windows::get_power_percent_left() {
-	return power_manager->get_power_percent_left();
+	return String::utf16((const char16_t *)(HwProfInfo.szHwProfileGuid), HW_PROFILE_GUIDLEN);
 }
 
 bool OS_Windows::_check_internal_feature_support(const String &p_feature) {
-
 	return p_feature == "pc";
 }
 
@@ -3637,33 +3222,28 @@ bool OS_Windows::is_disable_crash_handler() const {
 	return crash_handler.is_disabled();
 }
 
-void OS_Windows::process_and_drop_events() {
-
-	drop_events = true;
-	process_events();
-	drop_events = false;
-}
-
 Error OS_Windows::move_to_trash(const String &p_path) {
 	SHFILEOPSTRUCTW sf;
-	WCHAR *from = new WCHAR[p_path.length() + 2];
-	wcscpy_s(from, p_path.length() + 1, p_path.c_str());
-	from[p_path.length() + 1] = 0;
 
-	sf.hwnd = hWnd;
+	Char16String utf16 = p_path.utf16();
+	WCHAR *from = new WCHAR[utf16.length() + 2];
+	wcscpy_s(from, utf16.length() + 1, (LPCWSTR)(utf16.get_data()));
+	from[utf16.length() + 1] = 0;
+
+	sf.hwnd = main_window;
 	sf.wFunc = FO_DELETE;
 	sf.pFrom = from;
-	sf.pTo = NULL;
+	sf.pTo = nullptr;
 	sf.fFlags = FOF_ALLOWUNDO | FOF_NOCONFIRMATION;
 	sf.fAnyOperationsAborted = FALSE;
-	sf.hNameMappings = NULL;
-	sf.lpszProgressTitle = NULL;
+	sf.hNameMappings = nullptr;
+	sf.lpszProgressTitle = nullptr;
 
 	int ret = SHFileOperationW(&sf);
 	delete[] from;
 
 	if (ret) {
-		ERR_PRINTS("SHFileOperation error: " + itos(ret));
+		ERR_PRINT("SHFileOperation error: " + itos(ret));
 		return FAILED;
 	}
 
@@ -3739,7 +3319,12 @@ void OS_Windows::set_current_tablet_driver(const String &p_driver) {
 };
 
 OS_Windows::OS_Windows(HINSTANCE _hInstance) {
+	ticks_per_second = 0;
+	ticks_start = 0;
+	main_loop = nullptr;
+	process_map = nullptr;
 
+<<<<<<< HEAD
 	drop_events = false;
 	key_event_pos = 0;
 	layered_window = false;
@@ -3782,15 +3367,14 @@ OS_Windows::OS_Windows(HINSTANCE _hInstance) {
 	if (winink_available) {
 		tablet_drivers.push_back("winink");
 	}
+=======
+	force_quit = false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	hInstance = _hInstance;
-	pressrc = 0;
-	old_invalid = true;
-	mouse_mode = MOUSE_MODE_VISIBLE;
 #ifdef STDOUT_FILE
 	stdo = fopen("stdout.txt", "wb");
 #endif
-	user_proc = NULL;
 
 #ifdef WASAPI_ENABLED
 	AudioDriverManager::add_driver(&driver_wasapi);
@@ -3799,16 +3383,21 @@ OS_Windows::OS_Windows(HINSTANCE _hInstance) {
 	AudioDriverManager::add_driver(&driver_xaudio2);
 #endif
 
+	DisplayServerWindows::register_windows_driver();
+
 	Vector<Logger *> loggers;
 	loggers.push_back(memnew(WindowsTerminalLogger));
 	_set_logger(memnew(CompositeLogger(loggers)));
 }
 
 OS_Windows::~OS_Windows() {
+<<<<<<< HEAD
 	if (wintab_available && wtctx) {
 		wintab_WTClose(wtctx);
 		wtctx = 0;
 	}
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #ifdef STDOUT_FILE
 	fclose(stdo);
 #endif

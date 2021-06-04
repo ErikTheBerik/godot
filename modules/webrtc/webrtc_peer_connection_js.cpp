@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -106,11 +106,19 @@ Error WebRTCPeerConnectionJS::initialize(Dictionary p_config) {
 }
 
 Ref<WebRTCDataChannel> WebRTCPeerConnectionJS::create_data_channel(String p_channel, Dictionary p_channel_config) {
+<<<<<<< HEAD
 	ERR_FAIL_COND_V(_conn_state != STATE_NEW, NULL);
 
 	String config = JSON::print(p_channel_config);
 	int id = godot_js_rtc_pc_datachannel_create(_js_id, p_channel.utf8().get_data(), config.utf8().get_data());
 	ERR_FAIL_COND_V(id == 0, NULL);
+=======
+	ERR_FAIL_COND_V(_conn_state != STATE_NEW, nullptr);
+
+	String config = JSON::print(p_channel_config);
+	int id = godot_js_rtc_pc_datachannel_create(_js_id, p_channel.utf8().get_data(), config.utf8().get_data());
+	ERR_FAIL_COND_V(id == 0, nullptr);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return memnew(WebRTCDataChannelJS(id));
 }
 

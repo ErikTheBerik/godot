@@ -1,12 +1,12 @@
 # Chinese (Taiwan) translation of the Godot Engine editor
-# Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.
-# Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).
+# Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.
+# Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).
 # This file is distributed under the same license as the Godot source code.
 # Allen H <w84miracle@gmail.com>, 2017.
 # Billy SU <g4691821@gmail.com>, 2018.
 # Chao Yu <casd82@gmail.com>, 2017.
 # Cliffs Dover <bottle@dancingbottle.com>, 2017.
-# Kisaragi Hiu <mail@kisaragi-hiu.com>, 2018.
+# Kisaragi Hiu <mail@kisaragi-hiu.com>, 2018, 2021.
 # Matt <chchwy@gmail.com>, 2017.
 # popcade <popcade@gmail.com>, 2016.
 # Qing <icinriiq@gmail.com>, 2018.
@@ -23,14 +23,23 @@
 # binotaliu <binota@protonmail.ch>, 2020.
 # Allen H. <w84miracle@gmail.com>, 2020.
 # BinotaLIU <binota@protonmail.ch>, 2020.
+<<<<<<< HEAD
 # BinotaLIU <me@binota.org>, 2020.
+=======
+# BinotaLIU <me@binota.org>, 2020, 2021.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 # MintSoda <lionlxh@qq.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor\n"
 "POT-Creation-Date: \n"
+<<<<<<< HEAD
 "PO-Revision-Date: 2020-11-20 23:08+0000\n"
 "Last-Translator: BinotaLIU <me@binota.org>\n"
+=======
+"PO-Revision-Date: 2021-05-24 21:36+0000\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "godot-engine/godot/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -38,7 +47,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+<<<<<<< HEAD
 "X-Generator: Weblate 4.4-dev\n"
+=======
+"X-Generator: Weblate 4.7-dev\n"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: core/math/expression.cpp modules/gdscript/gdscript_functions.cpp
 #: modules/visual_script/visual_script_builtin_funcs.cpp
@@ -659,7 +672,7 @@ msgstr "選擇軌道以複製"
 #: editor/plugins/animation_player_editor_plugin.cpp
 #: editor/plugins/script_text_editor.cpp
 #: editor/plugins/sprite_frames_editor_plugin.cpp editor/property_editor.cpp
-#: scene/gui/line_edit.cpp scene/gui/text_edit.cpp
+#: editor/scene_tree_dock.cpp scene/gui/line_edit.cpp scene/gui/text_edit.cpp
 msgid "Copy"
 msgstr "複製"
 
@@ -1097,7 +1110,7 @@ msgstr "孤立資源瀏覽器"
 
 #: editor/dependency_editor.cpp editor/editor_audio_buses.cpp
 #: editor/editor_file_dialog.cpp editor/editor_node.cpp
-#: editor/filesystem_dock.cpp editor/plugins/item_list_editor_plugin.cpp
+#: editor/plugins/item_list_editor_plugin.cpp
 #: editor/plugins/sprite_frames_editor_plugin.cpp editor/project_export.cpp
 #: editor/project_settings_editor.cpp editor/scene_tree_dock.cpp
 msgid "Delete"
@@ -1851,8 +1864,8 @@ msgid "Open a File or Directory"
 msgstr "開啟檔案或資料夾"
 
 #: editor/editor_file_dialog.cpp editor/editor_node.cpp
-#: editor/editor_properties.cpp editor/inspector_dock.cpp
-#: editor/plugins/animation_player_editor_plugin.cpp
+#: editor/editor_properties.cpp editor/import_defaults_editor.cpp
+#: editor/inspector_dock.cpp editor/plugins/animation_player_editor_plugin.cpp
 #: editor/plugins/script_editor_plugin.cpp scene/gui/file_dialog.cpp
 msgid "Save"
 msgstr "保存"
@@ -1942,10 +1955,13 @@ msgstr "預覽："
 #: editor/editor_file_dialog.cpp scene/gui/file_dialog.cpp
 msgid "File:"
 msgstr "檔案："
+<<<<<<< HEAD
 
 #: editor/editor_file_dialog.cpp scene/gui/file_dialog.cpp
 msgid "Must use a valid extension."
 msgstr "必須使用有效的副檔名。"
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_file_system.cpp
 msgid "ScanSources"
@@ -2365,6 +2381,13 @@ msgstr ""
 #: editor/editor_node.cpp
 msgid "There is no defined scene to run."
 msgstr "未定義欲執行之場景。"
+<<<<<<< HEAD
+=======
+
+#: editor/editor_node.cpp
+msgid "Save scene before running..."
+msgstr "執行前先保存場景..."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_node.cpp
 msgid "Could not start subprocess!"
@@ -2410,6 +2433,7 @@ msgstr "必須有根節點才可保存場景。"
 msgid "Save Scene As..."
 msgstr "另存場景為…"
 
+<<<<<<< HEAD
 #: editor/editor_node.cpp
 msgid "No"
 msgstr "否"
@@ -2422,6 +2446,8 @@ msgstr "是"
 msgid "This scene has never been saved. Save before running?"
 msgstr "此場景從未被保存。是否於執行前先保存？"
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #: editor/editor_node.cpp editor/scene_tree_dock.cpp
 msgid "This operation can't be done without a scene."
 msgstr "必須要有場景才可完成該操作。"
@@ -2471,6 +2497,10 @@ msgid "Quit"
 msgstr "離開"
 
 #: editor/editor_node.cpp
+msgid "Yes"
+msgstr "是"
+
+#: editor/editor_node.cpp
 msgid "Exit the editor?"
 msgstr "要結束編輯器嗎？"
 
@@ -2513,17 +2543,29 @@ msgid "Unable to enable addon plugin at: '%s' parsing of config failed."
 msgstr "無法在「%s」上啟用擴充功能，解析組態設定失敗。"
 
 #: editor/editor_node.cpp
+<<<<<<< HEAD
 msgid "Unable to find script field for addon plugin at: 'res://addons/%s'."
 msgstr "無法在擴充功能「res://addons/%s」中無法找到腳本欄位。"
+=======
+msgid "Unable to find script field for addon plugin at: '%s'."
+msgstr "無法在擴充功能「r%s」中找到腳本欄位。"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_node.cpp
 msgid "Unable to load addon script from path: '%s'."
 msgstr "無法自路徑「%s」載入擴充腳本。"
 
 #: editor/editor_node.cpp
+#, fuzzy
 msgid ""
+<<<<<<< HEAD
 "Unable to load addon script from path: '%s' There seems to be an error in "
 "the code, please check the syntax."
+=======
+"Unable to load addon script from path: '%s'. This might be due to a code "
+"error in that script.\n"
+"Disabling the addon at '%s' to prevent further errors."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgstr "無法自路徑「%s」載入擴充腳本。可能為程式碼中有錯誤，請檢查語法。"
 
 #: editor/editor_node.cpp
@@ -2923,6 +2965,7 @@ msgstr "管理匯出樣板..."
 #: editor/editor_node.cpp editor/plugins/shader_editor_plugin.cpp
 msgid "Help"
 msgstr "說明"
+<<<<<<< HEAD
 
 #: editor/editor_node.cpp editor/plugins/script_editor_plugin.cpp
 #: editor/plugins/script_text_editor.cpp
@@ -2931,6 +2974,8 @@ msgstr "說明"
 #: editor/project_settings_editor.cpp editor/settings_config_dialog.cpp
 msgid "Search"
 msgstr "搜尋"
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_node.cpp editor/plugins/script_editor_plugin.cpp
 #: editor/plugins/shader_editor_plugin.cpp
@@ -2956,6 +3001,10 @@ msgstr "社群"
 #: editor/editor_node.cpp
 msgid "About"
 msgstr "關於"
+
+#: editor/editor_node.cpp
+msgid "Support Godot Development"
+msgstr "支援 Godot 開發"
 
 #: editor/editor_node.cpp
 msgid "Play the project."
@@ -3092,6 +3141,27 @@ msgstr "與現有的合併"
 #: editor/editor_node.cpp
 msgid "Open & Run a Script"
 msgstr "開啟並執行腳本"
+<<<<<<< HEAD
+=======
+
+#: editor/editor_node.cpp
+msgid ""
+"The following files are newer on disk.\n"
+"What action should be taken?"
+msgstr ""
+"磁碟中的下列檔案已更新。\n"
+"要執行什麼操作？"
+
+#: editor/editor_node.cpp editor/plugins/script_editor_plugin.cpp
+#: editor/plugins/shader_editor_plugin.cpp
+msgid "Reload"
+msgstr "重新載入"
+
+#: editor/editor_node.cpp editor/plugins/script_editor_plugin.cpp
+#: editor/plugins/shader_editor_plugin.cpp
+msgid "Resave"
+msgstr "重新保存"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_node.cpp
 msgid "New Inherited"
@@ -3300,7 +3370,7 @@ msgstr "獨立化"
 #: editor/plugins/script_text_editor.cpp
 #: editor/plugins/sprite_frames_editor_plugin.cpp
 #: editor/plugins/tile_map_editor_plugin.cpp editor/property_editor.cpp
-#: scene/gui/line_edit.cpp scene/gui/text_edit.cpp
+#: editor/scene_tree_dock.cpp scene/gui/line_edit.cpp scene/gui/text_edit.cpp
 msgid "Paste"
 msgstr "貼上"
 
@@ -3606,6 +3676,14 @@ msgstr "我的最愛"
 #: editor/filesystem_dock.cpp
 msgid "Status: Import of file failed. Please fix file and reimport manually."
 msgstr "狀態：檔案匯入失敗。請修正檔案並手動重新匯入。"
+<<<<<<< HEAD
+=======
+
+#: editor/filesystem_dock.cpp
+msgid ""
+"Importing has been disabled for this file, so it can't be opened for editing."
+msgstr ""
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/filesystem_dock.cpp
 msgid "Cannot move/rename resources root."
@@ -3644,6 +3722,24 @@ msgid "Name contains invalid characters."
 msgstr "名稱包含無效字元。"
 
 #: editor/filesystem_dock.cpp
+<<<<<<< HEAD
+=======
+msgid ""
+"The following files or folders conflict with items in the target location "
+"'%s':\n"
+"\n"
+"%s\n"
+"\n"
+"Do you wish to overwrite them?"
+msgstr ""
+"以下檔案或資料夾與目標路徑「%s」中的項目衝突：\n"
+"\n"
+"%s\n"
+"\n"
+"要覆蓋這些檔案或資料夾嗎？"
+
+#: editor/filesystem_dock.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Renaming file:"
 msgstr "重新命名檔案："
 
@@ -3690,6 +3786,7 @@ msgstr "編輯相依性..."
 #: editor/filesystem_dock.cpp
 msgid "View Owners..."
 msgstr "檢視擁有者..."
+<<<<<<< HEAD
 
 #: editor/filesystem_dock.cpp editor/plugins/animation_player_editor_plugin.cpp
 msgid "Rename..."
@@ -3698,14 +3795,19 @@ msgstr "重新命名..."
 #: editor/filesystem_dock.cpp
 msgid "Duplicate..."
 msgstr "重複..."
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/filesystem_dock.cpp
 msgid "Move To..."
 msgstr "移動至..."
+<<<<<<< HEAD
 
 #: editor/filesystem_dock.cpp
 msgid "Move to Trash"
 msgstr "移動至資源回收桶"
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/filesystem_dock.cpp
 msgid "New Scene..."
@@ -3730,11 +3832,24 @@ msgid "Collapse All"
 msgstr "收合全部"
 
 #: editor/filesystem_dock.cpp
+<<<<<<< HEAD
 #: editor/plugins/animation_tree_player_editor_plugin.cpp
 #: editor/project_manager.cpp editor/rename_dialog.cpp
 #: editor/scene_tree_dock.cpp
 msgid "Rename"
 msgstr "重新命名"
+=======
+msgid "Duplicate..."
+msgstr "重複..."
+
+#: editor/filesystem_dock.cpp
+msgid "Move to Trash"
+msgstr "移動至資源回收桶"
+
+#: editor/filesystem_dock.cpp editor/plugins/animation_player_editor_plugin.cpp
+msgid "Rename..."
+msgstr "重新命名..."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/filesystem_dock.cpp
 msgid "Previous Folder/File"
@@ -3769,8 +3884,16 @@ msgid "Move"
 msgstr "移動"
 
 #: editor/filesystem_dock.cpp
+<<<<<<< HEAD
 msgid "There is already file or folder with the same name in this location."
 msgstr "該位置已有相同名稱的檔案或資料夾。"
+=======
+#: editor/plugins/animation_tree_player_editor_plugin.cpp
+#: editor/project_manager.cpp editor/rename_dialog.cpp
+#: editor/scene_tree_dock.cpp
+msgid "Rename"
+msgstr "重新命名"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/filesystem_dock.cpp
 msgid "Overwrite"
@@ -3836,8 +3959,21 @@ msgid "Searching..."
 msgstr "正在搜尋..."
 
 #: editor/find_in_files.cpp
+<<<<<<< HEAD
 msgid "Search complete"
 msgstr "搜尋完成"
+=======
+msgid "%d match in %d file."
+msgstr "%d 件相符合的結果（於 %d 個檔案內）。"
+
+#: editor/find_in_files.cpp
+msgid "%d matches in %d file."
+msgstr "%d 件相符合的結果（於 %d 個檔案內）。"
+
+#: editor/find_in_files.cpp
+msgid "%d matches in %d files."
+msgstr "%d 件相符合的結果（於 %d 個檔案內）。"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/groups_editor.cpp
 msgid "Add to Group"
@@ -3972,12 +4108,37 @@ msgstr "是否有在 `post_import()` 方法內回傳繼承 Node 之物件？"
 #: editor/import/resource_importer_scene.cpp
 msgid "Saving..."
 msgstr "正在保存..."
+<<<<<<< HEAD
 
 #: editor/import_dock.cpp
 msgid "%d Files"
 msgstr "%d 個檔案"
 
 #: editor/import_dock.cpp
+=======
+
+#: editor/import_defaults_editor.cpp
+msgid "Select Importer"
+msgstr "選擇匯入程式"
+
+#: editor/import_defaults_editor.cpp
+msgid "Importer:"
+msgstr "匯入程式："
+
+#: editor/import_defaults_editor.cpp
+msgid "Reset to Defaults"
+msgstr "重設為預設"
+
+#: editor/import_dock.cpp
+msgid "Keep File (No Import)"
+msgstr "保留檔案（不匯入）"
+
+#: editor/import_dock.cpp
+msgid "%d Files"
+msgstr "%d 個檔案"
+
+#: editor/import_dock.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Set as Default for '%s'"
 msgstr "設為「%s」的預設"
 
@@ -4928,7 +5089,11 @@ msgid "Got:"
 msgstr "獲得："
 
 #: editor/plugins/asset_library_editor_plugin.cpp
+<<<<<<< HEAD
 msgid "Failed sha256 hash check"
+=======
+msgid "Failed SHA-256 hash check"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgstr "SHA-256 雜湊檢查失敗"
 
 #: editor/plugins/asset_library_editor_plugin.cpp
@@ -5032,7 +5197,6 @@ msgid "Sort:"
 msgstr "排序："
 
 #: editor/plugins/asset_library_editor_plugin.cpp
-#: editor/project_settings_editor.cpp
 msgid "Category:"
 msgstr "分類："
 
@@ -5063,12 +5227,15 @@ msgstr "素材 ZIP 檔"
 #: editor/plugins/baked_lightmap_editor_plugin.cpp
 msgid ""
 "Can't determine a save path for lightmap images.\n"
-"Save your scene (for images to be saved in the same dir), or pick a save "
-"path from the BakedLightmap properties."
+"Save your scene and try again."
 msgstr ""
 "無法判斷光照圖的保存路徑。\n"
+<<<<<<< HEAD
 "請保存場景（圖片將保存於相同資料夾），或是在 BackedLightmap 屬性內選擇一個保"
 "存路徑。"
+=======
+"請保存場景並重試。"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/baked_lightmap_editor_plugin.cpp
 msgid ""
@@ -5080,10 +5247,37 @@ msgstr ""
 #: editor/plugins/baked_lightmap_editor_plugin.cpp
 msgid "Failed creating lightmap images, make sure path is writable."
 msgstr "建立光照圖失敗，請確保該路徑可寫入。"
+<<<<<<< HEAD
+=======
+
+#: editor/plugins/baked_lightmap_editor_plugin.cpp
+msgid "Failed determining lightmap size. Maximum lightmap size too small?"
+msgstr "無法判斷光照圖大小。最大光照圖大小是否過小？"
+
+#: editor/plugins/baked_lightmap_editor_plugin.cpp
+msgid ""
+"Some mesh is invalid. Make sure the UV2 channel values are contained within "
+"the [0.0,1.0] square region."
+msgstr "部分網格無效。請確保 UV2 通道的值位於 [0.0,1.0] 矩形內。"
+
+#: editor/plugins/baked_lightmap_editor_plugin.cpp
+#, fuzzy
+msgid ""
+"Godot editor was built without ray tracing support, lightmaps can't be baked."
+msgstr ""
+"Godot 編輯器在建制時未啟用光線追蹤 (Ray Tracing) 支援，無法烘焙光照圖。"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/baked_lightmap_editor_plugin.cpp
 msgid "Bake Lightmaps"
 msgstr "烘焙光照圖"
+<<<<<<< HEAD
+=======
+
+#: editor/plugins/baked_lightmap_editor_plugin.cpp
+msgid "Select lightmap bake file:"
+msgstr "選擇光照圖烘焙檔案："
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/camera_editor_plugin.cpp
 #: editor/plugins/spatial_editor_plugin.cpp
@@ -5153,6 +5347,7 @@ msgstr "建立水平與垂直參考線"
 #: editor/plugins/canvas_item_editor_plugin.cpp
 msgid "Set CanvasItem \"%s\" Pivot Offset to (%d, %d)"
 msgstr "將 CanvasItem「%s」的 Pivot Offset 設為 (%d, %d)"
+<<<<<<< HEAD
 
 #: editor/plugins/canvas_item_editor_plugin.cpp
 msgid "Rotate %d CanvasItems"
@@ -5183,6 +5378,38 @@ msgid "Scale CanvasItem \"%s\" to (%s, %s)"
 msgstr "縮放 CanvasItem「%s」為 (%s, %s)"
 
 #: editor/plugins/canvas_item_editor_plugin.cpp
+=======
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Rotate %d CanvasItems"
+msgstr "旋轉 %d 個 CanvasItem"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Rotate CanvasItem \"%s\" to %d degrees"
+msgstr "旋轉 CanvasItem「%d」為 %d 度"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Move CanvasItem \"%s\" Anchor"
+msgstr "移動 CanvasItem「%s」的錨點"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Scale Node2D \"%s\" to (%s, %s)"
+msgstr "縮放 Node2D「%s」為 (%s, %s)"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Resize Control \"%s\" to (%d, %d)"
+msgstr "縮放 Control「%s」為 (%d, %d)"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Scale %d CanvasItems"
+msgstr "縮放 %d 個 CanvasItem"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Scale CanvasItem \"%s\" to (%s, %s)"
+msgstr "縮放 CanvasItem「%s」為 (%s, %s)"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Move %d CanvasItems"
 msgstr "移動 %d 個 CanvasItem"
 
@@ -5867,6 +6094,7 @@ msgstr "無法為該場景根節點建立單一凸碰撞形狀。"
 #: editor/plugins/mesh_instance_editor_plugin.cpp
 msgid "Couldn't create a single convex collision shape."
 msgstr "無法建立單一凸碰撞形狀。"
+<<<<<<< HEAD
 
 #: editor/plugins/mesh_instance_editor_plugin.cpp
 msgid "Create Single Convex Shape"
@@ -5893,6 +6121,34 @@ msgid "Contained Mesh is not of type ArrayMesh."
 msgstr "包含之 Mesh 並非 ArrayMesh 型別。"
 
 #: editor/plugins/mesh_instance_editor_plugin.cpp
+=======
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+msgid "Create Single Convex Shape"
+msgstr "建立單一凸面形狀"
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+msgid "Can't create multiple convex collision shapes for the scene root."
+msgstr "無法為場景根節點建立多個凸碰撞形狀。"
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+msgid "Couldn't create any collision shapes."
+msgstr "無法建立任何碰撞形狀。"
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+msgid "Create Multiple Convex Shapes"
+msgstr "建立多個凸面形狀"
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+msgid "Create Navigation Mesh"
+msgstr "建立導航網格"
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+msgid "Contained Mesh is not of type ArrayMesh."
+msgstr "包含之 Mesh 並非 ArrayMesh 型別。"
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "UV Unwrap failed, mesh may not be manifold?"
 msgstr "UV 展開失敗，該網格可能並非流形？"
 
@@ -6161,6 +6417,13 @@ msgstr "產生矩形可見性"
 #: editor/plugins/particles_2d_editor_plugin.cpp
 msgid "Can only set point into a ParticlesMaterial process material"
 msgstr "僅可設為指向 ProticlesMaterial 處理材料"
+<<<<<<< HEAD
+=======
+
+#: editor/plugins/particles_2d_editor_plugin.cpp
+msgid "Convert to CPUParticles2D"
+msgstr "轉換為 CPUParticles2D"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/particles_2d_editor_plugin.cpp
 #: editor/plugins/particles_editor_plugin.cpp
@@ -6222,10 +6485,13 @@ msgstr "正在產生 AABB"
 #: editor/plugins/particles_editor_plugin.cpp
 msgid "Generate Visibility AABB"
 msgstr "產生可見性 AABB"
+<<<<<<< HEAD
 
 #: editor/plugins/particles_editor_plugin.cpp
 msgid "Generate AABB"
 msgstr "產生 AABB"
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/path_2d_editor_plugin.cpp
 msgid "Remove Point from Curve"
@@ -6809,6 +7075,17 @@ msgstr "關閉說明文件"
 #: editor/plugins/script_editor_plugin.cpp editor/project_manager.cpp
 msgid "Run"
 msgstr "執行"
+<<<<<<< HEAD
+=======
+
+#: editor/plugins/script_editor_plugin.cpp
+#: editor/plugins/script_text_editor.cpp
+#: editor/plugins/shader_editor_plugin.cpp editor/plugins/text_editor.cpp
+#: editor/plugins/visual_shader_editor_plugin.cpp editor/project_manager.cpp
+#: editor/project_settings_editor.cpp editor/settings_config_dialog.cpp
+msgid "Search"
+msgstr "搜尋"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/script_editor_plugin.cpp editor/script_editor_debugger.cpp
 msgid "Step Into"
@@ -6862,6 +7139,7 @@ msgid ""
 msgstr ""
 "磁碟中的下列檔案已更新。\n"
 "請選擇於執行之操作："
+<<<<<<< HEAD
 
 #: editor/plugins/script_editor_plugin.cpp
 #: editor/plugins/shader_editor_plugin.cpp
@@ -6872,6 +7150,8 @@ msgstr "重新載入"
 #: editor/plugins/shader_editor_plugin.cpp
 msgid "Resave"
 msgstr "重新保存"
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/script_editor_plugin.cpp editor/script_editor_debugger.cpp
 msgid "Debugger"
@@ -6959,14 +7239,22 @@ msgstr "書籤"
 #: editor/plugins/script_text_editor.cpp
 msgid "Breakpoints"
 msgstr "中斷點"
+<<<<<<< HEAD
+
+#: editor/plugins/script_text_editor.cpp
+#: editor/plugins/shader_editor_plugin.cpp editor/plugins/text_editor.cpp
+msgid "Go To"
+msgstr "跳至"
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/script_text_editor.cpp
 #: editor/plugins/shader_editor_plugin.cpp editor/plugins/text_editor.cpp
 msgid "Go To"
 msgstr "跳至"
 
-#: editor/plugins/script_text_editor.cpp scene/gui/line_edit.cpp
-#: scene/gui/text_edit.cpp
+#: editor/plugins/script_text_editor.cpp editor/scene_tree_dock.cpp
+#: scene/gui/line_edit.cpp scene/gui/text_edit.cpp
 msgid "Cut"
 msgstr "剪下"
 
@@ -7189,6 +7477,10 @@ msgid "Yaw"
 msgstr "偏航"
 
 #: editor/plugins/spatial_editor_plugin.cpp
+msgid "Size"
+msgstr "大小"
+
+#: editor/plugins/spatial_editor_plugin.cpp
 msgid "Objects Drawn"
 msgstr "繪製的物件"
 
@@ -7367,6 +7659,14 @@ msgstr "放慢自由視圖速度"
 #: editor/plugins/spatial_editor_plugin.cpp
 msgid "View Rotation Locked"
 msgstr "視圖旋轉已鎖定"
+<<<<<<< HEAD
+=======
+
+#: editor/plugins/spatial_editor_plugin.cpp
+msgid ""
+"To zoom further, change the camera's clipping planes (View -> Settings...)"
+msgstr "若要再繼續放大，請至 檢視 -> 設定... 修改攝影機的剪裁平面"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/spatial_editor_plugin.cpp
 msgid ""
@@ -8208,6 +8508,7 @@ msgstr "清除位元遮罩。"
 #: editor/plugins/tile_set_editor_plugin.cpp
 msgid "Create a new rectangle."
 msgstr "建立新矩形。"
+<<<<<<< HEAD
 
 #: editor/plugins/tile_set_editor_plugin.cpp
 #, fuzzy
@@ -8215,10 +8516,19 @@ msgid "New Rectangle"
 msgstr "矩形繪製"
 
 #: editor/plugins/tile_set_editor_plugin.cpp
+=======
+
+#: editor/plugins/tile_set_editor_plugin.cpp
+msgid "New Rectangle"
+msgstr "新增矩形"
+
+#: editor/plugins/tile_set_editor_plugin.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Create a new polygon."
 msgstr "建立新多邊形。"
 
 #: editor/plugins/tile_set_editor_plugin.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "New Polygon"
 msgstr "移動多邊形"
@@ -8227,6 +8537,14 @@ msgstr "移動多邊形"
 #, fuzzy
 msgid "Delete Selected Shape"
 msgstr "刪除所選"
+=======
+msgid "New Polygon"
+msgstr "新增多邊形"
+
+#: editor/plugins/tile_set_editor_plugin.cpp
+msgid "Delete Selected Shape"
+msgstr "刪除所選形狀"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/tile_set_editor_plugin.cpp
 msgid "Keep polygon inside region Rect."
@@ -8425,6 +8743,7 @@ msgstr "圖塊集"
 #: editor/plugins/version_control_editor_plugin.cpp
 msgid "No VCS addons are available."
 msgstr "無可用的版本控制 (VCS) 擴充功能。"
+<<<<<<< HEAD
 
 #: editor/plugins/version_control_editor_plugin.cpp
 msgid "Error"
@@ -8433,6 +8752,12 @@ msgstr "錯誤"
 #: editor/plugins/version_control_editor_plugin.cpp
 msgid "No commit message was provided"
 msgstr "未提供提交訊息"
+=======
+
+#: editor/plugins/version_control_editor_plugin.cpp
+msgid "Error"
+msgstr "錯誤"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/version_control_editor_plugin.cpp
 msgid "No files added to stage"
@@ -8491,10 +8816,13 @@ msgid "Stage All"
 msgstr "預存全部"
 
 #: editor/plugins/version_control_editor_plugin.cpp
+<<<<<<< HEAD
 msgid "Add a commit message"
 msgstr "新增一個提交訊息"
 
 #: editor/plugins/version_control_editor_plugin.cpp
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Commit Changes"
 msgstr "提交改動"
 
@@ -9539,6 +9867,7 @@ msgstr "管理匯出樣板"
 #: editor/project_export.cpp
 msgid "Export With Debug"
 msgstr "以偵錯模式匯出"
+<<<<<<< HEAD
 
 #: editor/project_manager.cpp
 msgid "The path specified doesn't exist."
@@ -9549,6 +9878,18 @@ msgid "Error opening package file (it's not in ZIP format)."
 msgstr "開啟套件檔案時發生錯誤（非 ZIP 格式）。"
 
 #: editor/project_manager.cpp
+=======
+
+#: editor/project_manager.cpp
+msgid "The path specified doesn't exist."
+msgstr "指定的路徑不存在。"
+
+#: editor/project_manager.cpp
+msgid "Error opening package file (it's not in ZIP format)."
+msgstr "開啟套件檔案時發生錯誤（非 ZIP 格式）。"
+
+#: editor/project_manager.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid ""
 "Invalid \".zip\" project file; it doesn't contain a \"project.godot\" file."
 msgstr "無效的「.zip」專案檔；未包含「project.godot」檔案。"
@@ -9654,6 +9995,10 @@ msgstr "算繪引擎："
 #: editor/project_manager.cpp
 msgid "OpenGL ES 3.0"
 msgstr "OpenGL ES 3.0"
+
+#: editor/project_manager.cpp
+msgid "Not supported by your GPU drivers."
+msgstr "所使用的 GPU 驅動程式不支援。"
 
 #: editor/project_manager.cpp
 msgid ""
@@ -9822,6 +10167,10 @@ msgid "Projects"
 msgstr "專案"
 
 #: editor/project_manager.cpp
+msgid "Loading, please wait..."
+msgstr "載入中，請稍後..."
+
+#: editor/project_manager.cpp
 msgid "Last Modified"
 msgstr "最後修改時間"
 
@@ -9888,7 +10237,7 @@ msgstr "滑鼠按鈕"
 
 #: editor/project_settings_editor.cpp
 msgid ""
-"Invalid action name. it cannot be empty nor contain '/', ':', '=', '\\' or "
+"Invalid action name. It cannot be empty nor contain '/', ':', '=', '\\' or "
 "'\"'"
 msgstr "無效的操作名稱。名稱不可留空或包含 “/”, “:”, “=”, “\\” 或 “\"”"
 
@@ -10185,6 +10534,13 @@ msgstr "Autoload"
 #: editor/project_settings_editor.cpp
 msgid "Plugins"
 msgstr "外掛"
+<<<<<<< HEAD
+=======
+
+#: editor/project_settings_editor.cpp
+msgid "Import Defaults"
+msgstr "匯入預設"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/property_editor.cpp
 msgid "Preset..."
@@ -10433,6 +10789,17 @@ msgid "Instance Child Scene"
 msgstr "實體化子場景"
 
 #: editor/scene_tree_dock.cpp
+<<<<<<< HEAD
+=======
+msgid "Can't paste root node into the same scene."
+msgstr "無法將跟節點貼到相同的場景中。"
+
+#: editor/scene_tree_dock.cpp
+msgid "Paste Node(s)"
+msgstr "貼上節點"
+
+#: editor/scene_tree_dock.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Detach Script"
 msgstr "取消附加腳本"
 
@@ -10553,6 +10920,13 @@ msgstr "無法對目前場景繼承來源的節點進行操作！"
 #: editor/scene_tree_dock.cpp
 msgid "Attach Script"
 msgstr "附加腳本"
+<<<<<<< HEAD
+=======
+
+#: editor/scene_tree_dock.cpp
+msgid "Cut Node(s)"
+msgstr "剪下節點"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/scene_tree_dock.cpp
 msgid "Remove Node(s)"
@@ -10662,6 +11036,18 @@ msgstr "自所選節點取消附加腳本。"
 #: editor/scene_tree_dock.cpp
 msgid "Remote"
 msgstr "遠端"
+
+#: editor/scene_tree_dock.cpp
+<<<<<<< HEAD
+msgid "Local"
+msgstr "本機"
+=======
+msgid ""
+"If selected, the Remote scene tree dock will cause the project to stutter "
+"every time it updates.\n"
+"Switch back to the Local scene tree dock to improve performance."
+msgstr ""
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/scene_tree_dock.cpp
 msgid "Local"
@@ -11352,6 +11738,37 @@ msgstr "篩選網格"
 #: modules/gridmap/grid_map_editor_plugin.cpp
 msgid "Give a MeshLibrary resource to this GridMap to use its meshes."
 msgstr "提供 MeshLibrary 予該 GridMap 以使用其網格。"
+<<<<<<< HEAD
+=======
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Begin Bake"
+msgstr "開始烘焙"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Preparing data structures"
+msgstr "正在準備資料結構"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Generate buffers"
+msgstr "產生緩衝"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Direct lighting"
+msgstr "向性光照"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Indirect lighting"
+msgstr "非向性光照"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Post processing"
+msgstr "後處理"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Plotting lightmaps"
+msgstr "正在繪製光照"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: modules/mono/csharp_script.cpp
 msgid "Class name can't be a reserved keyword"
@@ -11851,12 +12268,23 @@ msgid "Select device from the list"
 msgstr "自清單中選擇裝置"
 
 #: platform/android/export/export.cpp
+<<<<<<< HEAD
 msgid "ADB executable not configured in the Editor Settings."
 msgstr "尚未於編輯器設定中設定 ADB 可執行檔。"
 
 #: platform/android/export/export.cpp
 msgid "OpenJDK jarsigner not configured in the Editor Settings."
 msgstr "尚未於編輯器設定中設定 OpenJDK Jarsigner。"
+=======
+msgid "Unable to find the 'apksigner' tool."
+msgstr "找不到「apksigner」工具。"
+
+#: platform/android/export/export.cpp
+msgid ""
+"Android build template not installed in the project. Install it from the "
+"Project menu."
+msgstr "尚未於專案中安裝 Android 建置樣板。請先於專案目錄中進行安裝。"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: platform/android/export/export.cpp
 msgid "Debug keystore not configured in the Editor Settings nor in the preset."
@@ -11865,6 +12293,7 @@ msgstr "尚未於編輯器設定或預設設定中設定金鑰儲存區 (Keystor
 #: platform/android/export/export.cpp
 msgid "Release keystore incorrectly configured in the export preset."
 msgstr "發行金鑰儲存區中不正確之組態設定至匯出預設設定。"
+<<<<<<< HEAD
 
 #: platform/android/export/export.cpp
 msgid "Custom build requires a valid Android SDK path in Editor Settings."
@@ -11927,6 +12356,80 @@ msgstr ""
 "Mobile VR」時可用。"
 
 #: platform/android/export/export.cpp
+=======
+
+#: platform/android/export/export.cpp
+msgid "A valid Android SDK path is required in Editor Settings."
+msgstr "必須於 [編輯器設定] 中提供一個有效的 Android SDK 路徑。"
+
+#: platform/android/export/export.cpp
+msgid "Invalid Android SDK path in Editor Settings."
+msgstr "[編輯器設定] 中所指定的 Android SDK 路徑無效。"
+
+#: platform/android/export/export.cpp
+msgid "Missing 'platform-tools' directory!"
+msgstr "缺少「platform-tools」資料夾！"
+
+#: platform/android/export/export.cpp
+msgid "Unable to find Android SDK platform-tools' adb command."
+msgstr "找不到 Android SDK platform-tools 的 adb 指令。"
+
+#: platform/android/export/export.cpp
+msgid "Please check in the Android SDK directory specified in Editor Settings."
+msgstr "請檢查 [編輯器設定] 中所指定的 Android SDK 資料夾。"
+
+#: platform/android/export/export.cpp
+msgid "Missing 'build-tools' directory!"
+msgstr "缺少「build-tools」資料夾！"
+
+#: platform/android/export/export.cpp
+msgid "Unable to find Android SDK build-tools' apksigner command."
+msgstr "找不到 Android SDK build-tools 的 apksigner 指令。"
+
+#: platform/android/export/export.cpp
+msgid "Invalid public key for APK expansion."
+msgstr "無效的 APK Expansion 公鑰。"
+
+#: platform/android/export/export.cpp
+msgid "Invalid package name:"
+msgstr "無效的套件名稱："
+
+#: platform/android/export/export.cpp
+msgid ""
+"Invalid \"GodotPaymentV3\" module included in the \"android/modules\" "
+"project setting (changed in Godot 3.2.2).\n"
+msgstr ""
+"「andoird/modules」專案設定中包含了無效的「GodotPaymentV3」模組（更改於 "
+"Godot 3.2.2）。\n"
+
+#: platform/android/export/export.cpp
+msgid "\"Use Custom Build\" must be enabled to use the plugins."
+msgstr "「使用自定建置」必須啟用以使用本外掛。"
+
+#: platform/android/export/export.cpp
+msgid ""
+"\"Degrees Of Freedom\" is only valid when \"Xr Mode\" is \"Oculus Mobile VR"
+"\"."
+msgstr ""
+"「Degrees Of Freedom」（自由角度）僅可在「Xr Mode」（XR 模式）設為「Oculus "
+"Mobile VR」時可用。"
+
+#: platform/android/export/export.cpp
+msgid ""
+"\"Hand Tracking\" is only valid when \"Xr Mode\" is \"Oculus Mobile VR\"."
+msgstr ""
+"「Hand Tracking」（手部追蹤）僅可在「Xr Mode」（XR 模式）設為「Oculus Mobile "
+"VR」時可用。"
+
+#: platform/android/export/export.cpp
+msgid ""
+"\"Focus Awareness\" is only valid when \"Xr Mode\" is \"Oculus Mobile VR\"."
+msgstr ""
+"「Focus Awareness」（提高關注度）僅可在「Xr Mode」（XR 模式）設為「Oculus "
+"Mobile VR」時可用。"
+
+#: platform/android/export/export.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "\"Export AAB\" is only valid when \"Use Custom Build\" is enabled."
 msgstr "「Export AAB」僅於「Use Custom Build」啟用時可用。"
 
@@ -12129,6 +12632,17 @@ msgstr ""
 #: scene/2d/collision_polygon_2d.cpp
 msgid "An empty CollisionPolygon2D has no effect on collision."
 msgstr "空白的 CollisionPolygon2D 不會產生任何碰撞效果。"
+<<<<<<< HEAD
+=======
+
+#: scene/2d/collision_polygon_2d.cpp
+msgid "Invalid polygon. At least 3 points are needed in 'Solids' build mode."
+msgstr "無效的多邊形。至少必須有三個點為「Solids」建構模式。"
+
+#: scene/2d/collision_polygon_2d.cpp
+msgid "Invalid polygon. At least 2 points are needed in 'Segments' build mode."
+msgstr "無效的多邊形。至少必須有 2 個點為「Segments」建構模式。"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: scene/2d/collision_shape_2d.cpp
 msgid ""
@@ -12161,6 +12675,29 @@ msgid ""
 msgstr ""
 "CPUParticles2D 動畫需要使用有啟用「Particles Animation（粒子動畫）」的 "
 "CanvasItemMaterial。"
+<<<<<<< HEAD
+=======
+
+#: scene/2d/joints_2d.cpp
+msgid "Node A and Node B must be PhysicsBody2Ds"
+msgstr "Node A 與 Node B 必須為 PhysicsBody2D"
+
+#: scene/2d/joints_2d.cpp
+msgid "Node A must be a PhysicsBody2D"
+msgstr "Node A 必須為 PhysicsBody2D"
+
+#: scene/2d/joints_2d.cpp
+msgid "Node B must be a PhysicsBody2D"
+msgstr "Node B 必須為 PhysicsBody2D"
+
+#: scene/2d/joints_2d.cpp
+msgid "Joint is not connected to two PhysicsBody2Ds"
+msgstr "Joint 未連結至 2 個 PhysicsBody2D"
+
+#: scene/2d/joints_2d.cpp
+msgid "Node A and Node B must be different PhysicsBody2Ds"
+msgstr "Node A 與 Node B 必須為不同的 PhysicsBody2D"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: scene/2d/light_2d.cpp
 msgid ""
@@ -12296,6 +12833,7 @@ msgid "ARVROrigin requires an ARVRCamera child node."
 msgstr "ARVROrigin 必須有一個 ARVRCamera 子節點。"
 
 #: scene/3d/baked_lightmap.cpp
+<<<<<<< HEAD
 msgid "%d%%"
 msgstr "%d%%"
 
@@ -12318,6 +12856,30 @@ msgstr "繪製完成"
 #: scene/3d/baked_lightmap.cpp
 msgid "Lighting Meshes: "
 msgstr "正在照明網格： "
+=======
+msgid "Finding meshes and lights"
+msgstr "正在尋找網格與光照"
+
+#: scene/3d/baked_lightmap.cpp
+msgid "Preparing geometry (%d/%d)"
+msgstr "正在解析幾何 (%d/%d)"
+
+#: scene/3d/baked_lightmap.cpp
+msgid "Preparing environment"
+msgstr "正在準備環境"
+
+#: scene/3d/baked_lightmap.cpp
+msgid "Generating capture"
+msgstr "正在產生捕捉"
+
+#: scene/3d/baked_lightmap.cpp
+msgid "Saving lightmaps"
+msgstr "正在保存光照圖"
+
+#: scene/3d/baked_lightmap.cpp
+msgid "Done"
+msgstr "完成"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: scene/3d/collision_object.cpp
 msgid ""
@@ -12382,6 +12944,13 @@ msgstr ""
 #: scene/3d/gi_probe.cpp
 msgid "Plotting Meshes"
 msgstr "正在繪製網格"
+<<<<<<< HEAD
+=======
+
+#: scene/3d/gi_probe.cpp
+msgid "Finishing Plot"
+msgstr "繪製完成"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: scene/3d/gi_probe.cpp
 msgid ""
@@ -12390,11 +12959,14 @@ msgid ""
 msgstr ""
 "GLES2 視訊驅動程式不支援 GIProbes。\n"
 "請改為使用 BakedLightmap。"
+<<<<<<< HEAD
 
 #: scene/3d/interpolated_camera.cpp
 msgid ""
 "InterpolatedCamera has been deprecated and will be removed in Godot 4.0."
 msgstr "InterpolatedCamera 已停止維護，且將於 Godot 4.0 中移除。"
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: scene/3d/light.cpp
 msgid "A SpotLight with an angle wider than 90 degrees cannot cast shadows."
@@ -12455,6 +13027,29 @@ msgstr ""
 "（在 Character 或 Rigid Mode 下）更改 RigidBody 的大小將會在執行時被物理引擎"
 "複寫。\n"
 "請改為修改其子節點的碰撞形狀之大小。"
+<<<<<<< HEAD
+=======
+
+#: scene/3d/physics_joint.cpp
+msgid "Node A and Node B must be PhysicsBodies"
+msgstr "Node A 與 Node B 必須為 PhysicsBody"
+
+#: scene/3d/physics_joint.cpp
+msgid "Node A must be a PhysicsBody"
+msgstr "Node A 必須為 PhysicsBody"
+
+#: scene/3d/physics_joint.cpp
+msgid "Node B must be a PhysicsBody"
+msgstr "Node B 必須為 PhysicsBody"
+
+#: scene/3d/physics_joint.cpp
+msgid "Joint is not connected to any PhysicsBodies"
+msgstr "Joint 尚未連結至任何 PhysicsBody"
+
+#: scene/3d/physics_joint.cpp
+msgid "Node A and Node B must be different PhysicsBodies"
+msgstr "Node A 與 Node B 必須為不同的 PhysicsBody"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: scene/3d/remote_transform.cpp
 msgid ""
@@ -12609,6 +13204,14 @@ msgstr "警告！"
 msgid "Please Confirm..."
 msgstr "請確認..."
 
+#: scene/gui/file_dialog.cpp
+msgid "Must use a valid extension."
+msgstr "必須使用有效的副檔名。"
+
+#: scene/gui/graph_edit.cpp
+msgid "Enable grid minimap."
+msgstr "啟用網格迷你地圖。"
+
 #: scene/gui/popup.cpp
 msgid ""
 "Popups will hide by default unless you call popup() or any of the popup*() "
@@ -12658,6 +13261,15 @@ msgstr ""
 #: scene/main/viewport.cpp
 msgid "Viewport size must be greater than 0 to render anything."
 msgstr "Viewport 大小必須大於 0 才可進行算繪。"
+<<<<<<< HEAD
+=======
+
+#: scene/resources/visual_shader_nodes.cpp
+msgid ""
+"The sampler port is connected but not used. Consider changing the source to "
+"'SamplerPort'."
+msgstr "已連線至取樣器連結埠但並未使用。建議將來源設為「SamplerPort」。"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: scene/resources/visual_shader_nodes.cpp
 msgid "Invalid source for preview."
@@ -12687,11 +13299,56 @@ msgstr "Varying 變數只可在頂點函式中指派。"
 msgid "Constants cannot be modified."
 msgstr "不可修改常數。"
 
+<<<<<<< HEAD
 #~ msgid "Missing 'build-tools' directory!"
 #~ msgstr "缺少「build-tools」資料夾！"
 
 #~ msgid "Unable to find the zipalign tool."
 #~ msgstr "找不到 zipalign 工具。"
+=======
+#~ msgid ""
+#~ "InterpolatedCamera has been deprecated and will be removed in Godot 4.0."
+#~ msgstr "InterpolatedCamera 已停止維護，且將於 Godot 4.0 中移除。"
+
+#~ msgid "No"
+#~ msgstr "否"
+
+#~ msgid "This scene has never been saved. Save before running?"
+#~ msgstr "此場景從未被保存。是否於執行前先保存？"
+
+#~ msgid "ADB executable not configured in the Editor Settings."
+#~ msgstr "尚未於編輯器設定中設定 ADB 可執行檔。"
+
+#~ msgid "OpenJDK jarsigner not configured in the Editor Settings."
+#~ msgstr "尚未於編輯器設定中設定 OpenJDK Jarsigner。"
+
+#~ msgid "Custom build requires a valid Android SDK path in Editor Settings."
+#~ msgstr "自定建置需要有在編輯器設定中設定一個有效的 Android SDK 位置。"
+
+#~ msgid "%d%%"
+#~ msgstr "%d%%"
+
+#~ msgid "(Time Left: %d:%02d s)"
+#~ msgstr "（剩餘時間：%d:%02d 秒）"
+
+#~ msgid "Plotting Meshes: "
+#~ msgstr "正在繪製網格： "
+
+#~ msgid "Lighting Meshes: "
+#~ msgstr "正在照明網格： "
+
+#~ msgid "Search complete"
+#~ msgstr "搜尋完成"
+
+#~ msgid "No commit message was provided"
+#~ msgstr "未提供提交訊息"
+
+#~ msgid "Add a commit message"
+#~ msgstr "新增一個提交訊息"
+
+#~ msgid "There is already file or folder with the same name in this location."
+#~ msgstr "該位置已有相同名稱的檔案或資料夾。"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #~ msgid "Aligning APK..."
 #~ msgstr "正在對齊 APK…"

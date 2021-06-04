@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Texture" inherits="Resource" version="3.2">
+<class name="Texture" inherits="Resource" version="4.0">
 	<brief_description>
-		Texture for 2D and 3D.
 	</brief_description>
 	<description>
+<<<<<<< HEAD
 		A texture works by registering an image in the video hardware, which then can be used in 3D models or 2D [Sprite] or GUI [Control].
 		Textures are often created by loading them from a file. See [method @GDScript.load].
 		[Texture] is a base for other resources. It cannot be used directly.
 		[b]Note:[/b] The maximum texture size is 16384×16384 pixels due to graphics hardware limitations. Larger textures may fail to import.
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</description>
 	<tutorials>
 	</tutorials>
 	<methods>
+<<<<<<< HEAD
 		<method name="draw" qualifiers="const">
 			<return type="void">
 			</return>
@@ -104,13 +107,11 @@
 				Returns [code]true[/code] if this [Texture] has an alpha channel.
 			</description>
 		</method>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</methods>
-	<members>
-		<member name="flags" type="int" setter="set_flags" getter="get_flags" default="4">
-			The texture's [enum Flags]. [enum Flags] are used to set various properties of the [Texture].
-		</member>
-	</members>
 	<constants>
+<<<<<<< HEAD
 		<constant name="FLAGS_DEFAULT" value="7" enum="Flags">
 			Default flags. [constant FLAG_MIPMAPS], [constant FLAG_REPEAT] and [constant FLAG_FILTER] are enabled.
 		</constant>
@@ -138,5 +139,7 @@
 		<constant name="FLAG_VIDEO_SURFACE" value="2048" enum="Flags">
 			Texture is a video surface.
 		</constant>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</constants>
 </class>

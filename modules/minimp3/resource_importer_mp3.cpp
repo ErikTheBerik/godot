@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -68,7 +73,11 @@ String ResourceImporterMP3::get_preset_name(int p_idx) const {
 
 void ResourceImporterMP3::get_import_options(List<ImportOption> *r_options, int p_preset) const {
 	r_options->push_back(ImportOption(PropertyInfo(Variant::BOOL, "loop"), true));
+<<<<<<< HEAD
 	r_options->push_back(ImportOption(PropertyInfo(Variant::REAL, "loop_offset"), 0));
+=======
+	r_options->push_back(ImportOption(PropertyInfo(Variant::FLOAT, "loop_offset"), 0));
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 Error ResourceImporterMP3::import(const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
@@ -79,6 +88,7 @@ Error ResourceImporterMP3::import(const String &p_source_file, const String &p_s
 
 	ERR_FAIL_COND_V(!f, ERR_CANT_OPEN);
 
+<<<<<<< HEAD
 	size_t len = f->get_len();
 
 	PoolVector<uint8_t> data;
@@ -86,6 +96,15 @@ Error ResourceImporterMP3::import(const String &p_source_file, const String &p_s
 	PoolVector<uint8_t>::Write w = data.write();
 
 	f->get_buffer(w.ptr(), len);
+=======
+	uint64_t len = f->get_length();
+
+	Vector<uint8_t> data;
+	data.resize(len);
+	uint8_t *w = data.ptrw();
+
+	f->get_buffer(w, len);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	memdelete(f);
 

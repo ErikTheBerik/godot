@@ -23,6 +23,7 @@ SConscript("coremidi/SCsub")
 SConscript("winmidi/SCsub")
 
 # Graphics drivers
+<<<<<<< HEAD
 if env["platform"] != "server":
     SConscript("gles3/SCsub")
     SConscript("gles2/SCsub")
@@ -33,6 +34,14 @@ else:
 
 # Core dependencies
 SConscript("png/SCsub")
+=======
+if env["vulkan"]:
+    SConscript("vulkan/SCsub")
+
+# Core dependencies
+SConscript("png/SCsub")
+SConscript("spirv-reflect/SCsub")
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 env.add_source_files(env.drivers_sources, "*.cpp")
 

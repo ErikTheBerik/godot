@@ -1,7 +1,9 @@
-using System;
 using System.Runtime.CompilerServices;
 using Godot;
+<<<<<<< HEAD
 using Godot.Collections;
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 using GodotTools.IdeMessaging.Requests;
 
 namespace GodotTools.Internals
@@ -35,15 +37,12 @@ namespace GodotTools.Internals
 
         public static void ReloadAssemblies(bool softReload) => internal_ReloadAssemblies(softReload);
 
-        public static void ScriptEditorDebuggerReloadScripts() => internal_ScriptEditorDebuggerReloadScripts();
+        public static void EditorDebuggerNodeReloadScripts() => internal_EditorDebuggerNodeReloadScripts();
 
         public static bool ScriptEditorEdit(Resource resource, int line, int col, bool grabFocus = true) =>
             internal_ScriptEditorEdit(resource, line, col, grabFocus);
 
         public static void EditorNodeShowScriptScreen() => internal_EditorNodeShowScriptScreen();
-
-        public static Dictionary<string, object> GetScriptsMetadataOrNothing() =>
-            internal_GetScriptsMetadataOrNothing(typeof(Dictionary<string, object>));
 
         public static string MonoWindowsInstallRoot => internal_MonoWindowsInstallRoot();
 
@@ -92,16 +91,13 @@ namespace GodotTools.Internals
         private static extern void internal_ReloadAssemblies(bool softReload);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private static extern void internal_ScriptEditorDebuggerReloadScripts();
+        private static extern void internal_EditorDebuggerNodeReloadScripts();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern bool internal_ScriptEditorEdit(Resource resource, int line, int col, bool grabFocus);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern void internal_EditorNodeShowScriptScreen();
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        private static extern Dictionary<string, object> internal_GetScriptsMetadataOrNothing(Type dictType);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern string internal_MonoWindowsInstallRoot();

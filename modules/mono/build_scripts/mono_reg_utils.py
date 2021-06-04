@@ -1,6 +1,7 @@
 import os
 import platform
 
+<<<<<<< HEAD
 from compat import decode_utf8
 
 if os.name == "nt":
@@ -10,12 +11,21 @@ if os.name == "nt":
         import _winreg as winreg
     else:
         import winreg
+=======
+if os.name == "nt":
+    import sys
+    import winreg
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 
 def _reg_open_key(key, subkey):
     try:
         return winreg.OpenKey(key, subkey)
+<<<<<<< HEAD
     except (WindowsError, OSError):
+=======
+    except OSError:
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         if platform.architecture()[0] == "32bit":
             bitness_sam = winreg.KEY_WOW64_64KEY
         else:
@@ -43,7 +53,7 @@ def _find_mono_in_reg(subkey, bits):
         with _reg_open_key_bits(winreg.HKEY_LOCAL_MACHINE, subkey, bits) as hKey:
             value = winreg.QueryValueEx(hKey, "SdkInstallRoot")[0]
             return value
-    except (WindowsError, OSError):
+    except OSError:
         return None
 
 
@@ -54,7 +64,7 @@ def _find_mono_in_reg_old(subkey, bits):
             if default_clr:
                 return _find_mono_in_reg(subkey + "\\" + default_clr, bits)
             return None
-    except (WindowsError, EnvironmentError):
+    except OSError:
         return None
 
 
@@ -82,7 +92,11 @@ def find_msbuild_tools_path_reg():
         lines = subprocess.check_output([vswhere] + vswhere_args).splitlines()
 
         for line in lines:
+<<<<<<< HEAD
             parts = decode_utf8(line).split(":", 1)
+=======
+            parts = line.decode("utf-8").split(":", 1)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             if len(parts) < 2 or parts[0] != "installationPath":
                 continue
@@ -103,7 +117,11 @@ def find_msbuild_tools_path_reg():
         raise ValueError("Cannot find `installationPath` entry")
     except ValueError as e:
         print("Error reading output from vswhere: " + e.message)
+<<<<<<< HEAD
     except WindowsError:
+=======
+    except OSError:
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         pass  # Fine, vswhere not found
     except (subprocess.CalledProcessError, OSError):
         pass
@@ -115,5 +133,9 @@ def find_msbuild_tools_path_reg():
         with _reg_open_key(winreg.HKEY_LOCAL_MACHINE, subkey) as hKey:
             value = winreg.QueryValueEx(hKey, "MSBuildToolsPath")[0]
             return value
+<<<<<<< HEAD
     except (WindowsError, OSError):
+=======
+    except OSError:
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         return ""

@@ -222,7 +222,7 @@ See the [release announcement](https://godotengine.org/article/maintenance-relea
   - Ability to convert visual shaders to text-based shaders.
   - See the [complete list of new functions](https://github.com/godotengine/godot/pull/26164).
 - Improved visual scripting.
-  - Visual scripting now uses an unified graph where all functions are represented.
+  - Visual scripting now uses a unified graph where all functions are represented.
   - Nodes can now be edited directly in the graph.
   - Support for fuzzy searching.
   - The `tool` mode can now be enabled in visual scripts.
@@ -1085,7 +1085,7 @@ See the [release announcement](https://godotengine.org/article/maintenance-relea
 - Removed many debugging prints in the console.
 - Export templates now display an error dialog if no project was found when starting.
 - DynamicFont oversampling is now enabled by default.
-- Nodes' internal logic now consistently use internal physics processing.
+- Nodes' internal logic now consistently uses internal physics processing.
 - Allow attaching and clearing scripts on multiple nodes at once.
 - Default values are no longer saved in scene and resource files.
 - The selection rectangle of 2D nodes is now hidden when not pertinent (no more rectangle for collision shapes).

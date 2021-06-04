@@ -1,4 +1,5 @@
 const Preloader = /** @constructor */ function () { // eslint-disable-line no-unused-vars
+<<<<<<< HEAD
 	const loadXHR = function (resolve, reject, file, tracker, attempts) {
 		const xhr = new XMLHttpRequest();
 		tracker[file] = {
@@ -49,6 +50,66 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 		}
 		xhr.send();
 	};
+=======
+	function getTrackedResponse(response, load_status) {
+		function onloadprogress(reader, controller) {
+			return reader.read().then(function (result) {
+				if (load_status.done) {
+					return Promise.resolve();
+				}
+				if (result.value) {
+					controller.enqueue(result.value);
+					load_status.loaded += result.value.length;
+				}
+				if (!result.done) {
+					return onloadprogress(reader, controller);
+				}
+				load_status.done = true;
+				return Promise.resolve();
+			});
+		}
+		const reader = response.body.getReader();
+		return new Response(new ReadableStream({
+			start: function (controller) {
+				onloadprogress(reader, controller).then(function () {
+					controller.close();
+				});
+			},
+		}), { headers: response.headers });
+	}
+
+	function loadFetch(file, tracker, fileSize, raw) {
+		tracker[file] = {
+			total: fileSize || 0,
+			loaded: 0,
+			done: false,
+		};
+		return fetch(file).then(function (response) {
+			if (!response.ok) {
+				return Promise.reject(new Error(`Failed loading file '${file}'`));
+			}
+			const tr = getTrackedResponse(response, tracker[file]);
+			if (raw) {
+				return Promise.resolve(tr);
+			}
+			return tr.arrayBuffer();
+		});
+	}
+
+	function retry(func, attempts = 1) {
+		function onerror(err) {
+			if (attempts <= 1) {
+				return Promise.reject(err);
+			}
+			return new Promise(function (resolve, reject) {
+				setTimeout(function () {
+					retry(func, attempts - 1).then(resolve).catch(reject);
+				}, 1000);
+			});
+		}
+		return func().catch(onerror);
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	const DOWNLOAD_ATTEMPTS_MAX = 4;
 	const loadingFiles = {};
@@ -63,7 +124,11 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 
 		Object.keys(loadingFiles).forEach(function (file) {
 			const stat = loadingFiles[file];
+<<<<<<< HEAD
 			if (!stat.final) {
+=======
+			if (!stat.done) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				progressIsFinal = false;
 			}
 			if (!totalIsValid || stat.total === 0) {
@@ -92,6 +157,7 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 		progressFunc = callback;
 	};
 
+<<<<<<< HEAD
 	this.loadPromise = function (file) {
 		return new Promise(function (resolve, reject) {
 			loadXHR(resolve, reject, file, loadingFiles, DOWNLOAD_ATTEMPTS_MAX);
@@ -107,6 +173,21 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 				me.preloadedFiles.push({
 					path: destPath || pathOrBuffer,
 					buffer: xhr.response,
+=======
+	this.loadPromise = function (file, fileSize, raw = false) {
+		return retry(loadFetch.bind(null, file, loadingFiles, fileSize, raw), DOWNLOAD_ATTEMPTS_MAX);
+	};
+
+	this.preloadedFiles = [];
+	this.preload = function (pathOrBuffer, destPath, fileSize) {
+		let buffer = null;
+		if (typeof pathOrBuffer === 'string') {
+			const me = this;
+			return this.loadPromise(pathOrBuffer, fileSize).then(function (buf) {
+				me.preloadedFiles.push({
+					path: destPath || pathOrBuffer,
+					buffer: buf,
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				});
 				return Promise.resolve();
 			});

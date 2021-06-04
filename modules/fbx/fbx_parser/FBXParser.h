@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -80,8 +85,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <map>
 #include <memory>
 
+<<<<<<< HEAD
 #include "core/color.h"
 #include "core/math/transform.h"
+=======
+#include "core/math/color.h"
+#include "core/math/transform_3d.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 
@@ -160,7 +170,11 @@ public:
 	}
 
 	ElementPtr FindElementCaseInsensitive(const std::string &elementName) const {
+<<<<<<< HEAD
 		for (auto element = elements.begin(); element != elements.end(); ++element) {
+=======
+		for (FBXDocParser::ElementMap::const_iterator element = elements.begin(); element != elements.end(); ++element) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			if (element->first.compare(elementName)) {
 				return element->second;
 			}
@@ -191,7 +205,11 @@ public:
 	Parser(const TokenList &tokens, bool is_binary);
 	~Parser();
 
+<<<<<<< HEAD
 	const ScopePtr GetRootScope() const {
+=======
+	ScopePtr GetRootScope() const {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		return root;
 	}
 
@@ -199,6 +217,13 @@ public:
 		return is_binary;
 	}
 
+<<<<<<< HEAD
+=======
+	bool IsCorrupt() const {
+		return corrupt;
+	}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 private:
 	friend class Scope;
 	friend class Element;
@@ -208,6 +233,10 @@ private:
 	TokenPtr CurrentToken() const;
 
 private:
+<<<<<<< HEAD
+=======
+	bool corrupt = false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ScopeList scopes;
 	const TokenList &tokens;
 
@@ -247,18 +276,32 @@ void ParseVectorDataArray(std::vector<int64_t> &out, const ElementPtr el);
 bool HasElement(const ScopePtr sc, const std::string &index);
 
 // extract a required element from a scope, abort if the element cannot be found
+<<<<<<< HEAD
 const ElementPtr GetRequiredElement(const ScopePtr sc, const std::string &index, const ElementPtr element = nullptr);
 const ScopePtr GetRequiredScope(const ElementPtr el); // New in 2020. (less likely to destroy application)
 const ElementPtr GetOptionalElement(const ScopePtr sc, const std::string &index, const ElementPtr element = nullptr);
 // extract required compound scope
 const ScopePtr GetRequiredScope(const ElementPtr el);
+=======
+ElementPtr GetRequiredElement(const ScopePtr sc, const std::string &index, const ElementPtr element = nullptr);
+ScopePtr GetRequiredScope(const ElementPtr el); // New in 2020. (less likely to destroy application)
+ScopePtr GetOptionalScope(const ElementPtr el); // New in 2021. (even LESS likely to destroy application now)
+
+ElementPtr GetOptionalElement(const ScopePtr sc, const std::string &index, const ElementPtr element = nullptr);
+// extract required compound scope
+ScopePtr GetRequiredScope(const ElementPtr el);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 // get token at a particular index
 TokenPtr GetRequiredToken(const ElementPtr el, unsigned int index);
 
 // ------------------------------------------------------------------------------------------------
 // read a 4x4 matrix from an array of 16 floats
+<<<<<<< HEAD
 Transform ReadMatrix(const ElementPtr element);
 
+=======
+Transform3D ReadMatrix(const ElementPtr element);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser
 
 #endif // FBX_PARSER_H

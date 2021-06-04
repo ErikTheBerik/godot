@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="@GDScript" version="3.2">
+<class name="@GDScript" version="4.0">
 	<brief_description>
 		Built-in GDScript functions.
 	</brief_description>
@@ -7,7 +7,11 @@
 		List of core built-in GDScript functions. Math functions and other utilities. Everything else is provided by objects. (Keywords: builtin, built in, global functions.)
 	</description>
 	<tutorials>
+<<<<<<< HEAD
 		<link title="Random number generation">https://docs.godotengine.org/en/3.2/tutorials/math/random_number_generation.html</link>
+=======
+		<link title="Random number generation">https://docs.godotengine.org/en/latest/tutorials/math/random_number_generation.html</link>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</tutorials>
 	<methods>
 		<method name="Color8">
@@ -32,6 +36,7 @@
 				[/codeblock]
 			</description>
 		</method>
+<<<<<<< HEAD
 		<method name="ColorN">
 			<return type="Color">
 			</return>
@@ -86,6 +91,8 @@
 				[/codeblock]
 			</description>
 		</method>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		<method name="assert">
 			<return type="void">
 			</return>
@@ -94,7 +101,11 @@
 			<argument index="1" name="message" type="String" default="&quot;&quot;">
 			</argument>
 			<description>
+<<<<<<< HEAD
 				Asserts that the [code]condition[/code] is [code]true[/code]. If the [code]condition[/code] is [code]false[/code], an error is generated. When running from the editor, the running project will also be paused until you resume it. This can be used as a stronger form of [method push_error] for reporting errors to project developers or add-on users.
+=======
+				Asserts that the [code]condition[/code] is [code]true[/code]. If the [code]condition[/code] is [code]false[/code], an error is generated. When running from the editor, the running project will also be paused until you resume it. This can be used as a stronger form of [method @GlobalScope.push_error] for reporting errors to project developers or add-on users.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				[b]Note:[/b] For performance reasons, the code inside [method assert] is only executed in debug builds or when running the project from the editor. Don't include code that has side effects in an [method assert] call. Otherwise, the project will behave differently when exported in release mode.
 				The optional [code]message[/code] argument, if given, is shown in addition to the generic "Assertion failed" message. You can use this to provide additional details about why the assertion failed.
 				[codeblock]
@@ -104,6 +115,7 @@
 				assert(speed &gt;= 0) # False, the program will stop
 				assert(speed &gt;= 0 and speed &lt; 20) # You can also combine the two conditional statements in one check
 				assert(speed &lt; 20, "speed = %f, but the speed limit is 20" % speed) # Show a message with clarifying details
+<<<<<<< HEAD
 				[/codeblock]
 			</description>
 		</method>
@@ -168,6 +180,8 @@
 				[codeblock]
 				i = ceil(1.45)  # i is 2
 				i = ceil(1.001) # i is 2
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				[/codeblock]
 				See also [method floor], [method round], and [method stepify].
 			</description>
@@ -175,7 +189,7 @@
 		<method name="char">
 			<return type="String">
 			</return>
-			<argument index="0" name="code" type="int">
+			<argument index="0" name="char" type="int">
 			</argument>
 			<description>
 				Returns a character as a String of the given Unicode code point (which is compatible with ASCII code).
@@ -183,29 +197,6 @@
 				a = char(65)      # a is "A"
 				a = char(65 + 32) # a is "a"
 				a = char(8364)    # a is "€"
-				[/codeblock]
-				This is the inverse of [method ord].
-			</description>
-		</method>
-		<method name="clamp">
-			<return type="float">
-			</return>
-			<argument index="0" name="value" type="float">
-			</argument>
-			<argument index="1" name="min" type="float">
-			</argument>
-			<argument index="2" name="max" type="float">
-			</argument>
-			<description>
-				Clamps [code]value[/code] and returns a value not less than [code]min[/code] and not more than [code]max[/code].
-				[codeblock]
-				speed = 1000
-				# a is 20
-				a = clamp(speed, 1, 20)
-
-				speed = -10
-				# a is 1
-				a = clamp(speed, 1, 20)
 				[/codeblock]
 			</description>
 		</method>
@@ -228,6 +219,7 @@
 				[/codeblock]
 			</description>
 		</method>
+<<<<<<< HEAD
 		<method name="cos">
 			<return type="float">
 			</return>
@@ -412,6 +404,15 @@
 				a = funcref(self, "foo")
 				print(a.call_func()) # Prints bar
 				[/codeblock]
+=======
+		<method name="dict2inst">
+			<return type="Object">
+			</return>
+			<argument index="0" name="dictionary" type="Dictionary">
+			</argument>
+			<description>
+				Converts a dictionary (previously created with [method inst2dict]) back to an instance. Useful for deserializing.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			</description>
 		</method>
 		<method name="get_stack">
@@ -435,22 +436,10 @@
 				[/codeblock]
 			</description>
 		</method>
-		<method name="hash">
-			<return type="int">
-			</return>
-			<argument index="0" name="var" type="Variant">
-			</argument>
-			<description>
-				Returns the integer hash of the variable passed.
-				[codeblock]
-				print(hash("a")) # Prints 177670
-				[/codeblock]
-			</description>
-		</method>
 		<method name="inst2dict">
 			<return type="Dictionary">
 			</return>
-			<argument index="0" name="inst" type="Object">
+			<argument index="0" name="instance" type="Object">
 			</argument>
 			<description>
 				Returns the passed instance converted to a dictionary (useful for serializing).
@@ -468,6 +457,7 @@
 				[/codeblock]
 			</description>
 		</method>
+<<<<<<< HEAD
 		<method name="instance_from_id">
 			<return type="Object">
 			</return>
@@ -552,6 +542,8 @@
 				This method is faster than using [method is_equal_approx] with one value as zero.
 			</description>
 		</method>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		<method name="len">
 			<return type="int">
 			</return>
@@ -566,71 +558,20 @@
 				[/codeblock]
 			</description>
 		</method>
-		<method name="lerp">
-			<return type="Variant">
-			</return>
-			<argument index="0" name="from" type="Variant">
-			</argument>
-			<argument index="1" name="to" type="Variant">
-			</argument>
-			<argument index="2" name="weight" type="float">
-			</argument>
-			<description>
-				Linearly interpolates between two values by a normalized value. This is the opposite of [method inverse_lerp].
-				If the [code]from[/code] and [code]to[/code] arguments are of type [int] or [float], the return value is a [float].
-				If both are of the same vector type ([Vector2], [Vector3] or [Color]), the return value will be of the same type ([code]lerp[/code] then calls the vector type's [code]linear_interpolate[/code] method).
-				[codeblock]
-				lerp(0, 4, 0.75) # Returns 3.0
-				lerp(Vector2(1, 5), Vector2(3, 2), 0.5) # Returns Vector2(2, 3.5)
-				[/codeblock]
-			</description>
-		</method>
-		<method name="lerp_angle">
-			<return type="float">
-			</return>
-			<argument index="0" name="from" type="float">
-			</argument>
-			<argument index="1" name="to" type="float">
-			</argument>
-			<argument index="2" name="weight" type="float">
-			</argument>
-			<description>
-				Linearly interpolates between two angles (in radians) by a normalized value.
-				Similar to [method lerp], but interpolates correctly when the angles wrap around [constant @GDScript.TAU].
-				[codeblock]
-				extends Sprite
-				var elapsed = 0.0
-				func _process(delta):
-				    var min_angle = deg2rad(0.0)
-				    var max_angle = deg2rad(90.0)
-				    rotation = lerp_angle(min_angle, max_angle, elapsed)
-				    elapsed += delta
-				[/codeblock]
-			</description>
-		</method>
-		<method name="linear2db">
-			<return type="float">
-			</return>
-			<argument index="0" name="nrg" type="float">
-			</argument>
-			<description>
-				Converts from linear energy to decibels (audio). This can be used to implement volume sliders that behave as expected (since volume isn't linear). Example:
-				[codeblock]
-				# "Slider" refers to a node that inherits Range such as HSlider or VSlider.
-				# Its range must be configured to go from 0 to 1.
-				# Change the bus name if you'd like to change the volume of a specific bus only.
-				AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear2db($Slider.value))
-				[/codeblock]
-			</description>
-		</method>
 		<method name="load">
 			<return type="Resource">
 			</return>
 			<argument index="0" name="path" type="String">
 			</argument>
 			<description>
+<<<<<<< HEAD
+				Linearly interpolates between two values by a normalized value. This is the opposite of [method inverse_lerp].
+				If the [code]from[/code] and [code]to[/code] arguments are of type [int] or [float], the return value is a [float].
+				If both are of the same vector type ([Vector2], [Vector3] or [Color]), the return value will be of the same type ([code]lerp[/code] then calls the vector type's [code]linear_interpolate[/code] method).
+=======
 				Loads a resource from the filesystem located at [code]path[/code]. The resource is loaded on the method call (unless it's referenced already elsewhere, e.g. in another script or in the scene), which might cause slight delay, especially when loading scenes. To avoid unnecessary delays when loading something multiple times, either store the resource in a variable or use [method preload].
 				[b]Note:[/b] Resource paths can be obtained by right-clicking on a resource in the FileSystem dock and choosing "Copy Path" or by dragging the file from the FileSystem dock into the script.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				[codeblock]
 				# Load a scene called main located in the root of the project directory and cache it in a variable.
 				var main = load("res://main.tscn") # main will contain a PackedScene resource.
@@ -639,15 +580,71 @@
 				This method is a simplified version of [method ResourceLoader.load], which can be used for more advanced scenarios.
 			</description>
 		</method>
-		<method name="log">
-			<return type="float">
+		<method name="preload">
+			<return type="Resource">
 			</return>
-			<argument index="0" name="s" type="float">
+			<argument index="0" name="path" type="String">
 			</argument>
 			<description>
-				Natural logarithm. The amount of time needed to reach a certain level of continuous growth.
-				[b]Note:[/b] This is not the same as the "log" function on most calculators, which uses a base 10 logarithm.
+<<<<<<< HEAD
+				Linearly interpolates between two angles (in radians) by a normalized value.
+				Similar to [method lerp], but interpolates correctly when the angles wrap around [constant @GDScript.TAU].
+=======
+				Returns a [Resource] from the filesystem located at [code]path[/code]. The resource is loaded during script parsing, i.e. is loaded with the script and [method preload] effectively acts as a reference to that resource. Note that the method requires a constant path. If you want to load a resource from a dynamic/variable path, use [method load].
+				[b]Note:[/b] Resource paths can be obtained by right clicking on a resource in the Assets Panel and choosing "Copy Path" or by dragging the file from the FileSystem dock into the script.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				[codeblock]
+				# Instance a scene.
+				var diamond = preload("res://diamond.tscn").instance()
+				[/codeblock]
+			</description>
+		</method>
+		<method name="print_debug" qualifiers="vararg">
+			<return type="void">
+			</return>
+			<description>
+<<<<<<< HEAD
+				Converts from linear energy to decibels (audio). This can be used to implement volume sliders that behave as expected (since volume isn't linear). Example:
+				[codeblock]
+				# "Slider" refers to a node that inherits Range such as HSlider or VSlider.
+				# Its range must be configured to go from 0 to 1.
+				# Change the bus name if you'd like to change the volume of a specific bus only.
+				AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear2db($Slider.value))
+				[/codeblock]
+=======
+				Like [method @GlobalScope.print], but prints only when used in debug mode.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
+			</description>
+		</method>
+		<method name="print_stack">
+			<return type="void">
+			</return>
+			<description>
+<<<<<<< HEAD
+				Loads a resource from the filesystem located at [code]path[/code]. The resource is loaded on the method call (unless it's referenced already elsewhere, e.g. in another script or in the scene), which might cause slight delay, especially when loading scenes. To avoid unnecessary delays when loading something multiple times, either store the resource in a variable or use [method preload].
+				[b]Note:[/b] Resource paths can be obtained by right-clicking on a resource in the FileSystem dock and choosing "Copy Path" or by dragging the file from the FileSystem dock into the script.
+				[codeblock]
+				# Load a scene called main located in the root of the project directory and cache it in a variable.
+				var main = load("res://main.tscn") # main will contain a PackedScene resource.
+				[/codeblock]
+				[b]Important:[/b] The path must be absolute, a local path will just return [code]null[/code].
+				This method is a simplified version of [method ResourceLoader.load], which can be used for more advanced scenarios.
+=======
+				Prints a stack track at code location, only works when running with debugger turned on.
+				Output in the console would look something like this:
+				[codeblock]
+				Frame 0 - res://test.gd:16 in function '_process'
+				[/codeblock]
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
+			</description>
+		</method>
+		<method name="range" qualifiers="vararg">
+			<return type="Array">
+			</return>
+			<description>
+				Returns an array with the given range. Range can be 1 argument N (0 to N-1), two arguments (initial, final-1) or three arguments (initial, final-1, increment).
+				[codeblock]
+<<<<<<< HEAD
 				log(10) # Returns 2.302585
 				[/codeblock]
 			</description>
@@ -984,6 +981,8 @@
 			<description>
 				Returns an array with the given range. Range can be 1 argument N (0 to N-1), two arguments (initial, final-1) or three arguments (initial, final-1, increment).
 				[codeblock]
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				print(range(4))
 				print(range(2, 5))
 				print(range(0, 6, 2))
@@ -993,6 +992,7 @@
 				[0, 1, 2, 3]
 				[2, 3, 4]
 				[0, 2, 4]
+<<<<<<< HEAD
 				[/codeblock]
 			</description>
 		</method>
@@ -1141,6 +1141,8 @@
 				[codeblock]
 				stepify(100, 32) # Returns 96
 				stepify(3.14159, 0.01) # Returns 3.14
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				[/codeblock]
 				See also [method ceil], [method floor], and [method round].
 			</description>
@@ -1158,6 +1160,7 @@
 				[/codeblock]
 			</description>
 		</method>
+<<<<<<< HEAD
 		<method name="str2var">
 			<return type="Variant">
 			</return>
@@ -1388,6 +1391,14 @@
 				[/codeblock]
 				When yielding on a function, the [code]completed[/code] signal will be emitted automatically when the function returns. It can, therefore, be used as the [code]signal[/code] parameter of the [code]yield[/code] method to resume.
 				In order to yield on a function, the resulting function should also return a [code]GDScriptFunctionState[/code]. Notice [code]yield(get_tree(), "idle_frame")[/code] from the above example.
+=======
+		<method name="type_exists">
+			<return type="bool">
+			</return>
+			<argument index="0" name="type" type="StringName">
+			</argument>
+			<description>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			</description>
 		</method>
 	</methods>

@@ -9,7 +9,7 @@
 	<key>CFBundleName</key>
 	<string>Godot</string>
 	<key>CFBundleGetInfoString</key>
-	<string>(c) 2007-2020 Juan Linietsky, Ariel Manzur &amp; Godot Engine contributors</string>
+	<string>(c) 2007-2021 Juan Linietsky, Ariel Manzur &amp; Godot Engine contributors</string>
 	<key>CFBundleIconFile</key>
 	<string>Godot.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -19,19 +19,33 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
+<<<<<<< HEAD
 	<string>3.2.4</string>
 	<key>CFBundleSignature</key>
 	<string>godot</string>
 	<key>CFBundleVersion</key>
 	<string>3.2.4</string>
+=======
+	<string>4.0</string>
+	<key>CFBundleSignature</key>
+	<string>godot</string>
+	<key>CFBundleVersion</key>
+	<string>4.0</string>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone access is required to capture audio.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access is required to capture video.</string>
 	<key>NSRequiresAquaSystemAppearance</key>
+<<<<<<< HEAD
 	<false />
 	<key>NSHumanReadableCopyright</key>
 	<string>© 2007-2020 Juan Linietsky, Ariel Manzur &amp; Godot Engine contributors</string>
+=======
+	<false/>
+	<key>NSHumanReadableCopyright</key>
+	<string>© 2007-2021 Juan Linietsky, Ariel Manzur &amp; Godot Engine contributors</string>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	<key>CFBundleSupportedPlatforms</key>
 	<array>
 		<string>MacOSX</string>
@@ -39,11 +53,19 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>LSMinimumSystemVersion</key>
+<<<<<<< HEAD
 	<string>10.9</string>
 	<key>LSMinimumSystemVersionByArchitecture</key>
 	<dict>
 		<key>x86_64</key>
 		<string>10.9</string>
+=======
+	<string>10.12</string>
+	<key>LSMinimumSystemVersionByArchitecture</key>
+	<dict>
+		<key>x86_64</key>
+		<string>10.12</string>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</dict>
 	<key>NSHighResolutionCapable</key>
 	<true/>

@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,7 +31,7 @@
 #ifndef GRADIENT_H
 #define GRADIENT_H
 
-#include "core/resource.h"
+#include "core/io/resource.h"
 
 class Gradient : public Resource {
 	GDCLASS(Gradient, Resource);
@@ -39,8 +39,7 @@ class Gradient : public Resource {
 
 public:
 	struct Point {
-
-		float offset;
+		float offset = 0.0;
 		Color color;
 		bool operator<(const Point &p_ponit) const {
 			return offset < p_ponit.offset;
@@ -49,7 +48,11 @@ public:
 
 private:
 	Vector<Point> points;
+<<<<<<< HEAD
 	bool is_sorted;
+=======
+	bool is_sorted = true;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	_FORCE_INLINE_ void _update_sorting() {
 		if (!is_sorted) {
 			points.sort();
@@ -83,9 +86,14 @@ public:
 	Vector<Color> get_colors() const;
 
 	_FORCE_INLINE_ Color get_color_at_offset(float p_offset) {
-
-		if (points.empty())
+		if (points.is_empty()) {
 			return Color(0, 0, 0, 1);
+<<<<<<< HEAD
+
+		_update_sorting();
+=======
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		_update_sorting();
 
@@ -95,8 +103,9 @@ public:
 		int middle = 0;
 
 #ifdef DEBUG_ENABLED
-		if (low > high)
+		if (low > high) {
 			ERR_PRINT("low > high, this may be a bug");
+		}
 #endif
 
 		while (low <= high) {
@@ -117,13 +126,15 @@ public:
 		}
 		int first = middle;
 		int second = middle + 1;
-		if (second >= points.size())
+		if (second >= points.size()) {
 			return points[points.size() - 1].color;
-		if (first < 0)
+		}
+		if (first < 0) {
 			return points[0].color;
+		}
 		const Point &pointFirst = points[first];
 		const Point &pointSecond = points[second];
-		return pointFirst.color.linear_interpolate(pointSecond.color, (p_offset - pointFirst.offset) / (pointSecond.offset - pointFirst.offset));
+		return pointFirst.color.lerp(pointSecond.color, (p_offset - pointFirst.offset) / (pointSecond.offset - pointFirst.offset));
 	}
 
 	int get_points_count() const;

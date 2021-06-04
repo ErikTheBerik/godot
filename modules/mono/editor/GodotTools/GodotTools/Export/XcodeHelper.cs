@@ -27,7 +27,11 @@ namespace GodotTools.Export
         {
             var outputWrapper = new Godot.Collections.Array();
 
+<<<<<<< HEAD
             int exitCode = Godot.OS.Execute("xcode-select", new string[] { "--print-path" }, blocking: true, output: outputWrapper);
+=======
+            int exitCode = Godot.OS.Execute("xcode-select", new string[] { "--print-path" }, output: outputWrapper);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             if (exitCode == 0)
             {

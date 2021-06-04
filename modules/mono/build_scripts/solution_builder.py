@@ -8,9 +8,12 @@ def find_dotnet_cli():
     import os.path
 
     if os.name == "nt":
+<<<<<<< HEAD
         windows_exts = os.environ["PATHEXT"]
         windows_exts = windows_exts.split(os.pathsep) if windows_exts else []
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         for hint_dir in os.environ["PATH"].split(os.pathsep):
             hint_dir = hint_dir.strip('"')
             hint_path = os.path.join(hint_dir, "dotnet")

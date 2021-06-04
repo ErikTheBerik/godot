@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,30 +31,16 @@
 #ifndef OS_OSX_H
 #define OS_OSX_H
 
-#define BitMap _QDBitMap // Suppress deprecated QuickDraw definition.
-
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "crash_handler_osx.h"
 #include "drivers/coreaudio/audio_driver_coreaudio.h"
 #include "drivers/coremidi/midi_driver_coremidi.h"
 #include "drivers/unix/os_unix.h"
 #include "joypad_osx.h"
-#include "main/input_default.h"
-#include "power_osx.h"
 #include "servers/audio_server.h"
-#include "servers/visual/rasterizer.h"
-#include "servers/visual/visual_server_wrap_mt.h"
-#include "servers/visual_server.h"
-
-#include <AppKit/AppKit.h>
-#include <AppKit/NSCursor.h>
-#include <ApplicationServices/ApplicationServices.h>
-#include <CoreVideo/CoreVideo.h>
-
-#undef BitMap
-#undef CursorShape
 
 class OS_OSX : public OS_Unix {
+<<<<<<< HEAD
 public:
 	struct KeyEvent {
 		unsigned int osx_state;
@@ -74,14 +60,13 @@ public:
 
 	Vector<KeyEvent> key_event_buffer;
 	int key_event_pos;
+=======
+	virtual void delete_main_loop() override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	bool force_quit;
-	//  rasterizer seems to no longer be given to visual server, its using GLES3 directly?
-	//Rasterizer *rasterizer;
-	VisualServer *visual_server;
 
-	List<String> args;
-	MainLoop *main_loop;
+	JoypadOSX *joypad_osx = nullptr;
 
 #ifdef COREAUDIO_ENABLED
 	AudioDriverCoreAudio audio_driver;
@@ -90,6 +75,7 @@ public:
 	MIDIDriverCoreMidi midi_driver;
 #endif
 
+<<<<<<< HEAD
 	InputDefault *input;
 	JoypadOSX *joypad_osx;
 
@@ -240,22 +226,37 @@ public:
 	void push_input(const Ref<InputEvent> &p_event);
 
 	String get_locale() const;
+=======
+	CrashHandler crash_handler;
 
-	virtual void set_video_mode(const VideoMode &p_video_mode, int p_screen = 0);
-	virtual VideoMode get_video_mode(int p_screen = 0) const;
-	virtual void get_fullscreen_mode_list(List<VideoMode> *p_list, int p_screen = 0) const;
+	MainLoop *main_loop;
 
-	virtual String get_executable_path() const;
+public:
+	String open_with_filename;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
+protected:
+	virtual void initialize_core() override;
+	virtual void initialize() override;
+	virtual void finalize() override;
+
+	virtual void initialize_joypads() override;
+
+<<<<<<< HEAD
 	virtual LatinKeyboardVariant get_latin_keyboard_variant() const;
 	virtual int keyboard_get_layout_count() const;
 	virtual int keyboard_get_current_layout() const;
 	virtual void keyboard_set_current_layout(int p_index);
 	virtual String keyboard_get_layout_language(int p_index) const;
 	virtual String keyboard_get_layout_name(int p_index) const;
+=======
+	virtual void set_main_loop(MainLoop *p_main_loop) override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	virtual void move_window_to_foreground();
+public:
+	virtual String get_name() const override;
 
+<<<<<<< HEAD
 	virtual int get_screen_count() const;
 	virtual int get_current_screen() const;
 	virtual void set_current_screen(int p_screen);
@@ -264,69 +265,38 @@ public:
 	virtual int get_screen_dpi(int p_screen = -1) const;
 	virtual float get_screen_scale(int p_screen = -1) const;
 	virtual float get_screen_max_scale() const;
+=======
+	virtual Error open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path = false) override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	virtual Point2 get_window_position() const;
-	virtual void set_window_position(const Point2 &p_position);
-	virtual Size2 get_max_window_size() const;
-	virtual Size2 get_min_window_size() const;
-	virtual void set_min_window_size(const Size2 p_size);
-	virtual void set_max_window_size(const Size2 p_size);
-	virtual void set_window_size(const Size2 p_size);
-	virtual void set_window_fullscreen(bool p_enabled);
-	virtual bool is_window_fullscreen() const;
-	virtual void set_window_resizable(bool p_enabled);
-	virtual bool is_window_resizable() const;
-	virtual void set_window_minimized(bool p_enabled);
-	virtual bool is_window_minimized() const;
-	virtual void set_window_maximized(bool p_enabled);
-	virtual bool is_window_maximized() const;
-	virtual void set_window_always_on_top(bool p_enabled);
-	virtual bool is_window_always_on_top() const;
-	virtual bool is_window_focused() const;
-	virtual void request_attention();
-	virtual String get_joy_guid(int p_device) const;
+	virtual MainLoop *get_main_loop() const override;
 
-	virtual void set_borderless_window(bool p_borderless);
-	virtual bool get_borderless_window();
+	virtual String get_config_path() const override;
+	virtual String get_data_path() const override;
+	virtual String get_cache_path() const override;
+	virtual String get_bundle_resource_dir() const override;
+	virtual String get_godot_dir_name() const override;
 
-	virtual bool get_window_per_pixel_transparency_enabled() const;
-	virtual void set_window_per_pixel_transparency_enabled(bool p_enabled);
+	virtual String get_system_dir(SystemDir p_dir) const override;
 
-	virtual void set_ime_active(const bool p_active);
-	virtual void set_ime_position(const Point2 &p_pos);
-	virtual Point2 get_ime_selection() const;
-	virtual String get_ime_text() const;
+	Error shell_open(String p_uri) override;
 
-	virtual String get_unique_id() const;
+	String get_locale() const override;
 
-	virtual OS::PowerState get_power_state();
-	virtual int get_power_seconds_left();
-	virtual int get_power_percent_left();
+	virtual String get_executable_path() const override;
 
-	virtual bool _check_internal_feature_support(const String &p_feature);
+	virtual String get_unique_id() const override; //++
 
-	virtual void _set_use_vsync(bool p_enable);
-	//virtual bool is_vsync_enabled() const;
+	virtual bool _check_internal_feature_support(const String &p_feature) override;
 
 	void run();
 
-	void set_mouse_mode(MouseMode p_mode);
-	MouseMode get_mouse_mode() const;
+	virtual void disable_crash_handler() override;
+	virtual bool is_disable_crash_handler() const override;
 
-	void disable_crash_handler();
-	bool is_disable_crash_handler() const;
-
-	virtual Error move_to_trash(const String &p_path);
-
-	void force_process_input();
+	virtual Error move_to_trash(const String &p_path) override;
 
 	OS_OSX();
-
-private:
-	Point2 get_native_screen_position(int p_screen) const;
-	Point2 get_native_window_position() const;
-	void set_native_window_position(const Point2 &p_position);
-	Point2 get_screens_origin() const;
 };
 
 #endif

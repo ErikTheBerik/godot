@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,18 +34,22 @@
 #include "core/io/udp_server.h"
 
 void PacketPeerUDP::set_blocking_mode(bool p_enable) {
-
 	blocking = p_enable;
 }
 
 void PacketPeerUDP::set_broadcast_enabled(bool p_enabled) {
 	ERR_FAIL_COND(udp_server);
 	broadcast = p_enabled;
-	if (_sock.is_valid() && _sock->is_open())
+	if (_sock.is_valid() && _sock->is_open()) {
 		_sock->set_broadcasting_enabled(p_enabled);
+	}
 }
 
+<<<<<<< HEAD
 Error PacketPeerUDP::join_multicast_group(IP_Address p_multi_address, String p_if_name) {
+=======
+Error PacketPeerUDP::join_multicast_group(IPAddress p_multi_address, String p_if_name) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ERR_FAIL_COND_V(udp_server, ERR_LOCKED);
 	ERR_FAIL_COND_V(!_sock.is_valid(), ERR_UNAVAILABLE);
 	ERR_FAIL_COND_V(!p_multi_address.is_valid(), ERR_INVALID_PARAMETER);
@@ -60,7 +64,11 @@ Error PacketPeerUDP::join_multicast_group(IP_Address p_multi_address, String p_i
 	return _sock->join_multicast_group(p_multi_address, p_if_name);
 }
 
+<<<<<<< HEAD
 Error PacketPeerUDP::leave_multicast_group(IP_Address p_multi_address, String p_if_name) {
+=======
+Error PacketPeerUDP::leave_multicast_group(IPAddress p_multi_address, String p_if_name) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ERR_FAIL_COND_V(udp_server, ERR_LOCKED);
 	ERR_FAIL_COND_V(!_sock.is_valid(), ERR_UNAVAILABLE);
 	ERR_FAIL_COND_V(!_sock->is_open(), ERR_UNCONFIGURED);
@@ -68,19 +76,18 @@ Error PacketPeerUDP::leave_multicast_group(IP_Address p_multi_address, String p_
 }
 
 String PacketPeerUDP::_get_packet_ip() const {
-
 	return get_packet_address();
 }
 
 Error PacketPeerUDP::_set_dest_address(const String &p_address, int p_port) {
-
-	IP_Address ip;
+	IPAddress ip;
 	if (p_address.is_valid_ip_address()) {
 		ip = p_address;
 	} else {
 		ip = IP::get_singleton()->resolve_hostname(p_address);
-		if (!ip.is_valid())
+		if (!ip.is_valid()) {
 			return ERR_CANT_RESOLVE;
+		}
 	}
 
 	set_dest_address(ip, p_port);
@@ -88,22 +95,23 @@ Error PacketPeerUDP::_set_dest_address(const String &p_address, int p_port) {
 }
 
 int PacketPeerUDP::get_available_packet_count() const {
-
 	// TODO we should deprecate this, and expose poll instead!
 	Error err = const_cast<PacketPeerUDP *>(this)->_poll();
-	if (err != OK)
+	if (err != OK) {
 		return -1;
+	}
 
 	return queue_count;
 }
 
 Error PacketPeerUDP::get_packet(const uint8_t **r_buffer, int &r_buffer_size) {
-
 	Error err = _poll();
-	if (err != OK)
+	if (err != OK) {
 		return err;
-	if (queue_count == 0)
+	}
+	if (queue_count == 0) {
 		return ERR_UNAVAILABLE;
+	}
 
 	uint32_t size = 0;
 	uint8_t ipv6[16];
@@ -119,7 +127,6 @@ Error PacketPeerUDP::get_packet(const uint8_t **r_buffer, int &r_buffer_size) {
 }
 
 Error PacketPeerUDP::put_packet(const uint8_t *p_buffer, int p_buffer_size) {
-
 	ERR_FAIL_COND_V(!_sock.is_valid(), ERR_UNAVAILABLE);
 	ERR_FAIL_COND_V(!peer_addr.is_valid(), ERR_UNCONFIGURED);
 
@@ -141,10 +148,11 @@ Error PacketPeerUDP::put_packet(const uint8_t *p_buffer, int p_buffer_size) {
 			err = _sock->sendto(p_buffer, p_buffer_size, sent, peer_addr, peer_port);
 		}
 		if (err != OK) {
-			if (err != ERR_BUSY)
+			if (err != ERR_BUSY) {
 				return FAILED;
-			else if (!blocking)
+			} else if (!blocking) {
 				return ERR_BUSY;
+			}
 			// Keep trying to send full packet
 			continue;
 		}
@@ -156,26 +164,27 @@ Error PacketPeerUDP::put_packet(const uint8_t *p_buffer, int p_buffer_size) {
 }
 
 int PacketPeerUDP::get_max_packet_size() const {
-
 	return 512; // uhm maybe not
 }
 
-Error PacketPeerUDP::listen(int p_port, const IP_Address &p_bind_address, int p_recv_buffer_size) {
-
+Error PacketPeerUDP::bind(int p_port, const IPAddress &p_bind_address, int p_recv_buffer_size) {
 	ERR_FAIL_COND_V(!_sock.is_valid(), ERR_UNAVAILABLE);
 	ERR_FAIL_COND_V(_sock->is_open(), ERR_ALREADY_IN_USE);
 	ERR_FAIL_COND_V(!p_bind_address.is_valid() && !p_bind_address.is_wildcard(), ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V_MSG(p_port < 0 || p_port > 65535, ERR_INVALID_PARAMETER, "The local port number must be between 0 and 65535 (inclusive).");
 
 	Error err;
 	IP::Type ip_type = IP::TYPE_ANY;
 
-	if (p_bind_address.is_valid())
+	if (p_bind_address.is_valid()) {
 		ip_type = p_bind_address.is_ipv4() ? IP::TYPE_IPV4 : IP::TYPE_IPV6;
+	}
 
 	err = _sock->open(NetSocket::TYPE_UDP, ip_type);
 
-	if (err != OK)
+	if (err != OK) {
 		return ERR_CANT_CREATE;
+	}
 
 	_sock->set_blocking_enabled(false);
 	_sock->set_broadcasting_enabled(broadcast);
@@ -189,7 +198,11 @@ Error PacketPeerUDP::listen(int p_port, const IP_Address &p_bind_address, int p_
 	return OK;
 }
 
+<<<<<<< HEAD
 Error PacketPeerUDP::connect_shared_socket(Ref<NetSocket> p_sock, IP_Address p_ip, uint16_t p_port, UDPServer *p_server) {
+=======
+Error PacketPeerUDP::connect_shared_socket(Ref<NetSocket> p_sock, IPAddress p_ip, uint16_t p_port, UDPServer *p_server) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	udp_server = p_server;
 	connected = true;
 	_sock = p_sock;
@@ -199,6 +212,7 @@ Error PacketPeerUDP::connect_shared_socket(Ref<NetSocket> p_sock, IP_Address p_i
 	packet_port = peer_port;
 	return OK;
 }
+<<<<<<< HEAD
 
 void PacketPeerUDP::disconnect_shared_socket() {
 	udp_server = nullptr;
@@ -230,6 +244,40 @@ Error PacketPeerUDP::connect_to_host(const IP_Address &p_host, int p_port) {
 		ERR_FAIL_V_MSG(FAILED, "Unable to connect");
 	}
 
+=======
+
+void PacketPeerUDP::disconnect_shared_socket() {
+	udp_server = nullptr;
+	_sock = Ref<NetSocket>(NetSocket::create());
+	close();
+}
+
+Error PacketPeerUDP::connect_to_host(const IPAddress &p_host, int p_port) {
+	ERR_FAIL_COND_V(udp_server, ERR_LOCKED);
+	ERR_FAIL_COND_V(!_sock.is_valid(), ERR_UNAVAILABLE);
+	ERR_FAIL_COND_V(!p_host.is_valid(), ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V_MSG(p_port < 1 || p_port > 65535, ERR_INVALID_PARAMETER, "The remote port number must be between 1 and 65535 (inclusive).");
+
+	Error err;
+
+	if (!_sock->is_open()) {
+		IP::Type ip_type = p_host.is_ipv4() ? IP::TYPE_IPV4 : IP::TYPE_IPV6;
+		err = _sock->open(NetSocket::TYPE_UDP, ip_type);
+		ERR_FAIL_COND_V(err != OK, ERR_CANT_OPEN);
+		_sock->set_blocking_enabled(false);
+	}
+
+	err = _sock->connect_to_host(p_host, p_port);
+
+	// I see no reason why we should get ERR_BUSY (wouldblock/eagain) here.
+	// This is UDP, so connect is only used to tell the OS to which socket
+	// it should deliver packets when multiple are bound on the same address/port.
+	if (err != OK) {
+		close();
+		ERR_FAIL_V_MSG(FAILED, "Unable to connect");
+	}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	connected = true;
 
 	peer_addr = p_host;
@@ -258,13 +306,11 @@ void PacketPeerUDP::close() {
 }
 
 Error PacketPeerUDP::wait() {
-
 	ERR_FAIL_COND_V(!_sock.is_valid(), ERR_UNAVAILABLE);
 	return _sock->poll(NetSocket::POLL_TYPE_IN, -1);
 }
 
 Error PacketPeerUDP::_poll() {
-
 	ERR_FAIL_COND_V(!_sock.is_valid(), ERR_UNAVAILABLE);
 
 	if (!_sock->is_open()) {
@@ -276,7 +322,7 @@ Error PacketPeerUDP::_poll() {
 
 	Error err;
 	int read;
-	IP_Address ip;
+	IPAddress ip;
 	uint16_t port;
 
 	while (true) {
@@ -289,8 +335,9 @@ Error PacketPeerUDP::_poll() {
 		}
 
 		if (err != OK) {
-			if (err == ERR_BUSY)
+			if (err == ERR_BUSY) {
 				break;
+			}
 			return FAILED;
 		}
 
@@ -304,6 +351,7 @@ Error PacketPeerUDP::_poll() {
 
 	return OK;
 }
+<<<<<<< HEAD
 
 Error PacketPeerUDP::store_packet(IP_Address p_ip, uint32_t p_port, uint8_t *p_buf, int p_buf_size) {
 	if (rb.space_left() < p_buf_size + 24) {
@@ -318,37 +366,62 @@ Error PacketPeerUDP::store_packet(IP_Address p_ip, uint32_t p_port, uint8_t *p_b
 }
 
 bool PacketPeerUDP::is_listening() const {
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
+Error PacketPeerUDP::store_packet(IPAddress p_ip, uint32_t p_port, uint8_t *p_buf, int p_buf_size) {
+	if (rb.space_left() < p_buf_size + 24) {
+		return ERR_OUT_OF_MEMORY;
+	}
+	rb.write(p_ip.get_ipv6(), 16);
+	rb.write((uint8_t *)&p_port, 4);
+	rb.write((uint8_t *)&p_buf_size, 4);
+	rb.write(p_buf, p_buf_size);
+	++queue_count;
+	return OK;
+}
+
+bool PacketPeerUDP::is_bound() const {
 	return _sock.is_valid() && _sock->is_open();
 }
 
-IP_Address PacketPeerUDP::get_packet_address() const {
-
+IPAddress PacketPeerUDP::get_packet_address() const {
 	return packet_ip;
 }
 
 int PacketPeerUDP::get_packet_port() const {
-
 	return packet_port;
 }
 
-void PacketPeerUDP::set_dest_address(const IP_Address &p_address, int p_port) {
+int PacketPeerUDP::get_local_port() const {
+	uint16_t local_port;
+	_sock->get_socket_address(nullptr, &local_port);
+	return local_port;
+}
 
+<<<<<<< HEAD
+=======
+void PacketPeerUDP::set_dest_address(const IPAddress &p_address, int p_port) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ERR_FAIL_COND_MSG(connected, "Destination address cannot be set for connected sockets");
 	peer_addr = p_address;
 	peer_port = p_port;
 }
 
 void PacketPeerUDP::_bind_methods() {
-
-	ClassDB::bind_method(D_METHOD("listen", "port", "bind_address", "recv_buf_size"), &PacketPeerUDP::listen, DEFVAL("*"), DEFVAL(65536));
+	ClassDB::bind_method(D_METHOD("bind", "port", "bind_address", "recv_buf_size"), &PacketPeerUDP::bind, DEFVAL("*"), DEFVAL(65536));
 	ClassDB::bind_method(D_METHOD("close"), &PacketPeerUDP::close);
 	ClassDB::bind_method(D_METHOD("wait"), &PacketPeerUDP::wait);
+<<<<<<< HEAD
 	ClassDB::bind_method(D_METHOD("is_listening"), &PacketPeerUDP::is_listening);
+=======
+	ClassDB::bind_method(D_METHOD("is_bound"), &PacketPeerUDP::is_bound);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ClassDB::bind_method(D_METHOD("connect_to_host", "host", "port"), &PacketPeerUDP::connect_to_host);
 	ClassDB::bind_method(D_METHOD("is_connected_to_host"), &PacketPeerUDP::is_connected_to_host);
 	ClassDB::bind_method(D_METHOD("get_packet_ip"), &PacketPeerUDP::_get_packet_ip);
 	ClassDB::bind_method(D_METHOD("get_packet_port"), &PacketPeerUDP::get_packet_port);
+	ClassDB::bind_method(D_METHOD("get_local_port"), &PacketPeerUDP::get_local_port);
 	ClassDB::bind_method(D_METHOD("set_dest_address", "host", "port"), &PacketPeerUDP::_set_dest_address);
 	ClassDB::bind_method(D_METHOD("set_broadcast_enabled", "enabled"), &PacketPeerUDP::set_broadcast_enabled);
 	ClassDB::bind_method(D_METHOD("join_multicast_group", "multicast_address", "interface_name"), &PacketPeerUDP::join_multicast_group);
@@ -356,6 +429,7 @@ void PacketPeerUDP::_bind_methods() {
 }
 
 PacketPeerUDP::PacketPeerUDP() :
+<<<<<<< HEAD
 		packet_port(0),
 		queue_count(0),
 		peer_port(0),
@@ -363,11 +437,12 @@ PacketPeerUDP::PacketPeerUDP() :
 		blocking(true),
 		broadcast(false),
 		udp_server(nullptr),
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		_sock(Ref<NetSocket>(NetSocket::create())) {
 	rb.resize(16);
 }
 
 PacketPeerUDP::~PacketPeerUDP() {
-
 	close();
 }

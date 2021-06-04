@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -64,7 +69,11 @@ public:
 	/// Converts quaternion into rotation order vector (in rad).
 	static Vector3 QuaternionToEuler(FBXDocParser::Model::RotOrder mode, const Quat &p_rotation);
 
+<<<<<<< HEAD
 	static void debug_xform(String name, const Transform &t) {
+=======
+	static void debug_xform(String name, const Transform3D &t) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		print_verbose(name + " " + t.origin + " rotation: " + (t.basis.get_euler() * (180 / Math_PI)));
 	}
 
@@ -204,6 +213,7 @@ public:
      */
 	static float get_fbx_fps(int32_t time_mode) {
 		switch (time_mode) {
+<<<<<<< HEAD
 			case AssetImportFbx::TIME_MODE_DEFAULT: return 24;
 			case AssetImportFbx::TIME_MODE_120: return 120;
 			case AssetImportFbx::TIME_MODE_100: return 100;
@@ -219,6 +229,38 @@ public:
 			case AssetImportFbx::TIME_MODE_1000: return 1000;
 			case AssetImportFbx::TIME_MODE_CINEMA_ND: return 23.976f;
 			case AssetImportFbx::TIME_MODE_CUSTOM: return -1;
+=======
+			case AssetImportFbx::TIME_MODE_DEFAULT:
+				return 24;
+			case AssetImportFbx::TIME_MODE_120:
+				return 120;
+			case AssetImportFbx::TIME_MODE_100:
+				return 100;
+			case AssetImportFbx::TIME_MODE_60:
+				return 60;
+			case AssetImportFbx::TIME_MODE_50:
+				return 50;
+			case AssetImportFbx::TIME_MODE_48:
+				return 48;
+			case AssetImportFbx::TIME_MODE_30:
+				return 30;
+			case AssetImportFbx::TIME_MODE_30_DROP:
+				return 30;
+			case AssetImportFbx::TIME_MODE_NTSC_DROP_FRAME:
+				return 29.9700262f;
+			case AssetImportFbx::TIME_MODE_NTSC_FULL_FRAME:
+				return 29.9700262f;
+			case AssetImportFbx::TIME_MODE_PAL:
+				return 25;
+			case AssetImportFbx::TIME_MODE_CINEMA:
+				return 24;
+			case AssetImportFbx::TIME_MODE_1000:
+				return 1000;
+			case AssetImportFbx::TIME_MODE_CINEMA_ND:
+				return 23.976f;
+			case AssetImportFbx::TIME_MODE_CUSTOM:
+				return -1;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
 		return 0;
 	}
@@ -252,7 +294,11 @@ public:
 	  */
 	// static void set_texture_mapping_mode(aiTextureMapMode *map_mode, Ref<ImageTexture> texture) {
 	// 	ERR_FAIL_COND(texture.is_null());
+<<<<<<< HEAD
 	// 	ERR_FAIL_COND(map_mode == NULL);
+=======
+	// 	ERR_FAIL_COND(map_mode == nullptr);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// 	aiTextureMapMode tex_mode = map_mode[0];
 
 	// 	int32_t flags = Texture::FLAGS_DEFAULT;
@@ -271,7 +317,10 @@ public:
 	  * We need to upgrade this in the later version :) should not be hard
 	  */
 	//static Ref<Image> load_image(ImportState &state, const aiScene *p_scene, String p_path){
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// Map<String, Ref<Image> >::Element *match = state.path_to_image_cache.find(p_path);
 
 	// // if our cache contains this image then don't bother
@@ -325,7 +374,11 @@ public:
 	// } else {
 	// 	Ref<Texture> texture = ResourceLoader::load(p_path);
 	// 	ERR_FAIL_COND_V(texture.is_null(), Ref<Image>());
+<<<<<<< HEAD
 	// 	Ref<Image> image = texture->get_data();
+=======
+	// 	Ref<Image> image = texture->get_image();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// 	ERR_FAIL_COND_V(image.is_null(), Ref<Image>());
 	// 	state.path_to_image_cache.insert(p_path, image);
 	// 	return image;
@@ -368,7 +421,11 @@ public:
 	// 		String &path,
 	// 		AssimpImageData &image_state) {
 	// 	aiString ai_filename = aiString();
+<<<<<<< HEAD
 	// 	if (AI_SUCCESS == ai_material->GetTexture(texture_type, 0, &ai_filename, NULL, NULL, NULL, NULL, image_state.map_mode)) {
+=======
+	// 	if (AI_SUCCESS == ai_material->GetTexture(texture_type, 0, &ai_filename, nullptr, nullptr, nullptr, nullptr, image_state.map_mode)) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// 		return CreateAssimpTexture(state, ai_filename, filename, path, image_state);
 	// 	}
 
@@ -377,7 +434,11 @@ public:
 };
 
 // Apply the transforms so the basis will have scale 1.
+<<<<<<< HEAD
 Transform get_unscaled_transform(const Transform &p_initial, real_t p_scale);
+=======
+Transform3D get_unscaled_transform(const Transform3D &p_initial, real_t p_scale);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 /// Uses the Newell's method to compute any polygon normal.
 /// The polygon must be at least size of 3 or bigger.

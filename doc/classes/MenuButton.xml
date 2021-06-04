@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="MenuButton" inherits="Button" version="3.2">
+<class name="MenuButton" inherits="Button" version="4.0">
 	<brief_description>
 		Special button that brings up a [PopupMenu] when clicked.
 	</brief_description>
 	<description>
 		Special button that brings up a [PopupMenu] when clicked.
+<<<<<<< HEAD
 		New items can be created inside this [PopupMenu] using [code]get_popup().add_item("My Item Name")[/code]. You can also create them directly from the editor. To do so, select the [MenuButton] node, then in the toolbar at the top of the 2D editor, click [b]Items[/b] then click [b]Add[/b] in the popup. You will be able to give each items new properties.
+=======
+		New items can be created inside this [PopupMenu] using [code]get_popup().add_item("My Item Name")[/code]. You can also create them directly from the editor. To do so, select the [MenuButton] node, then in the toolbar at the top of the 2D editor, click [b]Items[/b] then click [b]Add[/b] in the popup. You will be able to give each item new properties.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		See also [BaseButton] which contains common properties and methods associated with this node.
 	</description>
 	<tutorials>
@@ -37,9 +41,9 @@
 		<member name="toggle_mode" type="bool" setter="set_toggle_mode" getter="is_toggle_mode" override="true" default="true" />
 	</members>
 	<signals>
-		<signal name="about_to_show">
+		<signal name="about_to_popup">
 			<description>
-				Emitted when [PopupMenu] of this MenuButton is about to show.
+				Emitted when the [PopupMenu] of this MenuButton is about to show.
 			</description>
 		</signal>
 	</signals>
@@ -58,6 +62,7 @@
 		<theme_item name="font_color" type="Color" default="Color( 0.88, 0.88, 0.88, 1 )">
 			Default text [Color] of the [MenuButton].
 		</theme_item>
+<<<<<<< HEAD
 		<theme_item name="font_color_disabled" type="Color" default="Color( 1, 1, 1, 0.3 )">
 			Text [Color] used when the [MenuButton] is disabled.
 		</theme_item>
@@ -66,6 +71,22 @@
 		</theme_item>
 		<theme_item name="font_color_pressed" type="Color" default="Color( 1, 1, 1, 1 )">
 			Text [Color] used when the [MenuButton] is being pressed.
+=======
+		<theme_item name="font_disabled_color" type="Color" default="Color( 1, 1, 1, 0.3 )">
+			Text [Color] used when the [MenuButton] is disabled.
+		</theme_item>
+		<theme_item name="font_hover_color" type="Color" default="Color( 0.94, 0.94, 0.94, 1 )">
+			Text [Color] used when the [MenuButton] is being hovered.
+		</theme_item>
+		<theme_item name="font_outline_color" type="Color" default="Color( 1, 1, 1, 1 )">
+			The tint of text outline of the [MenuButton].
+		</theme_item>
+		<theme_item name="font_pressed_color" type="Color" default="Color( 1, 1, 1, 1 )">
+			Text [Color] used when the [MenuButton] is being pressed.
+		</theme_item>
+		<theme_item name="font_size" type="int">
+			Font size of the [MenuButton]'s text.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		</theme_item>
 		<theme_item name="hover" type="StyleBox">
 			[StyleBox] used when the [MenuButton] is being hovered.
@@ -75,6 +96,12 @@
 		</theme_item>
 		<theme_item name="normal" type="StyleBox">
 			Default [StyleBox] for the [MenuButton].
+<<<<<<< HEAD
+=======
+		</theme_item>
+		<theme_item name="outline_size" type="int" default="0">
+			The size of the text outline.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		</theme_item>
 		<theme_item name="pressed" type="StyleBox">
 			[StyleBox] used when the [MenuButton] is being pressed.

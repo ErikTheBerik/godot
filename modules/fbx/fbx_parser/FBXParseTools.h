@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,8 +36,13 @@
 #ifndef FBX_PARSE_TOOLS_H
 #define FBX_PARSE_TOOLS_H
 
+<<<<<<< HEAD
 #include "core/error_macros.h"
 #include "core/ustring.h"
+=======
+#include "core/error/error_macros.h"
+#include "core/string/ustring.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #include <stdint.h>
 #include <algorithm>
@@ -61,7 +71,11 @@ inline bool IsLineEnd(char_t c) {
 // Special version of the function, providing higher accuracy and safety
 // It is mainly used by fast_atof to prevent ugly and unwanted integer overflows.
 // ------------------------------------------------------------------------------------
+<<<<<<< HEAD
 inline uint64_t strtoul10_64(const char *in, bool &errored, const char **out = 0, unsigned int *max_inout = 0) {
+=======
+inline uint64_t strtoul10_64(const char *in, bool &errored, const char **out = nullptr, unsigned int *max_inout = nullptr) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	unsigned int cur = 0;
 	uint64_t value = 0;
 

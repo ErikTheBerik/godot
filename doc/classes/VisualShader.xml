@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="VisualShader" inherits="Shader" version="3.2">
+<class name="VisualShader" inherits="Shader" version="4.0">
 	<brief_description>
 		A custom shader program with a visual editor.
 	</brief_description>
@@ -114,7 +114,7 @@
 			</description>
 		</method>
 		<method name="get_node_list" qualifiers="const">
-			<return type="PoolIntArray">
+			<return type="PackedInt32Array">
 			</return>
 			<argument index="0" name="type" type="int" enum="VisualShader.Type">
 			</argument>
@@ -167,6 +167,22 @@
 			</argument>
 			<description>
 				Removes the specified node from the shader.
+<<<<<<< HEAD
+=======
+			</description>
+		</method>
+		<method name="replace_node">
+			<return type="void">
+			</return>
+			<argument index="0" name="type" type="int" enum="VisualShader.Type">
+			</argument>
+			<argument index="1" name="id" type="int">
+			</argument>
+			<argument index="2" name="new_class" type="StringName">
+			</argument>
+			<description>
+				Replaces the specified node with a node of new class type.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			</description>
 		</method>
 		<method name="set_mode">
@@ -195,6 +211,11 @@
 	<members>
 		<member name="graph_offset" type="Vector2" setter="set_graph_offset" getter="get_graph_offset" default="Vector2( 0, 0 )">
 			The offset vector of the whole graph.
+<<<<<<< HEAD
+=======
+		</member>
+		<member name="version" type="String" setter="set_version" getter="get_version" default="&quot;&quot;">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		</member>
 	</members>
 	<constants>
@@ -206,8 +227,19 @@
 		</constant>
 		<constant name="TYPE_LIGHT" value="2" enum="Type">
 			A shader for light calculations.
+<<<<<<< HEAD
+=======
 		</constant>
-		<constant name="TYPE_MAX" value="3" enum="Type">
+		<constant name="TYPE_EMIT" value="3" enum="Type">
+		</constant>
+		<constant name="TYPE_PROCESS" value="4" enum="Type">
+		</constant>
+		<constant name="TYPE_END" value="5" enum="Type">
+		</constant>
+		<constant name="TYPE_SKY" value="6" enum="Type">
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
+		</constant>
+		<constant name="TYPE_MAX" value="7" enum="Type">
 			Represents the size of the [enum Type] enum.
 		</constant>
 		<constant name="NODE_ID_INVALID" value="-1">

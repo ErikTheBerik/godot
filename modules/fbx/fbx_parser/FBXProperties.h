@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -137,6 +142,7 @@ class PropertyTable {
 public:
 	// in-memory property table with no source element
 	PropertyTable();
+<<<<<<< HEAD
 	PropertyTable(const ElementPtr element, const PropertyTable *templateProps);
 	~PropertyTable();
 
@@ -159,13 +165,38 @@ public:
 		return templateProps;
 	}
 
+=======
+	PropertyTable(const ElementPtr element);
+	virtual ~PropertyTable();
+
+	PropertyPtr Get(const std::string &name) const;
+	void Setup(ElementPtr ptr);
+
+	// PropertyTable's need not be coupled with FBX elements so this can be NULL
+	ElementPtr GetElement() {
+		return element;
+	}
+
+	PropertyMap &GetProperties() {
+		return props;
+	}
+
+	const LazyPropertyMap &GetLazyProperties() {
+		return lazyProps;
+	}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	DirectPropertyMap GetUnparsedProperties() const;
 
 private:
 	LazyPropertyMap lazyProps;
 	mutable PropertyMap props;
+<<<<<<< HEAD
 	const PropertyTable *templateProps = nullptr;
 	const ElementPtr element = nullptr;
+=======
+	ElementPtr element = nullptr;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 };
 
 // ------------------------------------------------------------------------------------------------
@@ -177,7 +208,11 @@ inline T PropertyGet(const PropertyTable *in, const std::string &name, const T &
 	}
 
 	// strong typing, no need to be lenient
+<<<<<<< HEAD
 	const TypedProperty<T> *const tprop = prop->As<TypedProperty<T> >();
+=======
+	const TypedProperty<T> *const tprop = prop->As<TypedProperty<T>>();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (nullptr == tprop) {
 		return defaultValue;
 	}
@@ -190,6 +225,7 @@ template <typename T>
 inline T PropertyGet(const PropertyTable *in, const std::string &name, bool &result, bool useTemplate = false) {
 	PropertyPtr prop = in->Get(name);
 	if (nullptr == prop) {
+<<<<<<< HEAD
 		if (!useTemplate) {
 			result = false;
 			return T();
@@ -200,6 +236,13 @@ inline T PropertyGet(const PropertyTable *in, const std::string &name, bool &res
 			return T();
 		}
 		prop = templ->Get(name);
+=======
+		if (nullptr == in) {
+			result = false;
+			return T();
+		}
+		prop = in->Get(name);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		if (nullptr == prop) {
 			result = false;
 			return T();
@@ -207,7 +250,11 @@ inline T PropertyGet(const PropertyTable *in, const std::string &name, bool &res
 	}
 
 	// strong typing, no need to be lenient
+<<<<<<< HEAD
 	const TypedProperty<T> *const tprop = prop->As<TypedProperty<T> >();
+=======
+	const TypedProperty<T> *const tprop = prop->As<TypedProperty<T>>();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (nullptr == tprop) {
 		result = false;
 		return T();
@@ -216,7 +263,10 @@ inline T PropertyGet(const PropertyTable *in, const std::string &name, bool &res
 	result = true;
 	return tprop->Value();
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser
 
 #endif // FBX_PROPERTIES_H

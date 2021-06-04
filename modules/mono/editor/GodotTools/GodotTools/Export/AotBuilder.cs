@@ -120,7 +120,11 @@ namespace GodotTools.Export
                 string assemblyPath = assembly.Value;
 
                 string outputFileExtension = platform == OS.Platforms.Windows ? ".dll" :
+<<<<<<< HEAD
                     platform == OS.Platforms.OSX ? ".dylib" :
+=======
+                    platform == OS.Platforms.MacOS ? ".dylib" :
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                     ".so";
 
                 string outputFileName = assemblyName + ".dll" + outputFileExtension;
@@ -132,7 +136,11 @@ namespace GodotTools.Export
 
                 ExecuteCompiler(FindCrossCompiler(compilerDirPath), compilerArgs, bclDir);
 
+<<<<<<< HEAD
                 if (platform == OS.Platforms.OSX)
+=======
+                if (platform == OS.Platforms.MacOS)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                 {
                     exporter.AddSharedObject(tempOutputFilePath, tags: null);
                 }
@@ -581,13 +589,21 @@ MONO_AOT_MODE_LAST = 1000,
                         string arch = bits == "64" ? "x86_64" : "i686";
                         return $"windows-{arch}";
                     }
+<<<<<<< HEAD
                 case OS.Platforms.OSX:
+=======
+                case OS.Platforms.MacOS:
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                     {
                         Debug.Assert(bits == null || bits == "64");
                         string arch = "x86_64";
                         return $"{platform}-{arch}";
                     }
+<<<<<<< HEAD
                 case OS.Platforms.X11:
+=======
+                case OS.Platforms.LinuxBSD:
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                 case OS.Platforms.Server:
                     {
                         string arch = bits == "64" ? "x86_64" : "i686";

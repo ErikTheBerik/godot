@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -93,7 +98,11 @@ using namespace Util;
 
 // ------------------------------------------------------------------------------------------------
 LazyObject::LazyObject(uint64_t id, const ElementPtr element, const Document &doc) :
+<<<<<<< HEAD
 		doc(doc), element(element), id(id), flags() {
+=======
+		doc(doc), element(element), id(id) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// empty
 }
 
@@ -184,7 +193,10 @@ ObjectPtr LazyObject::LoadObject() {
 		if (!strcmp(classtag.c_str(), "Cluster")) {
 			object.reset(new Cluster(id, element, doc, name));
 		} else if (!strcmp(classtag.c_str(), "Skin")) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			object.reset(new Skin(id, element, doc, name));
 		} else if (!strcmp(classtag.c_str(), "BlendShape")) {
 			object.reset(new BlendShape(id, element, doc, name));
@@ -229,7 +241,11 @@ ObjectPtr LazyObject::LoadObject() {
 
 // ------------------------------------------------------------------------------------------------
 Object::Object(uint64_t id, const ElementPtr element, const std::string &name) :
+<<<<<<< HEAD
 		element(element), name(name), id(id) {
+=======
+		PropertyTable(element), element(element), name(name), id(id) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -238,22 +254,34 @@ Object::~Object() {
 }
 
 // ------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
 FileGlobalSettings::FileGlobalSettings(const Document &doc, const PropertyTable *props) :
 		props(props), doc(doc) {
+=======
+FileGlobalSettings::FileGlobalSettings(const Document &doc) :
+		PropertyTable(), doc(doc) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// empty
 }
 
 // ------------------------------------------------------------------------------------------------
 FileGlobalSettings::~FileGlobalSettings() {
+<<<<<<< HEAD
 	if (props != nullptr) {
 		delete props;
 		props = nullptr;
 	}
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 // ------------------------------------------------------------------------------------------------
 Document::Document(const Parser &parser, const ImportSettings &settings) :
+<<<<<<< HEAD
 		settings(settings), parser(parser), SafeToImport(false) {
+=======
+		settings(settings), parser(parser) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// Cannot use array default initialization syntax because vc8 fails on it
 	for (unsigned int &timeStamp : creationTimeStamp) {
 		timeStamp = 0;
@@ -298,23 +326,44 @@ static const unsigned int UpperSupportedVersion = 7700;
 
 bool Document::ReadHeader() {
 	// Read ID objects from "Objects" section
+<<<<<<< HEAD
 	const ScopePtr sc = parser.GetRootScope();
 	const ElementPtr ehead = sc->GetElement("FBXHeaderExtension");
+=======
+	ScopePtr sc = parser.GetRootScope();
+	ElementPtr ehead = sc->GetElement("FBXHeaderExtension");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (!ehead || !ehead->Compound()) {
 		DOMError("no FBXHeaderExtension dictionary found");
 	}
 
+<<<<<<< HEAD
+=======
+	if (parser.IsCorrupt()) {
+		DOMError("File is corrupt");
+		return false;
+	}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	const ScopePtr shead = ehead->Compound();
 	fbxVersion = ParseTokenAsInt(GetRequiredToken(GetRequiredElement(shead, "FBXVersion", ehead), 0));
 
 	// While we may have some success with newer files, we don't support
 	// the older 6.n fbx format
 	if (fbxVersion < LowerSupportedVersion) {
+<<<<<<< HEAD
 		DOMWarning("unsupported, old format version, supported are only FBX 2011, FBX 2012 and FBX 2013, you can re-export using Maya, 3DS, blender or Autodesk FBX tool");
 		return false;
 	}
 	if (fbxVersion > UpperSupportedVersion) {
 		DOMWarning("unsupported, newer format version, supported are only FBX 2011, up to FBX 2020"
+=======
+		DOMWarning("unsupported, old format version, FBX 2015-2020, you must re-export in a more modern version of your original modelling application");
+		return false;
+	}
+	if (fbxVersion > UpperSupportedVersion) {
+		DOMWarning("unsupported, newer format version, supported are only FBX 2015, up to FBX 2020"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				   " trying to read it nevertheless");
 	}
 
@@ -323,6 +372,16 @@ bool Document::ReadHeader() {
 		creator = ParseTokenAsString(GetRequiredToken(ecreator, 0));
 	}
 
+<<<<<<< HEAD
+=======
+	// Scene Info
+	const ElementPtr scene_info = shead->GetElement("SceneInfo");
+
+	if (scene_info) {
+		metadata_properties.Setup(scene_info);
+	}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	const ElementPtr etimestamp = shead->GetElement("CreationTimeStamp");
 	if (etimestamp && etimestamp->Compound()) {
 		const ScopePtr stimestamp = etimestamp->Compound();
@@ -342,6 +401,7 @@ bool Document::ReadHeader() {
 void Document::ReadGlobalSettings() {
 	ERR_FAIL_COND_MSG(globals != nullptr, "Global settings is already setup this is a serious error and should be reported");
 
+<<<<<<< HEAD
 	const ScopePtr sc = parser.GetRootScope();
 	const ElementPtr ehead = sc->GetElement("GlobalSettings");
 	if (nullptr == ehead || !ehead->Compound()) {
@@ -359,6 +419,9 @@ void Document::ReadGlobalSettings() {
 	}
 
 	globals = std::make_shared<FileGlobalSettings>(*this, props);
+=======
+	globals = std::make_shared<FileGlobalSettings>(*this);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -376,7 +439,10 @@ void Document::ReadObjects() {
 
 	const ScopePtr sobjects = eobjects->Compound();
 	for (const ElementMap::value_type &iter : sobjects->Elements()) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// extract ID
 		const TokenList &tok = iter.second->Tokens();
 
@@ -430,6 +496,7 @@ void Document::ReadObjects() {
 
 // ------------------------------------------------------------------------------------------------
 void Document::ReadPropertyTemplates() {
+<<<<<<< HEAD
 	const ScopePtr sc = parser.GetRootScope();
 	// read property templates from "Definitions" section
 	const ElementPtr edefs = sc->GetElement("Definitions");
@@ -482,6 +549,8 @@ void Document::ReadPropertyTemplates() {
 			}
 		}
 	}
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -549,7 +618,11 @@ const std::vector<const AnimationStack *> &Document::AnimationStacks() const {
 		const AnimationStack *stack = lazy->Get<AnimationStack>();
 		ERR_CONTINUE_MSG(!stack, "invalid ptr to AnimationStack - conversion failure");
 
+<<<<<<< HEAD
 		// We push back the weak reference :) to keep things simple, as ownership is on the parser side so it wont be cleaned up.
+=======
+		// We push back the weak reference :) to keep things simple, as ownership is on the parser side so it won't be cleaned up.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		animationStacksResolved.push_back(stack);
 	}
 
@@ -695,5 +768,8 @@ Object *Connection::DestinationObject() const {
 	//ai_assert(lazy);
 	return lazy->LoadObject();
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser

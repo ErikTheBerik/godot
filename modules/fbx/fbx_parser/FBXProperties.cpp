@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -94,7 +99,11 @@ Property::~Property() {
 namespace {
 
 // ------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
 // read a typed property out of a FBX element. The return value is NULL if the property cannot be read.
+=======
+// read a typed property out of a FBX element. The return value is nullptr if the property cannot be read.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 PropertyPtr ReadTypedProperty(const ElementPtr element) {
 	//ai_assert(element.KeyToken().StringContents() == "P");
 
@@ -142,11 +151,15 @@ std::string PeekPropertyName(const Element &element) {
 
 	return ParseTokenAsString(tok[0]);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace
 
 // ------------------------------------------------------------------------------------------------
 PropertyTable::PropertyTable() :
+<<<<<<< HEAD
 		templateProps(), element() {
 }
 
@@ -155,6 +168,34 @@ PropertyTable::PropertyTable(const ElementPtr element, const PropertyTable *temp
 		templateProps(templateProps), element(element) {
 	const ScopePtr scope = GetRequiredScope(element);
 	ERR_FAIL_COND(!scope);
+=======
+		element(nullptr) {
+}
+
+// Is used when dealing with FBX Objects not metadata.
+PropertyTable::PropertyTable(const ElementPtr element) :
+		element(element) {
+	Setup(element);
+}
+
+// ------------------------------------------------------------------------------------------------
+PropertyTable::~PropertyTable() {
+	for (PropertyMap::value_type &v : props) {
+		delete v.second;
+	}
+}
+
+void PropertyTable::Setup(ElementPtr ptr) {
+	const ScopePtr sc = GetRequiredScope(ptr);
+	const ElementPtr Properties70 = sc->GetElement("Properties70");
+	const ScopePtr scope = GetOptionalScope(Properties70);
+
+	// no scope, no care.
+	if (!scope) {
+		return; // NOTE: this is not an error this is actually a Object, without properties, here we will nullptr it.
+	}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	for (const ElementMap::value_type &v : scope->Elements()) {
 		if (v.first != "P") {
 			DOMWarning("expected only P elements in property table", v.second);
@@ -179,6 +220,7 @@ PropertyTable::PropertyTable(const ElementPtr element, const PropertyTable *temp
 }
 
 // ------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
 PropertyTable::~PropertyTable() {
 	for (PropertyMap::value_type &v : props) {
 		delete v.second;
@@ -186,6 +228,8 @@ PropertyTable::~PropertyTable() {
 }
 
 // ------------------------------------------------------------------------------------------------
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 PropertyPtr PropertyTable::Get(const std::string &name) const {
 	PropertyMap::const_iterator it = props.find(name);
 	if (it == props.end()) {
@@ -200,10 +244,13 @@ PropertyPtr PropertyTable::Get(const std::string &name) const {
 
 		if (it == props.end()) {
 			// check property template
+<<<<<<< HEAD
 			if (templateProps) {
 				return templateProps->Get(name);
 			}
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			return nullptr;
 		}
 	}
@@ -216,9 +263,16 @@ DirectPropertyMap PropertyTable::GetUnparsedProperties() const {
 
 	// Loop through all the lazy properties (which is all the properties)
 	for (const LazyPropertyMap::value_type &element : lazyProps) {
+<<<<<<< HEAD
 
 		// Skip parsed properties
 		if (props.end() != props.find(element.first)) continue;
+=======
+		// Skip parsed properties
+		if (props.end() != props.find(element.first)) {
+			continue;
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		// Read the element's value.
 		// Wrap the naked pointer (since the call site is required to acquire ownership)
@@ -226,7 +280,13 @@ DirectPropertyMap PropertyTable::GetUnparsedProperties() const {
 		Property *prop = ReadTypedProperty(element.second);
 
 		// Element could not be read. Skip it.
+<<<<<<< HEAD
 		if (!prop) continue;
+=======
+		if (!prop) {
+			continue;
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		// Add to result
 		result[element.first] = prop;
@@ -234,5 +294,8 @@ DirectPropertyMap PropertyTable::GetUnparsedProperties() const {
 
 	return result;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser

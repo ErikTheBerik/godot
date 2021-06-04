@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,41 +31,31 @@
 #ifndef ANIMATION_CACHE_H
 #define ANIMATION_CACHE_H
 
-#include "scene/3d/skeleton.h"
+#include "scene/3d/skeleton_3d.h"
 #include "scene/resources/animation.h"
 
 class AnimationCache : public Object {
-
 	GDCLASS(AnimationCache, Object);
 
 	struct Path {
-
 		RES resource;
-		Object *object;
-		Skeleton *skeleton; // haxor
-		Node *node;
-		Spatial *spatial;
+		Object *object = nullptr;
+		Skeleton3D *skeleton = nullptr; // haxor
+		Node *node = nullptr;
+		Node3D *spatial = nullptr;
 
-		int bone_idx;
+		int bone_idx = -1;
 		Vector<StringName> subpath;
-		bool valid;
-		Path() {
-			object = NULL;
-			skeleton = NULL;
-			node = NULL;
-			bone_idx = -1;
-			valid = false;
-			spatial = NULL;
-		}
+		bool valid = false;
 	};
 
 	Set<Node *> connected_nodes;
 	Vector<Path> path_cache;
 
-	Node *root;
+	Node *root = nullptr;
 	Ref<Animation> animation;
-	bool cache_dirty;
-	bool cache_valid;
+	bool cache_dirty = true;
+	bool cache_valid = false;
 
 	void _node_exit_tree(Node *p_node);
 
@@ -77,9 +67,9 @@ protected:
 	static void _bind_methods();
 
 public:
-	void set_track_transform(int p_idx, const Transform &p_transform);
+	void set_track_transform(int p_idx, const Transform3D &p_transform);
 	void set_track_value(int p_idx, const Variant &p_value);
-	void call_track(int p_idx, const StringName &p_method, const Variant **p_args, int p_argcount, Variant::CallError &r_error);
+	void call_track(int p_idx, const StringName &p_method, const Variant **p_args, int p_argcount, Callable::CallError &r_error);
 
 	void set_all(float p_time, float p_delta = 0);
 

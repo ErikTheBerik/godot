@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -29,15 +29,19 @@
 /*************************************************************************/
 
 #include "ios.h"
+<<<<<<< HEAD
 
 #import "app_delegate.h"
 #import "view_controller.h"
 
+=======
+#import "app_delegate.h"
+#import "view_controller.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #import <UIKit/UIKit.h>
 #include <sys/sysctl.h>
 
 void iOS::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("get_rate_url", "app_id"), &iOS::get_rate_url);
 };
 
@@ -59,16 +63,16 @@ void iOS::alert(const char *p_alert, const char *p_title) {
 String iOS::get_model() const {
 	// [[UIDevice currentDevice] model] only returns "iPad" or "iPhone".
 	size_t size;
-	sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+	sysctlbyname("hw.machine", nullptr, &size, nullptr, 0);
 	char *model = (char *)malloc(size);
-	if (model == NULL) {
+	if (model == nullptr) {
 		return "";
 	}
-	sysctlbyname("hw.machine", model, &size, NULL, 0);
+	sysctlbyname("hw.machine", model, &size, nullptr, 0);
 	NSString *platform = [NSString stringWithCString:model encoding:NSUTF8StringEncoding];
 	free(model);
 	const char *str = [platform UTF8String];
-	return String(str != NULL ? str : "");
+	return String(str != nullptr ? str : "");
 }
 
 String iOS::get_rate_url(int p_app_id) const {
@@ -76,9 +80,13 @@ String iOS::get_rate_url(int p_app_id) const {
 
 	String ret = app_url_path.replace("APP_ID", String::num(p_app_id));
 
+<<<<<<< HEAD
 	printf("returning rate url %ls\n", ret.c_str());
 
+=======
+	printf("returning rate url %s\n", ret.utf8().get_data());
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return ret;
 };
 
-iOS::iOS(){};
+iOS::iOS() {}

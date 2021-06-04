@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,8 +34,8 @@
 #include "crypto_mbedtls.h"
 
 #include "core/os/file_access.h"
-#include "core/pool_vector.h"
-#include "core/reference.h"
+
+#include "core/object/reference.h"
 
 #include <mbedtls/config.h>
 #include <mbedtls/ctr_drbg.h>
@@ -43,6 +43,7 @@
 #include <mbedtls/entropy.h>
 #include <mbedtls/ssl.h>
 #include <mbedtls/ssl_cookie.h>
+<<<<<<< HEAD
 
 class SSLContextMbedTLS;
 
@@ -63,13 +64,33 @@ public:
 	CookieContextMbedTLS();
 	~CookieContextMbedTLS();
 };
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-class SSLContextMbedTLS : public Reference {
+class SSLContextMbedTLS;
+
+class CookieContextMbedTLS : public Reference {
+	friend class SSLContextMbedTLS;
 
 protected:
-	bool inited;
+	bool inited = false;
+	mbedtls_entropy_context entropy;
+	mbedtls_ctr_drbg_context ctr_drbg;
+	mbedtls_ssl_cookie_ctx cookie_ctx;
 
-	static PoolByteArray _read_file(String p_path);
+public:
+	Error setup();
+	void clear();
+
+	CookieContextMbedTLS();
+	~CookieContextMbedTLS();
+};
+
+class SSLContextMbedTLS : public Reference {
+protected:
+	bool inited = false;
+
+	static PackedByteArray _read_file(String p_path);
 
 public:
 	static void print_mbedtls_error(int p_ret);

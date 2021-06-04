@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -32,7 +32,18 @@
 
 @class ViewController;
 
+<<<<<<< HEAD
 @interface AppDelegate : NSObject <UIApplicationDelegate>
+=======
+// FIXME: Add support for both GLES2 and Vulkan when GLES2 is implemented again,
+// so it can't be done with compilation time branching.
+//#if defined(OPENGL_ENABLED)
+//@interface AppDelegate : NSObject <UIApplicationDelegate, GLViewDelegate> {
+//#endif
+//#if defined(VULKAN_ENABLED)
+@interface AppDelegate : NSObject <UIApplicationDelegate>
+//#endif
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 @property(strong, nonatomic) UIWindow *window;
 @property(strong, class, readonly, nonatomic) ViewController *viewController;

@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -121,9 +126,16 @@ static const uint8_t base64DecodeTable[128] = {
 };
 
 uint8_t DecodeBase64(char ch) {
+<<<<<<< HEAD
 	const auto idx = static_cast<uint8_t>(ch);
 	if (idx > 127)
 		return 255;
+=======
+	const uint8_t idx = static_cast<uint8_t>(ch);
+	if (idx > 127) {
+		return 255;
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	return base64DecodeTable[idx];
 }
 
@@ -168,10 +180,17 @@ char EncodeBase64(char byte) {
 }
 
 /** Encodes a block of 4 bytes to base64 encoding
+<<<<<<< HEAD
 *
 *  @param bytes Bytes to encode.
 *  @param out_string String to write encoded values to.
 *  @param string_pos Position in out_string.*/
+=======
+*  @param bytes Bytes to encode.
+*  @param out_string String to write encoded values to.
+*  @param string_pos Position in out_string.
+*/
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 void EncodeByteBlock(const char *bytes, std::string &out_string, size_t string_pos) {
 	char b0 = (bytes[0] & 0xFC) >> 2;
 	char b1 = (bytes[0] & 0x03) << 4 | ((bytes[1] & 0xF0) >> 4);
@@ -211,11 +230,20 @@ std::string EncodeBase64(const char *data, size_t length) {
 		EncodeByteBlock(&finalBytes[0], encoded_string, iEncodedByte);
 
 		// add '=' at the end
+<<<<<<< HEAD
 		for (size_t i = 0; i < 4 * extraBytes / 3; i++)
 			encoded_string[encodedBytes - i - 1] = '=';
 	}
 	return encoded_string;
 }
 
+=======
+		for (size_t i = 0; i < 4 * extraBytes / 3; i++) {
+			encoded_string[encodedBytes - i - 1] = '=';
+		}
+	}
+	return encoded_string;
+}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace Util
 } // namespace FBXDocParser

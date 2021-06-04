@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,6 +34,10 @@ import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.GodotPluginRegistry;
 import org.godotengine.godot.utils.GLUtils;
 
+<<<<<<< HEAD
+=======
+import android.content.Context;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 import android.opengl.GLSurfaceView;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -43,7 +47,10 @@ import javax.microedition.khronos.opengles.GL10;
  * Godot's renderer implementation.
  */
 class GodotRenderer implements GLSurfaceView.Renderer {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	private final GodotPluginRegistry pluginRegistry;
 	private boolean activityJustResumed = false;
 
@@ -58,8 +65,8 @@ class GodotRenderer implements GLSurfaceView.Renderer {
 		}
 
 		GodotLib.step();
-		for (int i = 0; i < Godot.singleton_count; i++) {
-			Godot.singletons[i].onGLDrawFrame(gl);
+		for (GodotPlugin plugin : pluginRegistry.getAllPlugins()) {
+			plugin.onGLDrawFrame(gl);
 		}
 		for (GodotPlugin plugin : pluginRegistry.getAllPlugins()) {
 			plugin.onGLDrawFrame(gl);
@@ -67,9 +74,15 @@ class GodotRenderer implements GLSurfaceView.Renderer {
 	}
 
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
+<<<<<<< HEAD
 		GodotLib.resize(width, height);
 		for (int i = 0; i < Godot.singleton_count; i++) {
 			Godot.singletons[i].onGLSurfaceChanged(gl, width, height);
+=======
+		GodotLib.resize(null, width, height);
+		for (GodotPlugin plugin : pluginRegistry.getAllPlugins()) {
+			plugin.onGLSurfaceChanged(gl, width, height);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
 		for (GodotPlugin plugin : pluginRegistry.getAllPlugins()) {
 			plugin.onGLSurfaceChanged(gl, width, height);
@@ -77,7 +90,11 @@ class GodotRenderer implements GLSurfaceView.Renderer {
 	}
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+<<<<<<< HEAD
 		GodotLib.newcontext(GLUtils.use_32);
+=======
+		GodotLib.newcontext(null, GLUtils.use_32);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		for (GodotPlugin plugin : pluginRegistry.getAllPlugins()) {
 			plugin.onGLSurfaceCreated(gl, config);
 		}

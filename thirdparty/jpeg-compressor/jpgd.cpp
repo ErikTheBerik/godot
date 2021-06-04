@@ -1669,7 +1669,11 @@ namespace jpgd {
 		int row = m_max_mcu_y_size - m_mcu_lines_left;
 		uint8* d0 = m_pScan_line_0;
 
+<<<<<<< HEAD
 		const int half_image_x_size = (m_image_x_size >> 1) - 1;
+=======
+		const int half_image_x_size = (m_image_x_size == 1) ? 0 : (m_image_x_size >> 1) - 1;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		const int row_x8 = row * 8;
 
 		for (int x = 0; x < m_image_x_size; x++)
@@ -1762,7 +1766,11 @@ namespace jpgd {
 		int y = m_image_y_size - m_total_lines_left;
 		int row = y & 15;
 
+<<<<<<< HEAD
 		const int half_image_y_size = (m_image_y_size >> 1) - 1;
+=======
+		const int half_image_y_size = (m_image_y_size == 1) ? 0 : (m_image_y_size >> 1) - 1;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		uint8* d0 = m_pScan_line_0;
 
@@ -1891,7 +1899,11 @@ namespace jpgd {
 		int y = m_image_y_size - m_total_lines_left;
 		int row = y & 15;
 
+<<<<<<< HEAD
 		const int half_image_y_size = (m_image_y_size >> 1) - 1;
+=======
+		const int half_image_y_size = (m_image_y_size == 1) ? 0 : (m_image_y_size >> 1) - 1;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		uint8* d0 = m_pScan_line_0;
 
@@ -1915,7 +1927,11 @@ namespace jpgd {
 		const int y0_base = (c_y0 & 7) * 8 + 256;
 		const int y1_base = (c_y1 & 7) * 8 + 256;
 
+<<<<<<< HEAD
 		const int half_image_x_size = (m_image_x_size >> 1) - 1;
+=======
+		const int half_image_x_size = (m_image_x_size == 1) ? 0 : (m_image_x_size >> 1) - 1;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		static const uint8_t s_muls[2][2][4] =
 		{

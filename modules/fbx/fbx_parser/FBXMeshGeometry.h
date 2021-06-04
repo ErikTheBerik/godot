@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -73,10 +78,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef FBX_MESH_GEOMETRY_H
 #define FBX_MESH_GEOMETRY_H
 
+<<<<<<< HEAD
 #include "core/color.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 #include "core/vector.h"
+=======
+#include "core/math/color.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/templates/vector.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #include "FBXDocument.h"
 #include "FBXParser.h"
@@ -96,7 +108,11 @@ public:
 	Geometry(uint64_t id, const ElementPtr element, const std::string &name, const Document &doc);
 	virtual ~Geometry();
 
+<<<<<<< HEAD
 	/** Get the Skin attached to this geometry or NULL */
+=======
+	/** Get the Skin attached to this geometry or nullptr */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	const Skin *DeformerSkin() const;
 
 	const std::vector<const BlendShape *> &get_blend_shapes() const;
@@ -106,7 +122,11 @@ public:
 	}
 
 private:
+<<<<<<< HEAD
 	const Skin *skin;
+=======
+	const Skin *skin = nullptr;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	std::vector<const BlendShape *> blendShapes;
 };
 
@@ -122,7 +142,11 @@ typedef std::vector<int> MatIndexArray;
 /// ## Map Type:
 /// 	* None The mapping is undetermined.
 /// 	* ByVertex There will be one mapping coordinate for each surface control point/vertex (ControlPoint is a vertex).
+<<<<<<< HEAD
 /// 		* If you have direct reference type verticies[x]
+=======
+/// 		* If you have direct reference type vertices[x]
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /// 		* If you have IndexToDirect reference type the UV
 /// 	* ByPolygonVertex There will be one mapping coordinate for each vertex, for every polygon of which it is a part. This means that a vertex will have as many mapping coordinates as polygons of which it is a part. (Sorted by polygon, referencing vertex)
 /// 	* ByPolygon There can be only one mapping coordinate for the whole polygon.
@@ -186,7 +210,11 @@ public:
 	/// Returns -1 if the vertices doesn't form an edge. Vertex order, doesn't
 	// matter.
 	static int get_edge_id(const std::vector<Edge> &p_map, int p_vertex_a, int p_vertex_b);
+<<<<<<< HEAD
 	// Retuns the edge point bu that ID, or the edge with -1 vertices if the
+=======
+	// Returns the edge point bu that ID, or the edge with -1 vertices if the
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// id is not valid.
 	static Edge get_edge(const std::vector<Edge> &p_map, int p_id);
 
@@ -207,7 +235,12 @@ private:
 			const ScopePtr source,
 			const std::string &MappingInformationType,
 			const std::string &ReferenceInformationType,
+<<<<<<< HEAD
 			const std::string &dataElementName);
+=======
+			const std::string &dataElementName,
+			const std::string &indexOverride = "");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 };
 
 /*
@@ -257,7 +290,10 @@ private:
 	std::vector<Vector3> m_vertices;
 	std::vector<int> m_indices;
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser
 
 #endif // FBX_MESH_GEOMETRY_H

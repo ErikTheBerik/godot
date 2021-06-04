@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -118,12 +123,18 @@ Material::Material(uint64_t id, const ElementPtr element, const Document &doc, c
 		DOMWarning("shading mode not recognized: " + shading, element);
 	}
 
+<<<<<<< HEAD
 	props = GetPropertyTable(doc, templateName, element, sc);
 
 	// resolve texture links
 	const std::vector<const Connection *> &conns = doc.GetConnectionsByDestinationSequenced(ID());
 	for (const Connection *con : conns) {
 
+=======
+	// resolve texture links
+	const std::vector<const Connection *> &conns = doc.GetConnectionsByDestinationSequenced(ID());
+	for (const Connection *con : conns) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// texture link to properties, not objects
 		if (!con->PropertyName().length()) {
 			continue;
@@ -164,15 +175,22 @@ Material::Material(uint64_t id, const ElementPtr element, const Document &doc, c
 
 // ------------------------------------------------------------------------------------------------
 Material::~Material() {
+<<<<<<< HEAD
 	if (props != nullptr) {
 		delete props;
 		props = nullptr;
 	}
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 // ------------------------------------------------------------------------------------------------
 Texture::Texture(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name) :
+<<<<<<< HEAD
 		Object(id, element, name), uvScaling(1.0f, 1.0f), media(nullptr) {
+=======
+		Object(id, element, name), uvScaling(1.0f, 1.0f) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	const ScopePtr sc = GetRequiredScope(element);
 
 	const ElementPtr Type = sc->GetElement("Type");
@@ -220,17 +238,27 @@ Texture::Texture(uint64_t id, const ElementPtr element, const Document &doc, con
 		alphaSource = ParseTokenAsString(GetRequiredToken(Texture_Alpha_Source, 0));
 	}
 
+<<<<<<< HEAD
 	props = GetPropertyTable(doc, "Texture.FbxFileTexture", element, sc);
 
 	// 3DS Max and FBX SDK use "Scaling" and "Translation" instead of "ModelUVScaling" and "ModelUVTranslation". Use these properties if available.
 	bool ok;
 	const Vector3 &scaling = PropertyGet<Vector3>(props, "Scaling", ok);
+=======
+	// 3DS Max and FBX SDK use "Scaling" and "Translation" instead of "ModelUVScaling" and "ModelUVTranslation". Use these properties if available.
+	bool ok = true;
+	const Vector3 &scaling = PropertyGet<Vector3>(this, "Scaling", ok);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (ok) {
 		uvScaling.x = scaling.x;
 		uvScaling.y = scaling.y;
 	}
 
+<<<<<<< HEAD
 	const Vector3 &trans = PropertyGet<Vector3>(props, "Translation", ok);
+=======
+	const Vector3 &trans = PropertyGet<Vector3>(this, "Translation", ok);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	if (ok) {
 		uvTrans.x = trans.x;
 		uvTrans.y = trans.y;
@@ -255,10 +283,13 @@ Texture::Texture(uint64_t id, const ElementPtr element, const Document &doc, con
 }
 
 Texture::~Texture() {
+<<<<<<< HEAD
 	if (props != nullptr) {
 		delete props;
 		props = nullptr;
 	}
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 LayeredTexture::LayeredTexture(uint64_t id, const ElementPtr element, const Document & /*doc*/, const std::string &name) :
@@ -268,10 +299,17 @@ LayeredTexture::LayeredTexture(uint64_t id, const ElementPtr element, const Docu
 	ElementPtr BlendModes = sc->GetElement("BlendModes");
 	ElementPtr Alphas = sc->GetElement("Alphas");
 
+<<<<<<< HEAD
 	if (BlendModes != 0) {
 		blendMode = (BlendMode)ParseTokenAsInt(GetRequiredToken(BlendModes, 0));
 	}
 	if (Alphas != 0) {
+=======
+	if (BlendModes != nullptr) {
+		blendMode = (BlendMode)ParseTokenAsInt(GetRequiredToken(BlendModes, 0));
+	}
+	if (Alphas != nullptr) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		alpha = ParseTokenAsFloat(GetRequiredToken(Alphas, 0));
 	}
 }
@@ -298,7 +336,11 @@ void LayeredTexture::fillTexture(const Document &doc) {
 
 // ------------------------------------------------------------------------------------------------
 Video::Video(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name) :
+<<<<<<< HEAD
 		Object(id, element, name), contentLength(0), content(0) {
+=======
+		Object(id, element, name) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	const ScopePtr sc = GetRequiredScope(element);
 
 	const ElementPtr Type = sc->GetElement("Type");
@@ -338,7 +380,11 @@ Video::Video(uint64_t id, const ElementPtr element, const Document &doc, const s
 					DOMError("embedded content is not surrounded by quotation marks", element);
 				} else {
 					size_t targetLength = 0;
+<<<<<<< HEAD
 					auto numTokens = Content->Tokens().size();
+=======
+					const size_t numTokens = Content->Tokens().size();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 					// First time compute size (it could be large like 64Gb and it is good to allocate it once)
 					for (uint32_t tokenIdx = 0; tokenIdx < numTokens; ++tokenIdx) {
 						const Token *dataToken = GetRequiredToken(Content, tokenIdx);
@@ -352,6 +398,7 @@ Video::Video(uint64_t id, const ElementPtr element, const Document &doc, const s
 					}
 					if (targetLength == 0) {
 						DOMError("Corrupted embedded content found", element);
+<<<<<<< HEAD
 					}
 					content = new uint8_t[targetLength];
 					contentLength = static_cast<uint64_t>(targetLength);
@@ -367,6 +414,24 @@ Video::Video(uint64_t id, const ElementPtr element, const Document &doc, const s
 						delete[] content;
 						contentLength = 0;
 						DOMError("Corrupted embedded content found", element);
+=======
+					} else {
+						content = new uint8_t[targetLength];
+						contentLength = static_cast<uint64_t>(targetLength);
+						size_t dst_offset = 0;
+						for (uint32_t tokenIdx = 0; tokenIdx < numTokens; ++tokenIdx) {
+							const Token *dataToken = GetRequiredToken(Content, tokenIdx);
+							ERR_FAIL_COND(!dataToken);
+							size_t tokenLength = dataToken->end() - dataToken->begin() - 2; // ignore double quotes
+							const char *base64data = dataToken->begin() + 1;
+							dst_offset += Util::DecodeBase64(base64data, tokenLength, content + dst_offset, targetLength - dst_offset);
+						}
+						if (targetLength != dst_offset) {
+							delete[] content;
+							contentLength = 0;
+							DOMError("Corrupted embedded content found", element);
+						}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 					}
 				}
 			} else if (static_cast<size_t>(token->end() - data) < 5) {
@@ -390,14 +455,18 @@ Video::Video(uint64_t id, const ElementPtr element, const Document &doc, const s
 			//									   runtimeError.what());
 		}
 	}
+<<<<<<< HEAD
 
 	props = GetPropertyTable(doc, "Video.FbxVideo", element, sc);
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 Video::~Video() {
 	if (content) {
 		delete[] content;
 	}
+<<<<<<< HEAD
 
 	if (props != nullptr) {
 		delete props;
@@ -405,4 +474,7 @@ Video::~Video() {
 	}
 }
 
+=======
+}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser

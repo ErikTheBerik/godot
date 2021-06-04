@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -48,6 +48,7 @@ protected:
 	RingBuffer<uint8_t> rb;
 	uint8_t recv_buffer[PACKET_BUFFER_SIZE];
 	uint8_t packet_buffer[PACKET_BUFFER_SIZE];
+<<<<<<< HEAD
 	IP_Address packet_ip;
 	int packet_port;
 	int queue_count;
@@ -58,6 +59,18 @@ protected:
 	bool blocking;
 	bool broadcast;
 	UDPServer *udp_server;
+=======
+	IPAddress packet_ip;
+	int packet_port = 0;
+	int queue_count = 0;
+
+	IPAddress peer_addr;
+	int peer_port = 0;
+	bool connected = false;
+	bool blocking = true;
+	bool broadcast = false;
+	UDPServer *udp_server = nullptr;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	Ref<NetSocket> _sock;
 
 	static void _bind_methods();
@@ -70,9 +83,10 @@ protected:
 public:
 	void set_blocking_mode(bool p_enable);
 
-	Error listen(int p_port, const IP_Address &p_bind_address = IP_Address("*"), int p_recv_buffer_size = 65536);
+	Error bind(int p_port, const IPAddress &p_bind_address = IPAddress("*"), int p_recv_buffer_size = 65536);
 	void close();
 	Error wait();
+<<<<<<< HEAD
 	bool is_listening() const;
 
 	Error connect_shared_socket(Ref<NetSocket> p_sock, IP_Address p_ip, uint16_t p_port, UDPServer *ref); // Used by UDPServer
@@ -82,16 +96,28 @@ public:
 	bool is_connected_to_host() const;
 
 	IP_Address get_packet_address() const;
-	int get_packet_port() const;
-	void set_dest_address(const IP_Address &p_address, int p_port);
+=======
+	bool is_bound() const;
 
-	Error put_packet(const uint8_t *p_buffer, int p_buffer_size);
-	Error get_packet(const uint8_t **r_buffer, int &r_buffer_size);
-	int get_available_packet_count() const;
-	int get_max_packet_size() const;
+	Error connect_shared_socket(Ref<NetSocket> p_sock, IPAddress p_ip, uint16_t p_port, UDPServer *ref); // Used by UDPServer
+	void disconnect_shared_socket(); // Used by UDPServer
+	Error store_packet(IPAddress p_ip, uint32_t p_port, uint8_t *p_buf, int p_buf_size); // Used internally and by UDPServer
+	Error connect_to_host(const IPAddress &p_host, int p_port);
+	bool is_connected_to_host() const;
+
+	IPAddress get_packet_address() const;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
+	int get_packet_port() const;
+	int get_local_port() const;
+	void set_dest_address(const IPAddress &p_address, int p_port);
+
+	Error put_packet(const uint8_t *p_buffer, int p_buffer_size) override;
+	Error get_packet(const uint8_t **r_buffer, int &r_buffer_size) override;
+	int get_available_packet_count() const override;
+	int get_max_packet_size() const override;
 	void set_broadcast_enabled(bool p_enabled);
-	Error join_multicast_group(IP_Address p_multi_address, String p_if_name);
-	Error leave_multicast_group(IP_Address p_multi_address, String p_if_name);
+	Error join_multicast_group(IPAddress p_multi_address, String p_if_name);
+	Error leave_multicast_group(IPAddress p_multi_address, String p_if_name);
 
 	PacketPeerUDP();
 	~PacketPeerUDP();

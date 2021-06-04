@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -44,6 +44,7 @@
 
 /// Abstract ENet interface for UDP/DTLS.
 class ENetGodotSocket {
+<<<<<<< HEAD
 
 public:
 	virtual Error bind(IP_Address p_ip, uint16_t p_port) = 0;
@@ -53,6 +54,17 @@ public:
 	virtual void close() = 0;
 	virtual void set_refuse_new_connections(bool p_refuse) { /* Only used by dtls server */ }
 	virtual ~ENetGodotSocket(){};
+=======
+public:
+	virtual Error bind(IPAddress p_ip, uint16_t p_port) = 0;
+	virtual Error get_socket_address(IPAddress *r_ip, uint16_t *r_port) = 0;
+	virtual Error sendto(const uint8_t *p_buffer, int p_len, int &r_sent, IPAddress p_ip, uint16_t p_port) = 0;
+	virtual Error recvfrom(uint8_t *p_buffer, int p_len, int &r_read, IPAddress &r_ip, uint16_t &r_port) = 0;
+	virtual int set_option(ENetSocketOption p_option, int p_value) = 0;
+	virtual void close() = 0;
+	virtual void set_refuse_new_connections(bool p_enable) {} /* Only used by dtls server */
+	virtual ~ENetGodotSocket() {}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 };
 
 class ENetDTLSClient;
@@ -60,21 +72,32 @@ class ENetDTLSServer;
 
 /// NetSocket interface
 class ENetUDP : public ENetGodotSocket {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	friend class ENetDTLSClient;
 	friend class ENetDTLSServer;
 
 private:
 	Ref<NetSocket> sock;
+<<<<<<< HEAD
 	IP_Address address;
 	uint16_t port;
 	bool bound;
+=======
+	IPAddress local_address;
+	bool bound = false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 public:
 	ENetUDP() {
 		sock = Ref<NetSocket>(NetSocket::create());
 		IP::Type ip_type = IP::TYPE_ANY;
+<<<<<<< HEAD
 		bound = false;
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		sock->open(NetSocket::TYPE_UDP, ip_type);
 	}
 
@@ -82,6 +105,7 @@ public:
 		sock->close();
 	}
 
+<<<<<<< HEAD
 	Error bind(IP_Address p_ip, uint16_t p_port) {
 		address = p_ip;
 		port = p_port;
@@ -97,6 +121,27 @@ public:
 		Error err = sock->poll(NetSocket::POLL_TYPE_IN, 0);
 		if (err != OK)
 			return err;
+=======
+	Error bind(IPAddress p_ip, uint16_t p_port) {
+		local_address = p_ip;
+		bound = true;
+		return sock->bind(p_ip, p_port);
+	}
+
+	Error get_socket_address(IPAddress *r_ip, uint16_t *r_port) {
+		return sock->get_socket_address(r_ip, r_port);
+	}
+
+	Error sendto(const uint8_t *p_buffer, int p_len, int &r_sent, IPAddress p_ip, uint16_t p_port) {
+		return sock->sendto(p_buffer, p_len, r_sent, p_ip, p_port);
+	}
+
+	Error recvfrom(uint8_t *p_buffer, int p_len, int &r_read, IPAddress &r_ip, uint16_t &r_port) {
+		Error err = sock->poll(NetSocket::POLL_TYPE_IN, 0);
+		if (err != OK) {
+			return err;
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		return sock->recvfrom(p_buffer, p_len, r_read, r_ip, r_port);
 	}
 
@@ -144,11 +189,16 @@ public:
 
 	void close() {
 		sock->close();
+<<<<<<< HEAD
+=======
+		local_address.clear();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 };
 
 /// DTLS Client ENet interface
 class ENetDTLSClient : public ENetGodotSocket {
+<<<<<<< HEAD
 
 	bool connected;
 	Ref<PacketPeerUDP> udp;
@@ -156,6 +206,15 @@ class ENetDTLSClient : public ENetGodotSocket {
 	bool verify;
 	String for_hostname;
 	Ref<X509Certificate> cert;
+=======
+	bool connected = false;
+	Ref<PacketPeerUDP> udp;
+	Ref<PacketPeerDTLS> dtls;
+	bool verify = false;
+	String for_hostname;
+	Ref<X509Certificate> cert;
+	IPAddress local_address;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 public:
 	ENetDTLSClient(ENetUDP *p_base, Ref<X509Certificate> p_cert, bool p_verify, String p_for_hostname) {
@@ -164,36 +223,72 @@ public:
 		cert = p_cert;
 		udp.instance();
 		dtls = Ref<PacketPeerDTLS>(PacketPeerDTLS::create());
+<<<<<<< HEAD
 		p_base->close();
 		if (p_base->bound) {
 			bind(p_base->address, p_base->port);
 		}
 		connected = false;
+=======
+		if (p_base->bound) {
+			uint16_t port;
+			p_base->get_socket_address(&local_address, &port);
+			p_base->close();
+			bind(local_address, port);
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	~ENetDTLSClient() {
 		close();
 	}
 
+<<<<<<< HEAD
 	Error bind(IP_Address p_ip, uint16_t p_port) {
 		return udp->listen(p_port, p_ip);
 	}
 
 	Error sendto(const uint8_t *p_buffer, int p_len, int &r_sent, IP_Address p_ip, uint16_t p_port) {
+=======
+	Error bind(IPAddress p_ip, uint16_t p_port) {
+		local_address = p_ip;
+		return udp->bind(p_port, p_ip);
+	}
+
+	Error get_socket_address(IPAddress *r_ip, uint16_t *r_port) {
+		if (!udp->is_bound()) {
+			return ERR_UNCONFIGURED;
+		}
+		*r_ip = local_address;
+		*r_port = udp->get_local_port();
+		return OK;
+	}
+
+	Error sendto(const uint8_t *p_buffer, int p_len, int &r_sent, IPAddress p_ip, uint16_t p_port) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		if (!connected) {
 			udp->connect_to_host(p_ip, p_port);
 			dtls->connect_to_peer(udp, verify, for_hostname, cert);
 			connected = true;
 		}
 		dtls->poll();
+<<<<<<< HEAD
 		if (dtls->get_status() == PacketPeerDTLS::STATUS_HANDSHAKING)
 			return ERR_BUSY;
 		else if (dtls->get_status() != PacketPeerDTLS::STATUS_CONNECTED)
 			return FAILED;
+=======
+		if (dtls->get_status() == PacketPeerDTLS::STATUS_HANDSHAKING) {
+			return ERR_BUSY;
+		} else if (dtls->get_status() != PacketPeerDTLS::STATUS_CONNECTED) {
+			return FAILED;
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		r_sent = p_len;
 		return dtls->put_packet(p_buffer, p_len);
 	}
 
+<<<<<<< HEAD
 	Error recvfrom(uint8_t *p_buffer, int p_len, int &r_read, IP_Address &r_ip, uint16_t &r_port) {
 		dtls->poll();
 		if (dtls->get_status() == PacketPeerDTLS::STATUS_HANDSHAKING)
@@ -205,13 +300,33 @@ public:
 			return ERR_BUSY;
 		else if (pc < 0)
 			return FAILED;
+=======
+	Error recvfrom(uint8_t *p_buffer, int p_len, int &r_read, IPAddress &r_ip, uint16_t &r_port) {
+		dtls->poll();
+		if (dtls->get_status() == PacketPeerDTLS::STATUS_HANDSHAKING) {
+			return ERR_BUSY;
+		}
+		if (dtls->get_status() != PacketPeerDTLS::STATUS_CONNECTED) {
+			return FAILED;
+		}
+		int pc = dtls->get_available_packet_count();
+		if (pc == 0) {
+			return ERR_BUSY;
+		} else if (pc < 0) {
+			return FAILED;
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		const uint8_t *buffer;
 		Error err = dtls->get_packet(&buffer, r_read);
 		ERR_FAIL_COND_V(err != OK, err);
 		ERR_FAIL_COND_V(p_len < r_read, ERR_OUT_OF_MEMORY);
 
+<<<<<<< HEAD
 		copymem(p_buffer, buffer, r_read);
+=======
+		memcpy(p_buffer, buffer, r_read);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		r_ip = udp->get_packet_address();
 		r_port = udp->get_packet_port();
 		return err;
@@ -229,6 +344,7 @@ public:
 
 /// DTLSServer - ENet interface
 class ENetDTLSServer : public ENetGodotSocket {
+<<<<<<< HEAD
 
 	Ref<DTLSServer> server;
 	Ref<UDPServer> udp_server;
@@ -242,6 +358,22 @@ public:
 		p_base->close();
 		if (p_base->bound) {
 			bind(p_base->address, p_base->port);
+=======
+	Ref<DTLSServer> server;
+	Ref<UDPServer> udp_server;
+	Map<String, Ref<PacketPeerDTLS>> peers;
+	int last_service = 0;
+	IPAddress local_address;
+
+public:
+	ENetDTLSServer(ENetUDP *p_base, Ref<CryptoKey> p_key, Ref<X509Certificate> p_cert) {
+		udp_server.instance();
+		if (p_base->bound) {
+			uint16_t port;
+			p_base->get_socket_address(&local_address, &port);
+			p_base->close();
+			bind(local_address, port);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
 		server = Ref<DTLSServer>(DTLSServer::create());
 		server->setup(p_key, p_cert);
@@ -255,15 +387,34 @@ public:
 		udp_server->set_max_pending_connections(p_refuse ? 0 : 16);
 	}
 
+<<<<<<< HEAD
 	Error bind(IP_Address p_ip, uint16_t p_port) {
 		return udp_server->listen(p_port, p_ip);
 	}
 
 	Error sendto(const uint8_t *p_buffer, int p_len, int &r_sent, IP_Address p_ip, uint16_t p_port) {
+=======
+	Error bind(IPAddress p_ip, uint16_t p_port) {
+		local_address = p_ip;
+		return udp_server->listen(p_port, p_ip);
+	}
+
+	Error get_socket_address(IPAddress *r_ip, uint16_t *r_port) {
+		if (!udp_server->is_listening()) {
+			return ERR_UNCONFIGURED;
+		}
+		*r_ip = local_address;
+		*r_port = udp_server->get_local_port();
+		return OK;
+	}
+
+	Error sendto(const uint8_t *p_buffer, int p_len, int &r_sent, IPAddress p_ip, uint16_t p_port) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		String key = String(p_ip) + ":" + itos(p_port);
 		ERR_FAIL_COND_V(!peers.has(key), ERR_UNAVAILABLE);
 		Ref<PacketPeerDTLS> peer = peers[key];
 		Error err = peer->put_packet(p_buffer, p_len);
+<<<<<<< HEAD
 		if (err == OK)
 			r_sent = p_len;
 		else if (err == ERR_BUSY)
@@ -274,11 +425,28 @@ public:
 	}
 
 	Error recvfrom(uint8_t *p_buffer, int p_len, int &r_read, IP_Address &r_ip, uint16_t &r_port) {
+=======
+		if (err == OK) {
+			r_sent = p_len;
+		} else if (err == ERR_BUSY) {
+			r_sent = 0;
+		} else {
+			r_sent = -1;
+		}
+		return err;
+	}
+
+	Error recvfrom(uint8_t *p_buffer, int p_len, int &r_read, IPAddress &r_ip, uint16_t &r_port) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		udp_server->poll();
 		// TODO limits? Maybe we can better enforce allowed connections!
 		if (udp_server->is_connection_available()) {
 			Ref<PacketPeerUDP> udp = udp_server->take_connection();
+<<<<<<< HEAD
 			IP_Address peer_ip = udp->get_packet_address();
+=======
+			IPAddress peer_ip = udp->get_packet_address();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			int peer_port = udp->get_packet_port();
 			Ref<PacketPeerDTLS> peer = server->take_connection(udp);
 			PacketPeerDTLS::Status status = peer->get_status();
@@ -291,6 +459,7 @@ public:
 		List<String> remove;
 		Error err = ERR_BUSY;
 		// TODO this needs to be fair!
+<<<<<<< HEAD
 		for (Map<String, Ref<PacketPeerDTLS> >::Element *E = peers.front(); E; E = E->next()) {
 			Ref<PacketPeerDTLS> peer = E->get();
 			peer->poll();
@@ -298,6 +467,15 @@ public:
 			if (peer->get_status() == PacketPeerDTLS::STATUS_HANDSHAKING)
 				continue;
 			else if (peer->get_status() != PacketPeerDTLS::STATUS_CONNECTED) {
+=======
+		for (Map<String, Ref<PacketPeerDTLS>>::Element *E = peers.front(); E; E = E->next()) {
+			Ref<PacketPeerDTLS> peer = E->get();
+			peer->poll();
+
+			if (peer->get_status() == PacketPeerDTLS::STATUS_HANDSHAKING) {
+				continue;
+			} else if (peer->get_status() != PacketPeerDTLS::STATUS_CONNECTED) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				// Peer disconnected, removing it.
 				remove.push_back(E->key());
 				continue;
@@ -316,7 +494,11 @@ public:
 				Vector<String> s = E->key().rsplit(":", false, 1);
 				ERR_CONTINUE(s.size() != 2); // BUG!
 
+<<<<<<< HEAD
 				copymem(p_buffer, buffer, r_read);
+=======
+				memcpy(p_buffer, buffer, r_read);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				r_ip = s[0];
 				r_port = s[1].to_int();
 				break; // err = OK
@@ -336,19 +518,26 @@ public:
 	}
 
 	void close() {
+<<<<<<< HEAD
 		for (Map<String, Ref<PacketPeerDTLS> >::Element *E = peers.front(); E; E = E->next()) {
+=======
+		for (Map<String, Ref<PacketPeerDTLS>>::Element *E = peers.front(); E; E = E->next()) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			E->get()->disconnect_from_peer();
 		}
 		peers.clear();
 		udp_server->stop();
 		server->stop();
+<<<<<<< HEAD
+=======
+		local_address.clear();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 };
 
 static enet_uint32 timeBase = 0;
 
 int enet_initialize(void) {
-
 	return 0;
 }
 
@@ -356,23 +545,19 @@ void enet_deinitialize(void) {
 }
 
 enet_uint32 enet_host_random_seed(void) {
-
 	return (enet_uint32)OS::get_singleton()->get_unix_time();
 }
 
 enet_uint32 enet_time_get(void) {
-
 	return OS::get_singleton()->get_ticks_msec() - timeBase;
 }
 
 void enet_time_set(enet_uint32 newTimeBase) {
-
 	timeBase = OS::get_singleton()->get_ticks_msec() - newTimeBase;
 }
 
 int enet_address_set_host(ENetAddress *address, const char *name) {
-
-	IP_Address ip = IP::get_singleton()->resolve_hostname(name);
+	IPAddress ip = IP::get_singleton()->resolve_hostname(name);
 	ERR_FAIL_COND_V(!ip.is_valid(), -1);
 
 	enet_address_set_ip(address, ip.get_ipv6(), 16);
@@ -380,24 +565,24 @@ int enet_address_set_host(ENetAddress *address, const char *name) {
 }
 
 void enet_address_set_ip(ENetAddress *address, const uint8_t *ip, size_t size) {
-
 	int len = size > 16 ? 16 : size;
 	memset(address->host, 0, 16);
 	memcpy(address->host, ip, len);
 }
 
 int enet_address_get_host_ip(const ENetAddress *address, char *name, size_t nameLength) {
-
 	return -1;
 }
 
 int enet_address_get_host(const ENetAddress *address, char *name, size_t nameLength) {
-
 	return -1;
 }
 
 ENetSocket enet_socket_create(ENetSocketType type) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ENetUDP *socket = memnew(ENetUDP);
 
 	return socket;
@@ -408,6 +593,7 @@ void enet_host_dtls_server_setup(ENetHost *host, void *p_key, void *p_cert) {
 	host->socket = memnew(ENetDTLSServer(sock, Ref<CryptoKey>((CryptoKey *)p_key), Ref<X509Certificate>((X509Certificate *)p_cert)));
 	memdelete(sock);
 }
+<<<<<<< HEAD
 
 void enet_host_dtls_client_setup(ENetHost *host, void *p_cert, uint8_t p_verify, const char *p_for_hostname) {
 	ENetUDP *sock = (ENetUDP *)host->socket;
@@ -421,10 +607,24 @@ void enet_host_refuse_new_connections(ENetHost *host, int p_refuse) {
 }
 
 int enet_socket_bind(ENetSocket socket, const ENetAddress *address) {
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	IP_Address ip;
+void enet_host_dtls_client_setup(ENetHost *host, void *p_cert, uint8_t p_verify, const char *p_for_hostname) {
+	ENetUDP *sock = (ENetUDP *)host->socket;
+	host->socket = memnew(ENetDTLSClient(sock, Ref<X509Certificate>((X509Certificate *)p_cert), p_verify, String(p_for_hostname)));
+	memdelete(sock);
+}
+
+void enet_host_refuse_new_connections(ENetHost *host, int p_refuse) {
+	ERR_FAIL_COND(!host->socket);
+	((ENetGodotSocket *)host->socket)->set_refuse_new_connections(p_refuse);
+}
+
+int enet_socket_bind(ENetSocket socket, const ENetAddress *address) {
+	IPAddress ip;
 	if (address->wildcard) {
-		ip = IP_Address("*");
+		ip = IPAddress("*");
 	} else {
 		ip.set_ipv6(address->host);
 	}
@@ -443,19 +643,25 @@ void enet_socket_destroy(ENetSocket socket) {
 }
 
 int enet_socket_send(ENetSocket socket, const ENetAddress *address, const ENetBuffer *buffers, size_t bufferCount) {
+	ERR_FAIL_COND_V(address == nullptr, -1);
 
+<<<<<<< HEAD
 	ERR_FAIL_COND_V(address == NULL, -1);
 
 	ENetGodotSocket *sock = (ENetGodotSocket *)socket;
 	IP_Address dest;
+=======
+	ENetGodotSocket *sock = (ENetGodotSocket *)socket;
+	IPAddress dest;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	Error err;
 	size_t i = 0;
 
 	dest.set_ipv6(address->host);
 
 	// Create a single packet.
-	PoolVector<uint8_t> out;
-	PoolVector<uint8_t>::Write w;
+	Vector<uint8_t> out;
+	uint8_t *w;
 	int size = 0;
 	int pos = 0;
 	for (i = 0; i < bufferCount; i++) {
@@ -463,7 +669,7 @@ int enet_socket_send(ENetSocket socket, const ENetAddress *address, const ENetBu
 	}
 
 	out.resize(size);
-	w = out.write();
+	w = out.ptrw();
 	for (i = 0; i < bufferCount; i++) {
 		memcpy(&w[pos], buffers[i].data, buffers[i].dataLength);
 		pos += buffers[i].dataLength;
@@ -472,7 +678,6 @@ int enet_socket_send(ENetSocket socket, const ENetAddress *address, const ENetBu
 	int sent = 0;
 	err = sock->sendto((const uint8_t *)&w[0], size, sent, dest, address->port);
 	if (err != OK) {
-
 		if (err == ERR_BUSY) { // Blocking call
 			return 0;
 		}
@@ -485,69 +690,79 @@ int enet_socket_send(ENetSocket socket, const ENetAddress *address, const ENetBu
 }
 
 int enet_socket_receive(ENetSocket socket, ENetAddress *address, ENetBuffer *buffers, size_t bufferCount) {
-
 	ERR_FAIL_COND_V(bufferCount != 1, -1);
 
 	ENetGodotSocket *sock = (ENetGodotSocket *)socket;
+<<<<<<< HEAD
+=======
 
 	int read;
-	IP_Address ip;
+	IPAddress ip;
 
 	Error err = sock->recvfrom((uint8_t *)buffers[0].data, buffers[0].dataLength, read, ip, address->port);
-	if (err == ERR_BUSY)
+	if (err == ERR_BUSY) {
 		return 0;
+	}
 
-	if (err != OK)
+	if (err != OK) {
 		return -1;
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	enet_address_set_ip(address, ip.get_ipv6(), 16);
 
 	return read;
 }
 
+int enet_socket_get_address (ENetSocket socket, ENetAddress * address) {
+	IPAddress ip;
+	uint16_t port;
+	ENetGodotSocket *sock = (ENetGodotSocket *)socket;
+
+	if (sock->get_socket_address(&ip, &port) != OK) {
+		return -1;
+	}
+
+	enet_address_set_ip(address, ip.get_ipv6(), 16);
+	address->port = port;
+
+	return 0;
+}
+
 // Not implemented
 int enet_socket_wait(ENetSocket socket, enet_uint32 *condition, enet_uint32 timeout) {
-
 	return 0; // do we need this function?
 }
 
-int enet_socket_get_address(ENetSocket socket, ENetAddress *address) {
-
-	return -1; // do we need this function?
-}
-
 int enet_socketset_select(ENetSocket maxSocket, ENetSocketSet *readSet, ENetSocketSet *writeSet, enet_uint32 timeout) {
-
 	return -1;
 }
 
 int enet_socket_listen(ENetSocket socket, int backlog) {
-
 	return -1;
 }
 
 int enet_socket_set_option(ENetSocket socket, ENetSocketOption option, int value) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ENetGodotSocket *sock = (ENetGodotSocket *)socket;
 	return sock->set_option(option, value);
 }
 
 int enet_socket_get_option(ENetSocket socket, ENetSocketOption option, int *value) {
-
 	return -1;
 }
 
 int enet_socket_connect(ENetSocket socket, const ENetAddress *address) {
-
 	return -1;
 }
 
 ENetSocket enet_socket_accept(ENetSocket socket, ENetAddress *address) {
-
-	return NULL;
+	return nullptr;
 }
 
 int enet_socket_shutdown(ENetSocket socket, ENetSocketShutdown how) {
-
 	return -1;
 }

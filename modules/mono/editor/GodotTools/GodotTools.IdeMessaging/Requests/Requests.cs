@@ -67,6 +67,22 @@ namespace GodotTools.IdeMessaging.Requests
     {
     }
 
+<<<<<<< HEAD
+=======
+    public sealed class StopPlayRequest : Request
+    {
+        public new const string Id = "StopPlay";
+
+        public StopPlayRequest() : base(Id)
+        {
+        }
+    }
+
+    public sealed class StopPlayResponse : Response
+    {
+    }
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     public sealed class DebugPlayRequest : Request
     {
         public string DebuggerHost { get; set; }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="MeshLibrary" inherits="Resource" version="3.2">
+<class name="MeshLibrary" inherits="Resource" version="4.0">
 	<brief_description>
 		Library of meshes.
 	</brief_description>
@@ -38,7 +38,7 @@
 			</description>
 		</method>
 		<method name="get_item_list" qualifiers="const">
-			<return type="PoolIntArray">
+			<return type="PackedInt32Array">
 			</return>
 			<description>
 				Returns the list of item IDs in use.
@@ -72,7 +72,7 @@
 			</description>
 		</method>
 		<method name="get_item_navmesh_transform" qualifiers="const">
-			<return type="Transform">
+			<return type="Transform3D">
 			</return>
 			<argument index="0" name="id" type="int">
 			</argument>
@@ -81,12 +81,16 @@
 			</description>
 		</method>
 		<method name="get_item_preview" qualifiers="const">
-			<return type="Texture">
+			<return type="Texture2D">
 			</return>
 			<argument index="0" name="id" type="int">
 			</argument>
 			<description>
+<<<<<<< HEAD
 				When running in the editor, returns a generated item preview (a 3D rendering in isometric perspective). When used in a running project, returns the manually-defined item preview which can be set using [method set_item_preview]. Returns an empty [Texture] if no preview was manually set in a running project.
+=======
+				When running in the editor, returns a generated item preview (a 3D rendering in isometric perspective). When used in a running project, returns the manually-defined item preview which can be set using [method set_item_preview]. Returns an empty [Texture2D] if no preview was manually set in a running project.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			</description>
 		</method>
 		<method name="get_item_shapes" qualifiers="const">
@@ -96,7 +100,7 @@
 			</argument>
 			<description>
 				Returns an item's collision shapes.
-				The array consists of each [Shape] followed by its [Transform].
+				The array consists of each [Shape3D] followed by its [Transform3D].
 			</description>
 		</method>
 		<method name="get_last_unused_item_id" qualifiers="const">
@@ -154,7 +158,7 @@
 			</return>
 			<argument index="0" name="id" type="int">
 			</argument>
-			<argument index="1" name="navmesh" type="Transform">
+			<argument index="1" name="navmesh" type="Transform3D">
 			</argument>
 			<description>
 				Sets the transform to apply to the item's navigation mesh.
@@ -165,7 +169,7 @@
 			</return>
 			<argument index="0" name="id" type="int">
 			</argument>
-			<argument index="1" name="texture" type="Texture">
+			<argument index="1" name="texture" type="Texture2D">
 			</argument>
 			<description>
 				Sets a texture to use as the item's preview icon in the editor.
@@ -180,7 +184,7 @@
 			</argument>
 			<description>
 				Sets an item's collision shapes.
-				The array should consist of [Shape] objects, each followed by a [Transform] that will be applied to it. For shapes that should not have a transform, use [constant Transform.IDENTITY].
+				The array should consist of [Shape3D] objects, each followed by a [Transform3D] that will be applied to it. For shapes that should not have a transform, use [constant Transform3D.IDENTITY].
 			</description>
 		</method>
 	</methods>

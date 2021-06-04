@@ -86,7 +86,11 @@ namespace GodotTools.Build
                 {
                     case BuildTool.DotnetCli:
                     {
+<<<<<<< HEAD
                         string dotnetCliPath = OS.PathWhich("dotnet");
+=======
+                        string dotnetCliPath = FindBuildEngineOnUnix("dotnet");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                         if (!string.IsNullOrEmpty(dotnetCliPath))
                             return (dotnetCliPath, BuildTool.DotnetCli);
                         GD.PushError($"Cannot find executable for '{BuildManager.PropNameDotnetCli}'. Fallback to MSBuild from Mono.");
@@ -119,10 +123,14 @@ namespace GodotTools.Build
             {
                 var result = new List<string>();
 
-                if (OS.IsOSX)
+                if (OS.IsMacOS)
                 {
                     result.Add("/Library/Frameworks/Mono.framework/Versions/Current/bin/");
+                    result.Add("/opt/local/bin/");
                     result.Add("/usr/local/var/homebrew/linked/mono/bin/");
+                    result.Add("/usr/local/bin/");
+                    result.Add("/usr/local/bin/dotnet/");
+                    result.Add("/usr/local/share/dotnet/");
                 }
 
                 result.Add("/opt/novell/mono/bin/");
@@ -181,7 +189,7 @@ namespace GodotTools.Build
 
             var outputArray = new Godot.Collections.Array<string>();
             int exitCode = Godot.OS.Execute(vsWherePath, vsWhereArgs,
-                blocking: true, output: (Godot.Collections.Array)outputArray);
+                output: (Godot.Collections.Array)outputArray);
 
             if (exitCode != 0)
                 return string.Empty;

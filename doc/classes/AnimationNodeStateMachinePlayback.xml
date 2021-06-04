@@ -1,29 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="AnimationNodeStateMachinePlayback" inherits="Resource" version="3.2">
+<class name="AnimationNodeStateMachinePlayback" inherits="Resource" version="4.0">
 	<brief_description>
 		Playback control for [AnimationNodeStateMachine].
 	</brief_description>
 	<description>
 		Allows control of [AnimationTree] state machines created with [AnimationNodeStateMachine]. Retrieve with [code]$AnimationTree.get("parameters/playback")[/code].
 		[b]Example:[/b]
-		[codeblock]
+		[codeblocks]
+		[gdscript]
 		var state_machine = $AnimationTree.get("parameters/playback")
 		state_machine.travel("some_state")
-		[/codeblock]
+		[/gdscript]
+		[csharp]
+		var stateMachine = GetNode&lt;AnimationTree&gt;("AnimationTree").Get("parameters/playback") as AnimationNodeStateMachinePlayback;
+		stateMachine.Travel("some_state");
+		[/csharp]
+		[/codeblocks]
 	</description>
 	<tutorials>
+<<<<<<< HEAD
 		<link>https://docs.godotengine.org/en/3.2/tutorials/animation/animation_tree.html</link>
+=======
+		<link title="AnimationTree">https://docs.godotengine.org/en/latest/tutorials/animation/animation_tree.html</link>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</tutorials>
 	<methods>
+		<method name="get_current_length" qualifiers="const">
+			<return type="float">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="get_current_node" qualifiers="const">
-			<return type="String">
+			<return type="StringName">
 			</return>
 			<description>
 				Returns the currently playing animation state.
 			</description>
 		</method>
+		<method name="get_current_play_position" qualifiers="const">
+			<return type="float">
+			</return>
+			<description>
+				Returns the playback position within the current animation state.
+			</description>
+		</method>
 		<method name="get_travel_path" qualifiers="const">
-			<return type="PoolStringArray">
+			<return type="PackedStringArray">
 			</return>
 			<description>
 				Returns the current travel path as computed internally by the A* algorithm.
@@ -39,7 +62,7 @@
 		<method name="start">
 			<return type="void">
 			</return>
-			<argument index="0" name="node" type="String">
+			<argument index="0" name="node" type="StringName">
 			</argument>
 			<description>
 				Starts playing the given animation.
@@ -55,7 +78,7 @@
 		<method name="travel">
 			<return type="void">
 			</return>
-			<argument index="0" name="to_node" type="String">
+			<argument index="0" name="to_node" type="StringName">
 			</argument>
 			<description>
 				Transitions from the current state to another one, following the shortest path.

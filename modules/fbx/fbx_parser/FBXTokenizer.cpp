@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -78,7 +83,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define ASSIMP_FBX_TAB_WIDTH 4
 
 #include "FBXTokenizer.h"
+<<<<<<< HEAD
 #include "core/print_string.h"
+=======
+#include "core/string/print_string.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 namespace FBXDocParser {
 
@@ -138,11 +147,18 @@ void ProcessDataToken(TokenList &output_tokens, const char *&start, const char *
 
 	start = end = nullptr;
 }
+<<<<<<< HEAD
 
 } // namespace
 
 // ------------------------------------------------------------------------------------------------
 void Tokenize(TokenList &output_tokens, const char *input) {
+=======
+} // namespace
+
+// ------------------------------------------------------------------------------------------------
+void Tokenize(TokenList &output_tokens, const char *input, size_t length, bool &corrupt) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// line and column numbers numbers are one-based
 	unsigned int line = 1;
 	unsigned int column = 1;
@@ -152,8 +168,18 @@ void Tokenize(TokenList &output_tokens, const char *input) {
 	bool pending_data_token = false;
 
 	const char *token_begin = nullptr, *token_end = nullptr;
+<<<<<<< HEAD
 	for (const char *cur = input; *cur; column += (*cur == '\t' ? ASSIMP_FBX_TAB_WIDTH : 1), ++cur) {
 		const char c = *cur;
+=======
+
+	// input (starting string), *cur the current string, column +=
+	// modified to fix strlen() and stop buffer overflow
+	for (size_t x = 0; x < length; x++) {
+		const char c = input[x];
+		const char *cur = &input[x];
+		column += (c == '\t' ? ASSIMP_FBX_TAB_WIDTH : 1);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		if (IsLineEnd(c)) {
 			comment = false;
@@ -181,6 +207,11 @@ void Tokenize(TokenList &output_tokens, const char *input) {
 			case '\"':
 				if (token_begin) {
 					TokenizeError("unexpected double-quote", line, column);
+<<<<<<< HEAD
+=======
+					corrupt = true;
+					return;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				}
 				token_begin = cur;
 				in_double_quotes = true;
@@ -218,7 +249,10 @@ void Tokenize(TokenList &output_tokens, const char *input) {
 		}
 
 		if (IsSpaceOrNewLine(c)) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			if (token_begin) {
 				// peek ahead and check if the next token is a colon in which
 				// case this counts as KEY token.
@@ -245,5 +279,8 @@ void Tokenize(TokenList &output_tokens, const char *input) {
 		}
 	}
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser

@@ -29,8 +29,13 @@ namespace GodotTools
         private AcceptDialog aboutDialog;
         private CheckBox aboutDialogCheckBox;
 
+<<<<<<< HEAD
         private ToolButton bottomPanelBtn;
         private ToolButton toolBarButton;
+=======
+        private Button bottomPanelBtn;
+        private Button toolBarBuildButton;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
         public GodotIdeManager GodotIdeManager { get; private set; }
 
@@ -127,26 +132,23 @@ namespace GodotTools
         {
             menuPopup.RemoveItem(menuPopup.GetItemIndex((int)MenuOptions.CreateSln));
             bottomPanelBtn.Show();
+<<<<<<< HEAD
             toolBarButton.Show();
+=======
+            toolBarBuildButton.Show();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         }
 
         private void _ShowAboutDialog()
         {
             bool showOnStart = (bool)editorSettings.GetSetting("mono/editor/show_info_on_start");
             aboutDialogCheckBox.Pressed = showOnStart;
-            aboutDialog.PopupCenteredMinsize();
+            aboutDialog.PopupCentered();
         }
 
-        private void _ToggleAboutDialogOnStart(bool enabled)
+        private void _MenuOptionPressed(int id)
         {
-            bool showOnStart = (bool)editorSettings.GetSetting("mono/editor/show_info_on_start");
-            if (showOnStart != enabled)
-                editorSettings.SetSetting("mono/editor/show_info_on_start", enabled);
-        }
-
-        private void _MenuOptionPressed(MenuOptions id)
-        {
-            switch (id)
+            switch ((MenuOptions)id)
             {
                 case MenuOptions.CreateSln:
                     CreateProjectSolution();
@@ -154,6 +156,21 @@ namespace GodotTools
                 case MenuOptions.AboutCSharp:
                     _ShowAboutDialog();
                     break;
+                case MenuOptions.SetupGodotNugetFallbackFolder:
+                {
+                    try
+                    {
+                        string fallbackFolder = NuGetUtils.GodotFallbackFolderPath;
+                        NuGetUtils.AddFallbackFolderToUserNuGetConfigs(NuGetUtils.GodotFallbackFolderName, fallbackFolder);
+                        NuGetUtils.AddBundledPackagesToFallbackFolder(fallbackFolder);
+                    }
+                    catch (Exception e)
+                    {
+                        ShowErrorDialog("Failed to setup Godot NuGet Offline Packages: " + e.Message);
+                    }
+
+                    break;
+                }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(id), id, "Invalid menu option");
             }
@@ -168,6 +185,7 @@ namespace GodotTools
             }
 
             Instance.MSBuildPanel.BuildSolution();
+<<<<<<< HEAD
         }
 
         private void _FileSystemDockFileMoved(string file, string newFile)
@@ -212,6 +230,23 @@ namespace GodotTools
                 _ShowAboutDialog();
                 // Once shown a first time, it can be seen again via the Mono menu - it doesn't have to be exclusive from that time on.
                 aboutDialog.PopupExclusive = false;
+=======
+        }
+
+        public override void _Ready()
+        {
+            base._Ready();
+
+            MSBuildPanel.BuildOutputView.BuildStateChanged += BuildStateChanged;
+
+            bool showInfoDialog = (bool)editorSettings.GetSetting("mono/editor/show_info_on_start");
+            if (showInfoDialog)
+            {
+                aboutDialog.Exclusive = true;
+                _ShowAboutDialog();
+                // Once shown a first time, it can be seen again via the Mono menu - it doesn't have to be exclusive from that time on.
+                aboutDialog.Exclusive = false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             }
 
             var fileSystemDock = GetEditorInterface().GetFileSystemDock();
@@ -226,13 +261,14 @@ namespace GodotTools
         {
             CreateSln,
             AboutCSharp,
+            SetupGodotNugetFallbackFolder,
         }
 
         public void ShowErrorDialog(string message, string title = "Error")
         {
-            errorDialog.WindowTitle = title;
+            errorDialog.Title = title;
             errorDialog.DialogText = message;
-            errorDialog.PopupCenteredMinsize();
+            errorDialog.PopupCentered();
         }
 
         private static string _vsCodePath = string.Empty;
@@ -301,7 +337,6 @@ namespace GodotTools
 
                     break;
                 }
-
                 case ExternalEditorId.VsCode:
                 {
                     if (string.IsNullOrEmpty(_vsCodePath) || !File.Exists(_vsCodePath))
@@ -314,7 +349,7 @@ namespace GodotTools
 
                     bool osxAppBundleInstalled = false;
 
-                    if (OS.IsOSX)
+                    if (OS.IsMacOS)
                     {
                         // The package path is '/Applications/Visual Studio Code.app'
                         const string vscodeBundleId = "com.microsoft.VSCode";
@@ -354,7 +389,7 @@ namespace GodotTools
 
                     string command;
 
-                    if (OS.IsOSX)
+                    if (OS.IsMacOS)
                     {
                         if (!osxAppBundleInstalled && string.IsNullOrEmpty(_vsCodePath))
                         {
@@ -386,7 +421,6 @@ namespace GodotTools
 
                     break;
                 }
-
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -465,16 +499,16 @@ namespace GodotTools
 
             menuPopup = new PopupMenu();
             menuPopup.Hide();
-            menuPopup.SetAsToplevel(true);
 
             AddToolSubmenuItem("C#", menuPopup);
 
             // TODO: Remove or edit this info dialog once Mono support is no longer in alpha
             {
                 menuPopup.AddItem("About C# support".TTR(), (int)MenuOptions.AboutCSharp);
+                menuPopup.AddItem("Setup Godot NuGet Offline Packages".TTR(), (int)MenuOptions.SetupGodotNugetFallbackFolder);
                 aboutDialog = new AcceptDialog();
                 editorBaseControl.AddChild(aboutDialog);
-                aboutDialog.WindowTitle = "Important: C# support is not feature-complete";
+                aboutDialog.Title = "Important: C# support is not feature-complete";
 
                 // We don't use DialogText as the default AcceptDialog Label doesn't play well with the TextureRect and CheckBox
                 // we'll add. Instead we add containers and a new autowrapped Label inside.
@@ -488,7 +522,7 @@ namespace GodotTools
                 aboutVBox.AddChild(aboutHBox);
 
                 var aboutIcon = new TextureRect();
-                aboutIcon.Texture = aboutIcon.GetIcon("NodeWarning", "EditorIcons");
+                aboutIcon.Texture = aboutIcon.GetThemeIcon("NodeWarning", "EditorIcons");
                 aboutHBox.AddChild(aboutIcon);
 
                 var aboutLabel = new Label();
@@ -510,18 +544,36 @@ namespace GodotTools
 
                 // CheckBox in main container
                 aboutDialogCheckBox = new CheckBox {Text = "Show this warning when starting the editor"};
+<<<<<<< HEAD
                 aboutDialogCheckBox.Connect("toggled", this, nameof(_ToggleAboutDialogOnStart));
                 aboutVBox.AddChild(aboutDialogCheckBox);
             }
 
             toolBarButton = new ToolButton
+=======
+                aboutDialogCheckBox.Toggled += enabled =>
+                {
+                    bool showOnStart = (bool)editorSettings.GetSetting("mono/editor/show_info_on_start");
+                    if (showOnStart != enabled)
+                        editorSettings.SetSetting("mono/editor/show_info_on_start", enabled);
+                };
+                aboutVBox.AddChild(aboutDialogCheckBox);
+            }
+
+            toolBarBuildButton = new Button
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             {
                 Text = "Build",
                 HintTooltip = "Build solution",
                 FocusMode = Control.FocusModeEnum.None
             };
+<<<<<<< HEAD
             toolBarButton.Connect("pressed", this, nameof(BuildSolutionPressed));
             AddControlToContainer(CustomControlContainer.Toolbar, toolBarButton);
+=======
+            toolBarBuildButton.PressedSignal += BuildSolutionPressed;
+            AddControlToContainer(CustomControlContainer.Toolbar, toolBarBuildButton);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             if (File.Exists(GodotSharpDirs.ProjectSlnPath) && File.Exists(GodotSharpDirs.ProjectCsProjPath))
             {
@@ -530,11 +582,19 @@ namespace GodotTools
             else
             {
                 bottomPanelBtn.Hide();
+<<<<<<< HEAD
                 toolBarButton.Hide();
                 menuPopup.AddItem("Create C# solution".TTR(), (int)MenuOptions.CreateSln);
             }
 
             menuPopup.Connect("id_pressed", this, nameof(_MenuOptionPressed));
+=======
+                toolBarBuildButton.Hide();
+                menuPopup.AddItem("Create C# solution".TTR(), (int)MenuOptions.CreateSln);
+            }
+
+            menuPopup.IdPressed += _MenuOptionPressed;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             // External editor settings
             EditorDef("mono/editor/external_editor", ExternalEditorId.None);
@@ -548,7 +608,7 @@ namespace GodotTools
                                    $",Visual Studio Code:{(int)ExternalEditorId.VsCode}" +
                                    $",JetBrains Rider:{(int)ExternalEditorId.Rider}";
             }
-            else if (OS.IsOSX)
+            else if (OS.IsMacOS)
             {
                 settingsHintStr += $",Visual Studio:{(int)ExternalEditorId.VisualStudioForMac}" +
                                    $",MonoDevelop:{(int)ExternalEditorId.MonoDevelop}" +
@@ -575,6 +635,16 @@ namespace GodotTools
             AddExportPlugin(exportPlugin);
             exportPlugin.RegisterExportSettings();
             exportPluginWeak = WeakRef(exportPlugin);
+
+            try
+            {
+                // At startup we make sure NuGet.Config files have our Godot NuGet fallback folder included
+                NuGetUtils.AddFallbackFolderToUserNuGetConfigs(NuGetUtils.GodotFallbackFolderName, NuGetUtils.GodotFallbackFolderPath);
+            }
+            catch (Exception e)
+            {
+                GD.PushError("Failed to add Godot NuGet Offline Packages to NuGet.Config: " + e.Message);
+            }
 
             BuildManager.Initialize();
             RiderPathManager.Initialize();

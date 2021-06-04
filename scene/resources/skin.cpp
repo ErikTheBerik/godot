@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -38,15 +38,19 @@ void Skin::set_bind_count(int p_size) {
 	emit_changed();
 }
 
-void Skin::add_bind(int p_bone, const Transform &p_pose) {
+void Skin::add_bind(int p_bone, const Transform3D &p_pose) {
 	uint32_t index = bind_count;
 	set_bind_count(bind_count + 1);
 	set_bind_bone(index, p_bone);
 	set_bind_pose(index, p_pose);
 }
 
+<<<<<<< HEAD
 void Skin::add_named_bind(const String &p_name, const Transform &p_pose) {
 
+=======
+void Skin::add_named_bind(const String &p_name, const Transform3D &p_pose) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	uint32_t index = bind_count;
 	set_bind_count(bind_count + 1);
 	set_bind_name(index, p_name);
@@ -59,7 +63,11 @@ void Skin::set_bind_name(int p_index, const StringName &p_name) {
 	binds_ptr[p_index].name = p_name;
 	emit_changed();
 	if (notify_change) {
+<<<<<<< HEAD
 		_change_notify();
+=======
+		notify_property_list_changed();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 }
 
@@ -69,7 +77,7 @@ void Skin::set_bind_bone(int p_index, int p_bone) {
 	emit_changed();
 }
 
-void Skin::set_bind_pose(int p_index, const Transform &p_pose) {
+void Skin::set_bind_pose(int p_index, const Transform3D &p_pose) {
 	ERR_FAIL_INDEX(p_index, bind_count);
 	binds_ptr[p_index].pose = p_pose;
 	emit_changed();
@@ -80,6 +88,10 @@ void Skin::clear_binds() {
 	binds_ptr = nullptr;
 	bind_count = 0;
 	emit_changed();
+}
+
+void Skin::reset_state() {
+	clear_binds();
 }
 
 bool Skin::_set(const StringName &p_name, const Variant &p_value) {
@@ -105,7 +117,6 @@ bool Skin::_set(const StringName &p_name, const Variant &p_value) {
 }
 
 bool Skin::_get(const StringName &p_name, Variant &r_ret) const {
-
 	String name = p_name;
 	if (name == "bind_count") {
 		r_ret = get_bind_count();
@@ -126,17 +137,23 @@ bool Skin::_get(const StringName &p_name, Variant &r_ret) const {
 	}
 	return false;
 }
+
 void Skin::_get_property_list(List<PropertyInfo> *p_list) const {
 	p_list->push_back(PropertyInfo(Variant::INT, "bind_count", PROPERTY_HINT_RANGE, "0,16384,1,or_greater"));
 	for (int i = 0; i < get_bind_count(); i++) {
+<<<<<<< HEAD
 		p_list->push_back(PropertyInfo(Variant::STRING, "bind/" + itos(i) + "/name"));
 		p_list->push_back(PropertyInfo(Variant::INT, "bind/" + itos(i) + "/bone", PROPERTY_HINT_RANGE, "0,16384,1,or_greater", get_bind_name(i) != StringName() ? PROPERTY_USAGE_NOEDITOR : PROPERTY_USAGE_DEFAULT));
 		p_list->push_back(PropertyInfo(Variant::TRANSFORM, "bind/" + itos(i) + "/pose"));
+=======
+		p_list->push_back(PropertyInfo(Variant::STRING_NAME, "bind/" + itos(i) + "/name"));
+		p_list->push_back(PropertyInfo(Variant::INT, "bind/" + itos(i) + "/bone", PROPERTY_HINT_RANGE, "0,16384,1,or_greater", get_bind_name(i) != StringName() ? PROPERTY_USAGE_NOEDITOR : PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::TRANSFORM3D, "bind/" + itos(i) + "/pose"));
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 }
 
 void Skin::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("set_bind_count", "bind_count"), &Skin::set_bind_count);
 	ClassDB::bind_method(D_METHOD("get_bind_count"), &Skin::get_bind_count);
 
@@ -155,6 +172,4 @@ void Skin::_bind_methods() {
 }
 
 Skin::Skin() {
-	bind_count = 0;
-	binds_ptr = nullptr;
 }

@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,10 +36,17 @@
 #include "udp_server.h"
 
 void UDPServer::_bind_methods() {
+<<<<<<< HEAD
 
 	ClassDB::bind_method(D_METHOD("listen", "port", "bind_address"), &UDPServer::listen, DEFVAL("*"));
 	ClassDB::bind_method(D_METHOD("poll"), &UDPServer::poll);
 	ClassDB::bind_method(D_METHOD("is_connection_available"), &UDPServer::is_connection_available);
+=======
+	ClassDB::bind_method(D_METHOD("listen", "port", "bind_address"), &UDPServer::listen, DEFVAL("*"));
+	ClassDB::bind_method(D_METHOD("poll"), &UDPServer::poll);
+	ClassDB::bind_method(D_METHOD("is_connection_available"), &UDPServer::is_connection_available);
+	ClassDB::bind_method(D_METHOD("get_local_port"), &UDPServer::get_local_port);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ClassDB::bind_method(D_METHOD("is_listening"), &UDPServer::is_listening);
 	ClassDB::bind_method(D_METHOD("take_connection"), &UDPServer::take_connection);
 	ClassDB::bind_method(D_METHOD("stop"), &UDPServer::stop);
@@ -50,7 +62,11 @@ Error UDPServer::poll() {
 	}
 	Error err;
 	int read;
+<<<<<<< HEAD
 	IP_Address ip;
+=======
+	IPAddress ip;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	uint16_t port;
 	while (true) {
 		err = _sock->recvfrom(recv_buffer, sizeof(recv_buffer), read, ip, port);
@@ -87,15 +103,24 @@ Error UDPServer::poll() {
 	return OK;
 }
 
+<<<<<<< HEAD
 Error UDPServer::listen(uint16_t p_port, const IP_Address &p_bind_address) {
 
 	ERR_FAIL_COND_V(!_sock.is_valid(), ERR_UNAVAILABLE);
 	ERR_FAIL_COND_V(_sock->is_open(), ERR_ALREADY_IN_USE);
 	ERR_FAIL_COND_V(!p_bind_address.is_valid() && !p_bind_address.is_wildcard(), ERR_INVALID_PARAMETER);
+=======
+Error UDPServer::listen(uint16_t p_port, const IPAddress &p_bind_address) {
+	ERR_FAIL_COND_V(!_sock.is_valid(), ERR_UNAVAILABLE);
+	ERR_FAIL_COND_V(_sock->is_open(), ERR_ALREADY_IN_USE);
+	ERR_FAIL_COND_V(!p_bind_address.is_valid() && !p_bind_address.is_wildcard(), ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V_MSG(p_port < 0 || p_port > 65535, ERR_INVALID_PARAMETER, "The local port number must be between 0 and 65535 (inclusive).");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	Error err;
 	IP::Type ip_type = IP::TYPE_ANY;
 
+<<<<<<< HEAD
 	if (p_bind_address.is_valid())
 		ip_type = p_bind_address.is_ipv4() ? IP::TYPE_IPV4 : IP::TYPE_IPV6;
 
@@ -103,6 +128,17 @@ Error UDPServer::listen(uint16_t p_port, const IP_Address &p_bind_address) {
 
 	if (err != OK)
 		return ERR_CANT_CREATE;
+=======
+	if (p_bind_address.is_valid()) {
+		ip_type = p_bind_address.is_ipv4() ? IP::TYPE_IPV4 : IP::TYPE_IPV6;
+	}
+
+	err = _sock->open(NetSocket::TYPE_UDP, ip_type);
+
+	if (err != OK) {
+		return ERR_CANT_CREATE;
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	_sock->set_blocking_enabled(false);
 	_sock->set_reuse_address_enabled(true);
@@ -112,11 +148,23 @@ Error UDPServer::listen(uint16_t p_port, const IP_Address &p_bind_address) {
 		stop();
 		return err;
 	}
+<<<<<<< HEAD
 	bind_address = p_bind_address;
 	bind_port = p_port;
 	return OK;
 }
 
+=======
+	return OK;
+}
+
+int UDPServer::get_local_port() const {
+	uint16_t local_port;
+	_sock->get_socket_address(nullptr, &local_port);
+	return local_port;
+}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 bool UDPServer::is_listening() const {
 	ERR_FAIL_COND_V(!_sock.is_valid(), false);
 
@@ -124,11 +172,19 @@ bool UDPServer::is_listening() const {
 }
 
 bool UDPServer::is_connection_available() const {
+<<<<<<< HEAD
 
 	ERR_FAIL_COND_V(!_sock.is_valid(), false);
 
 	if (!_sock->is_open())
 		return false;
+=======
+	ERR_FAIL_COND_V(!_sock.is_valid(), false);
+
+	if (!_sock->is_open()) {
+		return false;
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	return pending.size() > 0;
 }
@@ -151,7 +207,10 @@ int UDPServer::get_max_pending_connections() const {
 }
 
 Ref<PacketPeerUDP> UDPServer::take_connection() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	Ref<PacketPeerUDP> conn;
 	if (!is_connection_available()) {
 		return conn;
@@ -163,7 +222,11 @@ Ref<PacketPeerUDP> UDPServer::take_connection() {
 	return peer.peer;
 }
 
+<<<<<<< HEAD
 void UDPServer::remove_peer(IP_Address p_ip, int p_port) {
+=======
+void UDPServer::remove_peer(IPAddress p_ip, int p_port) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	Peer peer;
 	peer.ip = p_ip;
 	peer.port = p_port;
@@ -174,12 +237,18 @@ void UDPServer::remove_peer(IP_Address p_ip, int p_port) {
 }
 
 void UDPServer::stop() {
+<<<<<<< HEAD
 
 	if (_sock.is_valid()) {
 		_sock->close();
 	}
 	bind_port = 0;
 	bind_address = IP_Address();
+=======
+	if (_sock.is_valid()) {
+		_sock->close();
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	List<Peer>::Element *E = peers.front();
 	while (E) {
 		E->get().peer->disconnect_shared_socket();
@@ -200,6 +269,9 @@ UDPServer::UDPServer() :
 }
 
 UDPServer::~UDPServer() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	stop();
 }

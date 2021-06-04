@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -35,9 +40,14 @@
 #include <core/os/keyboard.h>
 
 struct _WinTranslatePair {
+<<<<<<< HEAD
 
 	unsigned int keysym;
 	unsigned int keycode;
+=======
+	unsigned int keysym = 0;
+	unsigned int keycode = 0;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 };
 
 static _WinTranslatePair _ak_to_keycode[] = {
@@ -128,8 +138,13 @@ static _WinTranslatePair _ak_to_keycode[] = {
 	{ KEY_BACKSLASH, AKEYCODE_BACKSLASH },
 	{ KEY_BRACKETLEFT, AKEYCODE_LEFT_BRACKET },
 	{ KEY_BRACKETRIGHT, AKEYCODE_RIGHT_BRACKET },
+<<<<<<< HEAD
 	{ KEY_CONTROL, AKEYCODE_CTRL_LEFT },
 	{ KEY_CONTROL, AKEYCODE_CTRL_RIGHT },
+=======
+	{ KEY_CTRL, AKEYCODE_CTRL_LEFT },
+	{ KEY_CTRL, AKEYCODE_CTRL_RIGHT },
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	{ KEY_UNKNOWN, 0 }
 };
 /*

@@ -111,10 +111,17 @@ namespace Godot
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Returns the minimum angle to the given vector, in radians.
         /// </summary>
         /// <param name="to">The other vector to compare this vector to.</param>
         /// <returns>The angle between the two vectors, in radians.</returns>
+=======
+        /// Returns the unsigned minimum angle to the given vector, in radians.
+        /// </summary>
+        /// <param name="to">The other vector to compare this vector to.</param>
+        /// <returns>The unsigned angle between the two vectors, in radians.</returns>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         public real_t AngleTo(Vector3 to)
         {
             return Mathf.Atan2(Cross(to).Length(), Dot(to));
@@ -140,6 +147,27 @@ namespace Godot
         }
 
         /// <summary>
+<<<<<<< HEAD
+=======
+        /// Returns a new vector with all components clamped between the
+        /// components of `min` and `max` using
+        /// <see cref="Mathf.Clamp(real_t, real_t, real_t)"/>.
+        /// </summary>
+        /// <param name="min">The vector with minimum allowed values.</param>
+        /// <param name="max">The vector with maximum allowed values.</param>
+        /// <returns>The vector with all components clamped.</returns>
+        public Vector3 Clamp(Vector3 min, Vector3 max)
+        {
+            return new Vector3
+            (
+                Mathf.Clamp(x, min.x, max.x),
+                Mathf.Clamp(y, min.y, max.y),
+                Mathf.Clamp(z, min.z, max.z)
+            );
+        }
+
+        /// <summary>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// Returns the cross product of this vector and `b`.
         /// </summary>
         /// <param name="b">The other vector.</param>
@@ -161,15 +189,22 @@ namespace Godot
         /// <param name="b">The destination vector.</param>
         /// <param name="preA">A vector before this vector.</param>
         /// <param name="postB">A vector after `b`.</param>
+<<<<<<< HEAD
         /// <param name="t">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
         /// <returns>The interpolated vector.</returns>
         public Vector3 CubicInterpolate(Vector3 b, Vector3 preA, Vector3 postB, real_t t)
+=======
+        /// <param name="weight">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
+        /// <returns>The interpolated vector.</returns>
+        public Vector3 CubicInterpolate(Vector3 b, Vector3 preA, Vector3 postB, real_t weight)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         {
             Vector3 p0 = preA;
             Vector3 p1 = this;
             Vector3 p2 = b;
             Vector3 p3 = postB;
 
+            real_t t = weight;
             real_t t2 = t * t;
             real_t t3 = t2 * t;
 
@@ -284,7 +319,11 @@ namespace Godot
         /// <param name="to">The destination vector for interpolation.</param>
         /// <param name="weight">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
         /// <returns>The resulting vector of the interpolation.</returns>
+<<<<<<< HEAD
         public Vector3 LinearInterpolate(Vector3 to, real_t weight)
+=======
+        public Vector3 Lerp(Vector3 to, real_t weight)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         {
             return new Vector3
             (
@@ -301,7 +340,11 @@ namespace Godot
         /// <param name="to">The destination vector for interpolation.</param>
         /// <param name="weight">A vector with components on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
         /// <returns>The resulting vector of the interpolation.</returns>
+<<<<<<< HEAD
         public Vector3 LinearInterpolate(Vector3 to, Vector3 weight)
+=======
+        public Vector3 Lerp(Vector3 to, Vector3 weight)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         {
             return new Vector3
             (
@@ -312,6 +355,28 @@ namespace Godot
         }
 
         /// <summary>
+<<<<<<< HEAD
+=======
+        /// Returns the vector with a maximum length by limiting its length to `length`.
+        /// </summary>
+        /// <param name="length">The length to limit to.</param>
+        /// <returns>The vector with its length limited.</returns>
+        public Vector3 LimitLength(real_t length = 1.0f)
+        {
+            Vector3 v = this;
+            real_t l = Length();
+
+            if (l > 0 && length < l)
+            {
+                v /= l;
+                v *= length;
+            }
+
+            return v;
+        }
+
+        /// <summary>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// Returns the axis of the vector's largest value. See <see cref="Axis"/>.
         /// If all components are equal, this method returns <see cref="Axis.X"/>.
         /// </summary>
@@ -422,6 +487,7 @@ namespace Godot
             }
 #endif
             return 2.0f * Dot(normal) * normal - this;
+<<<<<<< HEAD
         }
 
         /// <summary>
@@ -450,21 +516,36 @@ namespace Godot
         public Vector3 Round()
         {
             return new Vector3(Mathf.Round(x), Mathf.Round(y), Mathf.Round(z));
+=======
         }
 
-        [Obsolete("Set is deprecated. Use the Vector3(" + nameof(real_t) + ", " + nameof(real_t) + ", " + nameof(real_t) + ") constructor instead.", error: true)]
-        public void Set(real_t x, real_t y, real_t z)
+        /// <summary>
+        /// Rotates this vector around a given `axis` vector by `phi` radians.
+        /// The `axis` vector must be a normalized vector.
+        /// </summary>
+        /// <param name="axis">The vector to rotate around. Must be normalized.</param>
+        /// <param name="phi">The angle to rotate by, in radians.</param>
+        /// <returns>The rotated vector.</returns>
+        public Vector3 Rotated(Vector3 axis, real_t phi)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+#if DEBUG
+            if (!axis.IsNormalized())
+            {
+                throw new ArgumentException("Argument  is not normalized", nameof(axis));
+            }
+#endif
+            return new Basis(axis, phi).Xform(this);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         }
-        [Obsolete("Set is deprecated. Use the Vector3(" + nameof(Vector3) + ") constructor instead.", error: true)]
-        public void Set(Vector3 v)
+
+        /// <summary>
+        /// Returns this vector with all components rounded to the nearest integer,
+        /// with halfway cases rounded towards the nearest multiple of two.
+        /// </summary>
+        /// <returns>The rounded vector.</returns>
+        public Vector3 Round()
         {
-            x = v.x;
-            y = v.y;
-            z = v.z;
+            return new Vector3(Mathf.Round(x), Mathf.Round(y), Mathf.Round(z));
         }
 
         /// <summary>
@@ -483,6 +564,26 @@ namespace Godot
         }
 
         /// <summary>
+<<<<<<< HEAD
+=======
+        /// Returns the signed angle to the given vector, in radians.
+        /// The sign of the angle is positive in a counter-clockwise
+        /// direction and negative in a clockwise direction when viewed
+        /// from the side specified by the `axis`.
+        /// </summary>
+        /// <param name="to">The other vector to compare this vector to.</param>
+        /// <param name="axis">The reference axis to use for the angle sign.</param>
+        /// <returns>The signed angle between the two vectors, in radians.</returns>
+        public real_t SignedAngleTo(Vector3 to, Vector3 axis)
+        {
+            Vector3 crossTo = Cross(to);
+            real_t unsignedAngle = Mathf.Atan2(crossTo.Length(), Dot(to));
+            real_t sign = crossTo.Dot(axis);
+            return (sign < 0) ? -unsignedAngle : unsignedAngle;
+        }
+
+        /// <summary>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// Returns the result of the spherical linear interpolation between
         /// this vector and `to` by amount `weight`.
         ///
@@ -527,9 +628,15 @@ namespace Godot
         {
             return new Vector3
             (
+<<<<<<< HEAD
                 Mathf.Stepify(x, step.x),
                 Mathf.Stepify(y, step.y),
                 Mathf.Stepify(z, step.z)
+=======
+                Mathf.Snapped(x, step.x),
+                Mathf.Snapped(y, step.y),
+                Mathf.Snapped(z, step.z)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             );
         }
 
@@ -552,7 +659,6 @@ namespace Godot
         // Constants
         private static readonly Vector3 _zero = new Vector3(0, 0, 0);
         private static readonly Vector3 _one = new Vector3(1, 1, 1);
-        private static readonly Vector3 _negOne = new Vector3(-1, -1, -1);
         private static readonly Vector3 _inf = new Vector3(Mathf.Inf, Mathf.Inf, Mathf.Inf);
 
         private static readonly Vector3 _up = new Vector3(0, 1, 0);
@@ -573,11 +679,14 @@ namespace Godot
         /// <value>Equivalent to `new Vector3(1, 1, 1)`</value>
         public static Vector3 One { get { return _one; } }
         /// <summary>
+<<<<<<< HEAD
         /// Deprecated, please use a negative sign with <see cref="One"/> instead.
         /// </summary>
         /// <value>Equivalent to `new Vector3(-1, -1, -1)`</value>
         public static Vector3 NegOne { get { return _negOne; } }
         /// <summary>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// Infinity vector, a vector with all components set to `Mathf.Inf`.
         /// </summary>
         /// <value>Equivalent to `new Vector3(Mathf.Inf, Mathf.Inf, Mathf.Inf)`</value>

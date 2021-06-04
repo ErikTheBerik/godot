@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -58,6 +63,7 @@ const GodotConfig = {
 	$GodotConfig: {
 		canvas: null,
 		locale: 'en',
+<<<<<<< HEAD
 		resize_on_start: false,
 		on_execute: null,
 
@@ -68,17 +74,49 @@ const GodotConfig = {
 			GodotConfig.on_execute = p_opts['onExecute'];
 			// This is called by emscripten, even if undocumented.
 			Module['onExit'] = p_opts['onExit']; // eslint-disable-line no-undef
+=======
+		canvas_resize_policy: 2, // Adaptive
+		virtual_keyboard: false,
+		persistent_drops: false,
+		on_execute: null,
+		on_exit: null,
+
+		init_config: function (p_opts) {
+			GodotConfig.canvas_resize_policy = p_opts['canvasResizePolicy'];
+			GodotConfig.canvas = p_opts['canvas'];
+			GodotConfig.locale = p_opts['locale'] || GodotConfig.locale;
+			GodotConfig.virtual_keyboard = p_opts['virtualKeyboard'];
+			GodotConfig.persistent_drops = !!p_opts['persistentDrops'];
+			GodotConfig.on_execute = p_opts['onExecute'];
+			GodotConfig.on_exit = p_opts['onExit'];
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		},
 
 		locate_file: function (file) {
 			return Module['locateFile'](file); // eslint-disable-line no-undef
 		},
+<<<<<<< HEAD
 	},
 
+=======
+		clear: function () {
+			GodotConfig.canvas = null;
+			GodotConfig.locale = 'en';
+			GodotConfig.canvas_resize_policy = 2;
+			GodotConfig.virtual_keyboard = false;
+			GodotConfig.persistent_drops = false;
+			GodotConfig.on_execute = null;
+			GodotConfig.on_exit = null;
+		},
+	},
+
+	godot_js_config_canvas_id_get__sig: 'vii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_js_config_canvas_id_get: function (p_ptr, p_ptr_max) {
 		GodotRuntime.stringToHeap(`#${GodotConfig.canvas.id}`, p_ptr, p_ptr_max);
 	},
 
+<<<<<<< HEAD
 	godot_js_config_locale_get: function (p_ptr, p_ptr_max) {
 		GodotRuntime.stringToHeap(GodotConfig.locale, p_ptr, p_ptr_max);
 	},
@@ -86,6 +124,12 @@ const GodotConfig = {
 	godot_js_config_is_resize_on_start: function () {
 		return GodotConfig.resize_on_start ? 1 : 0;
 	},
+=======
+	godot_js_config_locale_get__sig: 'vii',
+	godot_js_config_locale_get: function (p_ptr, p_ptr_max) {
+		GodotRuntime.stringToHeap(GodotConfig.locale, p_ptr, p_ptr_max);
+	},
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 };
 
 autoAddDeps(GodotConfig, '$GodotConfig');
@@ -95,7 +139,10 @@ const GodotFS = {
 	$GodotFS__deps: ['$FS', '$IDBFS', '$GodotRuntime'],
 	$GodotFS__postset: [
 		'Module["initFS"] = GodotFS.init;',
+<<<<<<< HEAD
 		'Module["deinitFS"] = GodotFS.deinit;',
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		'Module["copyToFS"] = GodotFS.copy_to_fs;',
 	].join(''),
 	$GodotFS: {
@@ -207,9 +254,16 @@ const GodotFS = {
 mergeInto(LibraryManager.library, GodotFS);
 
 const GodotOS = {
+<<<<<<< HEAD
 	$GodotOS__deps: ['$GodotFS', '$GodotRuntime'],
 	$GodotOS__postset: [
 		'Module["request_quit"] = function() { GodotOS.request_quit() };',
+=======
+	$GodotOS__deps: ['$GodotRuntime', '$GodotConfig', '$GodotFS'],
+	$GodotOS__postset: [
+		'Module["request_quit"] = function() { GodotOS.request_quit() };',
+		'Module["onExit"] = GodotOS.cleanup;',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		'GodotOS._fs_sync_promise = Promise.resolve();',
 	].join(''),
 	$GodotOS: {
@@ -221,6 +275,18 @@ const GodotOS = {
 			GodotOS._async_cbs.push(p_promise_cb);
 		},
 
+<<<<<<< HEAD
+=======
+		cleanup: function (exit_code) {
+			const cb = GodotConfig.on_exit;
+			GodotFS.deinit();
+			GodotConfig.clear();
+			if (cb) {
+				cb(exit_code);
+			}
+		},
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		finish_async: function (callback) {
 			GodotOS._fs_sync_promise.then(function (err) {
 				const promises = [];
@@ -239,19 +305,35 @@ const GodotOS = {
 		},
 	},
 
+<<<<<<< HEAD
+=======
+	godot_js_os_finish_async__sig: 'vi',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_js_os_finish_async: function (p_callback) {
 		const func = GodotRuntime.get_func(p_callback);
 		GodotOS.finish_async(func);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_js_os_request_quit_cb__sig: 'vi',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_js_os_request_quit_cb: function (p_callback) {
 		GodotOS.request_quit = GodotRuntime.get_func(p_callback);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_js_os_fs_is_persistent__sig: 'i',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_js_os_fs_is_persistent: function () {
 		return GodotFS.is_persistent();
 	},
 
+<<<<<<< HEAD
+=======
+	godot_js_os_fs_sync__sig: 'vi',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_js_os_fs_sync: function (callback) {
 		const func = GodotRuntime.get_func(callback);
 		GodotOS._fs_sync_promise = GodotFS.sync();
@@ -260,6 +342,10 @@ const GodotOS = {
 		});
 	},
 
+<<<<<<< HEAD
+=======
+	godot_js_os_execute__sig: 'ii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_js_os_execute: function (p_json) {
 		const json_args = GodotRuntime.parseString(p_json);
 		const args = JSON.parse(json_args);
@@ -270,9 +356,38 @@ const GodotOS = {
 		return 1;
 	},
 
+<<<<<<< HEAD
 	godot_js_os_shell_open: function (p_uri) {
 		window.open(GodotRuntime.parseString(p_uri), '_blank');
 	},
+=======
+	godot_js_os_shell_open__sig: 'vi',
+	godot_js_os_shell_open: function (p_uri) {
+		window.open(GodotRuntime.parseString(p_uri), '_blank');
+	},
+
+	godot_js_os_hw_concurrency_get__sig: 'i',
+	godot_js_os_hw_concurrency_get: function () {
+		return navigator.hardwareConcurrency || 1;
+	},
+
+	godot_js_os_download_buffer__sig: 'viiii',
+	godot_js_os_download_buffer: function (p_ptr, p_size, p_name, p_mime) {
+		const buf = GodotRuntime.heapSlice(HEAP8, p_ptr, p_size);
+		const name = GodotRuntime.parseString(p_name);
+		const mime = GodotRuntime.parseString(p_mime);
+		const blob = new Blob([buf], { type: mime });
+		const url = window.URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = name;
+		a.style.display = 'none';
+		document.body.appendChild(a);
+		a.click();
+		a.remove();
+		window.URL.revokeObjectURL(url);
+	},
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 };
 
 autoAddDeps(GodotOS, '$GodotOS');

@@ -2,12 +2,21 @@
 
 Import("env")
 Import("env_modules")
+<<<<<<< HEAD
 
 from compat import isbasestring
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 env_freetype = env_modules.Clone()
 
 # Thirdparty source files
+<<<<<<< HEAD
+=======
+
+thirdparty_obj = []
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 if env["builtin_freetype"]:
     thirdparty_dir = "#thirdparty/freetype/"
     thirdparty_sources = [
@@ -86,6 +95,7 @@ if env["builtin_freetype"]:
     env_thirdparty = env_freetype.Clone()
     env_thirdparty.disable_warnings()
     lib = env_thirdparty.add_library("freetype_builtin", thirdparty_sources)
+    thirdparty_obj += lib
 
     # Needs to be appended to arrive after libscene in the linker call,
     # but we don't want it to arrive *after* system libs, so manual hack
@@ -93,14 +103,30 @@ if env["builtin_freetype"]:
     # and then plain strings for system library. We insert between the two.
     inserted = False
     for idx, linklib in enumerate(env["LIBS"]):
+<<<<<<< HEAD
         if isbasestring(linklib):  # first system lib such as "X11", otherwise SCons lib object
+=======
+        if isinstance(linklib, (str, bytes)):  # first system lib such as "X11", otherwise SCons lib object
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             env["LIBS"].insert(idx, lib)
             inserted = True
             break
     if not inserted:
         env.Append(LIBS=[lib])
 
+
 # Godot source files
+<<<<<<< HEAD
 env_freetype.add_source_files(env.modules_sources, "*.cpp")
 # Used in scene/, needs to be in main env
 env.Append(CPPDEFINES=["FREETYPE_ENABLED"])
+=======
+
+module_obj = []
+
+env_freetype.add_source_files(module_obj, "*.cpp")
+env.modules_sources += module_obj
+
+# Needed to force rebuilding the module files when the thirdparty library is updated.
+env.Depends(module_obj, thirdparty_obj)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45

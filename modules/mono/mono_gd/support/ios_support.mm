@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -57,9 +62,15 @@ void ios_mono_log_callback(const char *log_domain, const char *log_level, const 
 }
 
 void initialize() {
+<<<<<<< HEAD
 	mono_dllmap_insert(NULL, "System.Native", NULL, "__Internal", NULL);
 	mono_dllmap_insert(NULL, "System.IO.Compression.Native", NULL, "__Internal", NULL);
 	mono_dllmap_insert(NULL, "System.Security.Cryptography.Native.Apple", NULL, "__Internal", NULL);
+=======
+	mono_dllmap_insert(nullptr, "System.Native", nullptr, "__Internal", nullptr);
+	mono_dllmap_insert(nullptr, "System.IO.Compression.Native", nullptr, "__Internal", nullptr);
+	mono_dllmap_insert(nullptr, "System.Security.Cryptography.Native.Apple", nullptr, "__Internal", nullptr);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #ifdef IOS_DEVICE
 	// This function is defined in an auto-generated source file
@@ -72,7 +83,10 @@ void initialize() {
 
 void cleanup() {
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace support
 } // namespace ios
 } // namespace gdmono
@@ -86,7 +100,11 @@ void cleanup() {
 GD_PINVOKE_EXPORT const char *xamarin_get_locale_country_code() {
 	NSLocale *locale = [NSLocale currentLocale];
 	NSString *countryCode = [locale objectForKey:NSLocaleCountryCode];
+<<<<<<< HEAD
 	if (countryCode == NULL) {
+=======
+	if (countryCode == nullptr) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		return strdup("US");
 	}
 	return strdup([countryCode UTF8String]);

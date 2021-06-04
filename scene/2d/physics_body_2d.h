@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,23 +31,25 @@
 #ifndef PHYSICS_BODY_2D_H
 #define PHYSICS_BODY_2D_H
 
-#include "core/vset.h"
+#include "core/templates/vset.h"
 #include "scene/2d/collision_object_2d.h"
 #include "scene/resources/physics_material.h"
-#include "servers/physics_2d_server.h"
+#include "servers/physics_server_2d.h"
 
 class KinematicCollision2D;
 
 class PhysicsBody2D : public CollisionObject2D {
-
 	GDCLASS(PhysicsBody2D, CollisionObject2D);
 
+<<<<<<< HEAD
 	void _set_layers(uint32_t p_mask);
 	uint32_t _get_layers() const;
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 protected:
 	void _notification(int p_what);
-	PhysicsBody2D(Physics2DServer::BodyMode p_mode);
+	PhysicsBody2D(PhysicsServer2D::BodyMode p_mode);
 
 	void update_real_collision_mask() override;
 	void update_real_collision_layer() override;
@@ -55,8 +57,12 @@ protected:
 	static void _bind_methods();
 
 public:
+<<<<<<< HEAD
 
 	Array get_collision_exceptions();
+=======
+	TypedArray<PhysicsBody2D> get_collision_exceptions();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	void add_collision_exception_with(Node *p_node); //must be physicsbody
 	void remove_collision_exception_with(Node *p_node);
 
@@ -64,11 +70,10 @@ public:
 };
 
 class StaticBody2D : public PhysicsBody2D {
-
 	GDCLASS(StaticBody2D, PhysicsBody2D);
 
 	Vector2 constant_linear_velocity;
-	real_t constant_angular_velocity;
+	real_t constant_angular_velocity = 0.0;
 
 	Ref<PhysicsMaterial> physics_material_override;
 
@@ -76,13 +81,6 @@ protected:
 	static void _bind_methods();
 
 public:
-#ifndef DISABLE_DEPRECATED
-	void set_friction(real_t p_friction);
-	real_t get_friction() const;
-
-	void set_bounce(real_t p_bounce);
-	real_t get_bounce() const;
-#endif
 	void set_physics_material_override(const Ref<PhysicsMaterial> &p_physics_material_override);
 	Ref<PhysicsMaterial> get_physics_material_override() const;
 
@@ -100,7 +98,6 @@ private:
 };
 
 class RigidBody2D : public PhysicsBody2D {
-
 	GDCLASS(RigidBody2D, PhysicsBody2D);
 
 public:
@@ -118,34 +115,34 @@ public:
 	};
 
 private:
-	bool can_sleep;
-	Physics2DDirectBodyState *state;
-	Mode mode;
+	bool can_sleep = true;
+	PhysicsDirectBodyState2D *state = nullptr;
+	Mode mode = MODE_RIGID;
 
-	real_t mass;
+	real_t mass = 1.0;
 	Ref<PhysicsMaterial> physics_material_override;
-	real_t gravity_scale;
-	real_t linear_damp;
-	real_t angular_damp;
+	real_t gravity_scale = 1.0;
+	real_t linear_damp = -1.0;
+	real_t angular_damp = -1.0;
 
 	Vector2 linear_velocity;
-	real_t angular_velocity;
-	bool sleeping;
+	real_t angular_velocity = 0.0;
+	bool sleeping = false;
 
-	int max_contacts_reported;
+	int max_contacts_reported = 0;
 
-	bool custom_integrator;
+	bool custom_integrator = false;
 
-	CCDMode ccd_mode;
+	CCDMode ccd_mode = CCD_MODE_DISABLED;
 
 	struct ShapePair {
-
-		int body_shape;
-		int local_shape;
-		bool tagged;
+		int body_shape = 0;
+		int local_shape = 0;
+		bool tagged = false;
 		bool operator<(const ShapePair &p_sp) const {
-			if (body_shape == p_sp.body_shape)
+			if (body_shape == p_sp.body_shape) {
 				return local_shape < p_sp.local_shape;
+			}
 
 			return body_shape < p_sp.body_shape;
 		}
@@ -157,31 +154,30 @@ private:
 		}
 	};
 	struct RigidBody2D_RemoveAction {
-
+		RID rid;
 		ObjectID body_id;
 		ShapePair pair;
 	};
 	struct BodyState {
-
+		RID rid;
 		//int rc;
-		bool in_scene;
+		bool in_scene = false;
 		VSet<ShapePair> shapes;
 	};
 
 	struct ContactMonitor {
-
-		bool locked;
+		bool locked = false;
 		Map<ObjectID, BodyState> body_map;
 	};
 
-	ContactMonitor *contact_monitor;
+	ContactMonitor *contact_monitor = nullptr;
 	void _body_enter_tree(ObjectID p_id);
 	void _body_exit_tree(ObjectID p_id);
 
-	void _body_inout(int p_status, ObjectID p_instance, int p_body_shape, int p_local_shape);
+	void _body_inout(int p_status, const RID &p_body, ObjectID p_instance, int p_body_shape, int p_local_shape);
 	void _direct_state_changed(Object *p_state);
 
-	bool _test_motion(const Vector2 &p_motion, bool p_infinite_inertia = true, float p_margin = 0.08, const Ref<Physics2DTestMotionResult> &p_result = Ref<Physics2DTestMotionResult>());
+	bool _test_motion(const Vector2 &p_motion, bool p_infinite_inertia = true, real_t p_margin = 0.08, const Ref<PhysicsTestMotionResult2D> &p_result = Ref<PhysicsTestMotionResult2D>());
 
 protected:
 	void _notification(int p_what);
@@ -196,17 +192,6 @@ public:
 
 	void set_inertia(real_t p_inertia);
 	real_t get_inertia() const;
-
-	void set_weight(real_t p_weight);
-	real_t get_weight() const;
-
-#ifndef DISABLE_DEPRECATED
-	void set_friction(real_t p_friction);
-	real_t get_friction() const;
-
-	void set_bounce(real_t p_bounce);
-	real_t get_bounce() const;
-#endif
 
 	void set_physics_material_override(const Ref<PhysicsMaterial> &p_physics_material_override);
 	Ref<PhysicsMaterial> get_physics_material_override() const;
@@ -247,22 +232,22 @@ public:
 	CCDMode get_continuous_collision_detection_mode() const;
 
 	void apply_central_impulse(const Vector2 &p_impulse);
-	void apply_impulse(const Vector2 &p_offset, const Vector2 &p_impulse);
-	void apply_torque_impulse(float p_torque);
+	void apply_impulse(const Vector2 &p_impulse, const Vector2 &p_position = Vector2());
+	void apply_torque_impulse(real_t p_torque);
 
 	void set_applied_force(const Vector2 &p_force);
 	Vector2 get_applied_force() const;
 
-	void set_applied_torque(const float p_torque);
-	float get_applied_torque() const;
+	void set_applied_torque(const real_t p_torque);
+	real_t get_applied_torque() const;
 
 	void add_central_force(const Vector2 &p_force);
-	void add_force(const Vector2 &p_offset, const Vector2 &p_force);
-	void add_torque(float p_torque);
+	void add_force(const Vector2 &p_force, const Vector2 &p_position = Vector2());
+	void add_torque(real_t p_torque);
 
-	Array get_colliding_bodies() const; //function for script
+	TypedArray<Node2D> get_colliding_bodies() const; //function for script
 
-	virtual String get_configuration_warning() const;
+	TypedArray<String> get_configuration_warnings() const override;
 
 	RigidBody2D();
 	~RigidBody2D();
@@ -275,7 +260,6 @@ VARIANT_ENUM_CAST(RigidBody2D::Mode);
 VARIANT_ENUM_CAST(RigidBody2D::CCDMode);
 
 class KinematicBody2D : public PhysicsBody2D {
-
 	GDCLASS(KinematicBody2D, PhysicsBody2D);
 
 public:
@@ -285,15 +269,15 @@ public:
 		Vector2 collider_vel;
 		ObjectID collider;
 		RID collider_rid;
-		int collider_shape;
+		int collider_shape = 0;
 		Variant collider_metadata;
 		Vector2 remainder;
 		Vector2 travel;
-		int local_shape;
+		int local_shape = 0;
 	};
 
 private:
-	float margin;
+	real_t margin;
 
 	Vector2 floor_normal;
 	Vector2 floor_velocity;
@@ -304,10 +288,10 @@ private:
 	bool sync_to_physics;
 
 	Vector<Collision> colliders;
-	Vector<Ref<KinematicCollision2D> > slide_colliders;
+	Vector<Ref<KinematicCollision2D>> slide_colliders;
 	Ref<KinematicCollision2D> motion_cache;
 
-	_FORCE_INLINE_ bool _ignores_mode(Physics2DServer::BodyMode) const;
+	_FORCE_INLINE_ bool _ignores_mode(PhysicsServer2D::BodyMode) const;
 
 	Ref<KinematicCollision2D> _move(const Vector2 &p_motion, bool p_infinite_inertia = true, bool p_exclude_raycast_shapes = true, bool p_test_only = false);
 	Ref<KinematicCollision2D> _get_slide_collision(int p_bounce);
@@ -326,11 +310,11 @@ public:
 
 	bool separate_raycast_shapes(bool p_infinite_inertia, Collision &r_collision);
 
-	void set_safe_margin(float p_margin);
-	float get_safe_margin() const;
+	void set_safe_margin(real_t p_margin);
+	real_t get_safe_margin() const;
 
-	Vector2 move_and_slide(const Vector2 &p_linear_velocity, const Vector2 &p_up_direction = Vector2(0, 0), bool p_stop_on_slope = false, int p_max_slides = 4, float p_floor_max_angle = Math::deg2rad((float)45), bool p_infinite_inertia = true);
-	Vector2 move_and_slide_with_snap(const Vector2 &p_linear_velocity, const Vector2 &p_snap, const Vector2 &p_up_direction = Vector2(0, 0), bool p_stop_on_slope = false, int p_max_slides = 4, float p_floor_max_angle = Math::deg2rad((float)45), bool p_infinite_inertia = true);
+	Vector2 move_and_slide(const Vector2 &p_linear_velocity, const Vector2 &p_up_direction = Vector2(0, 0), bool p_stop_on_slope = false, int p_max_slides = 4, real_t p_floor_max_angle = Math::deg2rad((real_t)45.0), bool p_infinite_inertia = true);
+	Vector2 move_and_slide_with_snap(const Vector2 &p_linear_velocity, const Vector2 &p_snap, const Vector2 &p_up_direction = Vector2(0, 0), bool p_stop_on_slope = false, int p_max_slides = 4, real_t p_floor_max_angle = Math::deg2rad((real_t)45.0), bool p_infinite_inertia = true);
 	bool is_on_floor() const;
 	bool is_on_wall() const;
 	bool is_on_ceiling() const;
@@ -348,7 +332,6 @@ public:
 };
 
 class KinematicCollision2D : public Reference {
-
 	GDCLASS(KinematicCollision2D, Reference);
 
 	KinematicBody2D *owner;

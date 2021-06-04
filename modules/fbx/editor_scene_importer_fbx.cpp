@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -40,10 +45,17 @@
 #include "editor/editor_log.h"
 #include "editor/editor_node.h"
 #include "editor/import/resource_importer_scene.h"
+<<<<<<< HEAD
 #include "scene/3d/bone_attachment.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
 #include "scene/3d/mesh_instance.h"
+=======
+#include "editor/import/scene_importer_mesh_node_3d.h"
+#include "scene/3d/bone_attachment_3d.h"
+#include "scene/3d/camera_3d.h"
+#include "scene/3d/light_3d.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #include "scene/main/node.h"
 #include "scene/resources/material.h"
 
@@ -62,8 +74,12 @@ void EditorSceneImporterFBX::get_extensions(List<String> *r_extensions) const {
 	const String fbx_str = "fbx";
 	Vector<String> exts;
 	exts.push_back(fbx_str);
+<<<<<<< HEAD
 	_register_project_setting_import(fbx_str, import_setting_string, exts, r_extensions,
 			true);
+=======
+	_register_project_setting_import(fbx_str, import_setting_string, exts, r_extensions, true);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 void EditorSceneImporterFBX::_register_project_setting_import(const String generic,
@@ -84,7 +100,11 @@ uint32_t EditorSceneImporterFBX::get_import_flags() const {
 	return IMPORT_SCENE;
 }
 
+<<<<<<< HEAD
 Node *EditorSceneImporterFBX::import_scene(const String &p_path, uint32_t p_flags, int p_bake_fps,
+=======
+Node3D *EditorSceneImporterFBX::import_scene(const String &p_path, uint32_t p_flags, int p_bake_fps,
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		List<String> *r_missing_deps, Error *r_err) {
 	// done for performance when re-importing lots of files when testing importer in verbose only!
 	if (OS::get_singleton()->is_stdout_verbose()) {
@@ -94,41 +114,86 @@ Node *EditorSceneImporterFBX::import_scene(const String &p_path, uint32_t p_flag
 	Error err;
 	FileAccessRef f = FileAccess::open(p_path, FileAccess::READ, &err);
 
+<<<<<<< HEAD
 	ERR_FAIL_COND_V(!f, NULL);
 
 	{
 
 		PoolByteArray data;
+=======
+	ERR_FAIL_COND_V(!f, nullptr);
+
+	{
+		PackedByteArray data;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// broadphase tokenizing pass in which we identify the core
 		// syntax elements of FBX (brackets, commas, key:value mappings)
 		FBXDocParser::TokenList tokens;
 
 		bool is_binary = false;
+<<<<<<< HEAD
 		data.resize(f->get_len());
 		f->get_buffer(data.write().ptr(), data.size());
 		PoolByteArray fbx_header;
 		fbx_header.resize(64);
 		for (int32_t byte_i = 0; byte_i < 64; byte_i++) {
 			fbx_header.write()[byte_i] = data.read()[byte_i];
+=======
+		data.resize(f->get_length());
+
+		ERR_FAIL_COND_V(data.size() < 64, nullptr);
+
+		f->get_buffer(data.ptrw(), data.size());
+		PackedByteArray fbx_header;
+		fbx_header.resize(64);
+		for (int32_t byte_i = 0; byte_i < 64; byte_i++) {
+			fbx_header.ptrw()[byte_i] = data.ptr()[byte_i];
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
 
 		String fbx_header_string;
 		if (fbx_header.size() >= 0) {
+<<<<<<< HEAD
 			PoolByteArray::Read r = fbx_header.read();
 			fbx_header_string.parse_utf8((const char *)r.ptr(), fbx_header.size());
+=======
+			fbx_header_string.parse_utf8((const char *)fbx_header.ptr(), fbx_header.size());
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
 
 		print_verbose("[doc] opening fbx file: " + p_path);
 		print_verbose("[doc] fbx header: " + fbx_header_string);
+<<<<<<< HEAD
+=======
+		bool corrupt = false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		// safer to check this way as there can be different formatted headers
 		if (fbx_header_string.find("Kaydara FBX Binary", 0) != -1) {
 			is_binary = true;
 			print_verbose("[doc] is binary");
+<<<<<<< HEAD
 			FBXDocParser::TokenizeBinary(tokens, (const char *)data.write().ptr(), (size_t)data.size());
 		} else {
 			print_verbose("[doc] is ascii");
 			FBXDocParser::Tokenize(tokens, (const char *)data.write().ptr());
+=======
+
+			FBXDocParser::TokenizeBinary(tokens, (const char *)data.ptrw(), (size_t)data.size(), corrupt);
+
+		} else {
+			print_verbose("[doc] is ascii");
+			FBXDocParser::Tokenize(tokens, (const char *)data.ptrw(), (size_t)data.size(), corrupt);
+		}
+
+		if (corrupt) {
+			for (FBXDocParser::TokenPtr token : tokens) {
+				delete token;
+			}
+			tokens.clear();
+			ERR_PRINT(vformat("Cannot import FBX file: %s the file is corrupt so we safely exited parsing the file.", p_path));
+			return memnew(Node3D);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
 
 		// The import process explained:
@@ -140,6 +205,19 @@ Node *EditorSceneImporterFBX::import_scene(const String &p_path, uint32_t p_flag
 		// use this information to construct a very rudimentary
 		// parse-tree representing the FBX scope structure
 		FBXDocParser::Parser parser(tokens, is_binary);
+<<<<<<< HEAD
+=======
+
+		if (parser.IsCorrupt()) {
+			for (FBXDocParser::TokenPtr token : tokens) {
+				delete token;
+			}
+			tokens.clear();
+			ERR_PRINT(vformat("Cannot import FBX file: %s the file is corrupt so we safely exited parsing the file.", p_path));
+			return memnew(Node3D);
+		}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		FBXDocParser::ImportSettings settings;
 		settings.strictMode = false;
 
@@ -151,8 +229,46 @@ Node *EditorSceneImporterFBX::import_scene(const String &p_path, uint32_t p_flag
 
 		// safety for version handling
 		if (doc.IsSafeToImport()) {
+<<<<<<< HEAD
 			Spatial *spatial = _generate_scene(p_path, &doc, p_flags, p_bake_fps, 8);
 
+=======
+			bool is_blender_fbx = false;
+			const FBXDocParser::PropertyTable &import_props = doc.GetMetadataProperties();
+			const FBXDocParser::PropertyPtr app_name = import_props.Get("Original|ApplicationName");
+			const FBXDocParser::PropertyPtr app_vendor = import_props.Get("Original|ApplicationVendor");
+			const FBXDocParser::PropertyPtr app_version = import_props.Get("Original|ApplicationVersion");
+			//
+			if (app_name) {
+				const FBXDocParser::TypedProperty<std::string> *app_name_string = dynamic_cast<const FBXDocParser::TypedProperty<std::string> *>(app_name);
+				if (app_name_string) {
+					print_verbose("FBX App Name: " + String(app_name_string->Value().c_str()));
+				}
+			}
+
+			if (app_vendor) {
+				const FBXDocParser::TypedProperty<std::string> *app_vendor_string = dynamic_cast<const FBXDocParser::TypedProperty<std::string> *>(app_vendor);
+				if (app_vendor_string) {
+					print_verbose("FBX App Vendor: " + String(app_vendor_string->Value().c_str()));
+					is_blender_fbx = app_vendor_string->Value().find("Blender") != std::string::npos;
+				}
+			}
+
+			if (app_version) {
+				const FBXDocParser::TypedProperty<std::string> *app_version_string = dynamic_cast<const FBXDocParser::TypedProperty<std::string> *>(app_version);
+				if (app_version_string) {
+					print_verbose("FBX App Version: " + String(app_version_string->Value().c_str()));
+				}
+			}
+
+			if (is_blender_fbx) {
+				WARN_PRINT("We don't officially support Blender FBX animations yet, due to issues with upstream Blender,\n"
+						   "so please wait for us to work around remaining issues. We will continue to import the file but it may be broken.\n"
+						   "For minimal breakage, please export FBX from Blender with -Z forward, and Y up.");
+			}
+
+			Node3D *spatial = _generate_scene(p_path, &doc, p_flags, p_bake_fps, 8, is_blender_fbx);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			// todo: move to document shutdown (will need to be validated after moving; this code has been validated already)
 			for (FBXDocParser::TokenPtr token : tokens) {
 				if (token) {
@@ -162,38 +278,72 @@ Node *EditorSceneImporterFBX::import_scene(const String &p_path, uint32_t p_flag
 			}
 
 			return spatial;
+<<<<<<< HEAD
 		} else {
 			print_error("Cannot import file: " + p_path + " version of file is unsupported, please re-export in your modelling package file version is: " + itos(doc.FBXVersion()));
 		}
 	}
 
 	return memnew(Spatial);
+=======
+
+		} else {
+			for (FBXDocParser::TokenPtr token : tokens) {
+				delete token;
+			}
+			tokens.clear();
+
+			ERR_PRINT(vformat("Cannot import FBX file: %s. It uses file format %d which is unsupported by Godot. Please re-export it or convert it to a newer format.", p_path, doc.FBXVersion()));
+		}
+	}
+
+	return memnew(Node3D);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 template <class T>
 struct EditorSceneImporterAssetImportInterpolate {
+<<<<<<< HEAD
 
 	T lerp(const T &a, const T &b, float c) const {
 
+=======
+	T lerp(const T &a, const T &b, float c) const {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		return a + (b - a) * c;
 	}
 
 	T catmull_rom(const T &p0, const T &p1, const T &p2, const T &p3, float t) {
+<<<<<<< HEAD
 
 		float t2 = t * t;
 		float t3 = t2 * t;
 
 		return 0.5f * ((2.0f * p1) + (-p0 + p2) * t + (2.0f * p0 - 5.0f * p1 + 4 * p2 - p3) * t2 +
 							  (-p0 + 3.0f * p1 - 3.0f * p2 + p3) * t3);
+=======
+		const float t2 = t * t;
+		const float t3 = t2 * t;
+
+		return 0.5f * ((2.0f * p1) + (-p0 + p2) * t + (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3) * t2 + (-p0 + 3.0f * p1 - 3.0f * p2 + p3) * t3);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	T bezier(T start, T control_1, T control_2, T end, float t) {
 		/* Formula from Wikipedia article on Bezier curves. */
+<<<<<<< HEAD
 		real_t omt = (1.0 - t);
 		real_t omt2 = omt * omt;
 		real_t omt3 = omt2 * omt;
 		real_t t2 = t * t;
 		real_t t3 = t2 * t;
+=======
+		const real_t omt = (1.0 - t);
+		const real_t omt2 = omt * omt;
+		const real_t omt3 = omt2 * omt;
+		const real_t t2 = t * t;
+		const real_t t3 = t2 * t;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		return start * omt3 + control_1 * omt2 * t * 3.0 + control_2 * omt * t2 * 3.0 + end * t3;
 	}
@@ -202,7 +352,10 @@ struct EditorSceneImporterAssetImportInterpolate {
 //thank you for existing, partial specialization
 template <>
 struct EditorSceneImporterAssetImportInterpolate<Quat> {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	Quat lerp(const Quat &a, const Quat &b, float c) const {
 		ERR_FAIL_COND_V(!a.is_normalized(), Quat());
 		ERR_FAIL_COND_V(!b.is_normalized(), Quat());
@@ -231,8 +384,14 @@ T EditorSceneImporterFBX::_interpolate_track(const Vector<float> &p_times, const
 	//could use binary search, worth it?
 	int idx = -1;
 	for (int i = 0; i < p_times.size(); i++) {
+<<<<<<< HEAD
 		if (p_times[i] > p_time)
 			break;
+=======
+		if (p_times[i] > p_time) {
+			break;
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		idx++;
 	}
 
@@ -240,7 +399,10 @@ T EditorSceneImporterFBX::_interpolate_track(const Vector<float> &p_times, const
 
 	switch (p_interp) {
 		case AssetImportAnimation::INTERP_LINEAR: {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			if (idx == -1) {
 				return p_values[0];
 			} else if (idx >= p_times.size() - 1) {
@@ -253,7 +415,10 @@ T EditorSceneImporterFBX::_interpolate_track(const Vector<float> &p_times, const
 
 		} break;
 		case AssetImportAnimation::INTERP_STEP: {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			if (idx == -1) {
 				return p_values[0];
 			} else if (idx >= p_times.size() - 1) {
@@ -264,7 +429,10 @@ T EditorSceneImporterFBX::_interpolate_track(const Vector<float> &p_times, const
 
 		} break;
 		case AssetImportAnimation::INTERP_CATMULLROMSPLINE: {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			if (idx == -1) {
 				return p_values[1];
 			} else if (idx >= p_times.size() - 1) {
@@ -277,7 +445,10 @@ T EditorSceneImporterFBX::_interpolate_track(const Vector<float> &p_times, const
 
 		} break;
 		case AssetImportAnimation::INTERP_CUBIC_SPLINE: {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			if (idx == -1) {
 				return p_values[1];
 			} else if (idx >= p_times.size() - 1) {
@@ -299,6 +470,7 @@ T EditorSceneImporterFBX::_interpolate_track(const Vector<float> &p_times, const
 	ERR_FAIL_V(p_values[0]);
 }
 
+<<<<<<< HEAD
 void set_owner_recursive(Node *root, Node *current_node) {
 	current_node->set_owner(root);
 
@@ -331,10 +503,14 @@ Transform get_global_transform(Spatial *root, Spatial *child_node) {
 }
 
 Spatial *EditorSceneImporterFBX::_generate_scene(
+=======
+Node3D *EditorSceneImporterFBX::_generate_scene(
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		const String &p_path,
 		const FBXDocParser::Document *p_document,
 		const uint32_t p_flags,
 		int p_bake_fps,
+<<<<<<< HEAD
 		const int32_t p_max_bone_weights) {
 
 	ImportState state;
@@ -344,6 +520,18 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	// create new root node for scene
 	Spatial *scene_root = memnew(Spatial);
 	state.root = memnew(Spatial);
+=======
+		const int32_t p_max_bone_weights,
+		bool p_is_blender_fbx) {
+	ImportState state;
+	state.is_blender_fbx = p_is_blender_fbx;
+	state.path = p_path;
+	state.animation_player = nullptr;
+
+	// create new root node for scene
+	Node3D *scene_root = memnew(Node3D);
+	state.root = memnew(Node3D);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	state.root_owner = scene_root; // the real scene root... sorry compatibility code is painful...
 
 	state.root->set_name("RootNode");
@@ -356,6 +544,10 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	// Size relative to cm.
 	const real_t fbx_unit_scale = p_document->GlobalSettingsPtr()->UnitScaleFactor();
 
+<<<<<<< HEAD
+=======
+	print_verbose("FBX unit scale import value: " + rtos(fbx_unit_scale));
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// Set FBX file scale is relative to CM must be converted to M
 	state.scale = fbx_unit_scale / 100.0;
 	print_verbose("FBX unit scale is: " + rtos(state.scale));
@@ -366,6 +558,14 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	state.enable_animation_import = true;
 	Ref<FBXNode> root_node;
 	root_node.instance();
+<<<<<<< HEAD
+=======
+
+	// make sure fake noFBXDocParser::PropertyPtr ptrde always has a transform too ;)
+	Ref<PivotTransform> pivot_transform;
+	pivot_transform.instance();
+	root_node->pivot_transform = pivot_transform;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	root_node->node_name = "root node";
 	root_node->current_node_id = 0;
 	root_node->godot_node = state.root;
@@ -376,9 +576,22 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	// cache basic node information from FBX document
 	// grabs all FBX bones
 	BuildDocumentBones(Ref<FBXBone>(), state, p_document, 0L);
+<<<<<<< HEAD
 	BuildDocumentNodes(nullptr, state, p_document, 0L, nullptr);
 
 	// Build document skinning information
+=======
+	BuildDocumentNodes(Ref<PivotTransform>(), state, p_document, 0L, nullptr);
+
+	// Build document skinning information
+
+	// Algorithm is this:
+	// Get Deformer: object with "Skin" class.
+	// Deformer:: has link to Geometry:: (correct mesh for skin)
+	// Deformer:: has Source which is the SubDeformer:: (e.g. the Cluster)
+	// Notes at the end it configures the vertex weight mapping.
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	for (uint64_t skin_id : p_document->GetSkinIDs()) {
 		// Validate the parser
 		FBXDocParser::LazyObject *lazy_skin = p_document->GetObject(skin_id);
@@ -389,7 +602,10 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		ERR_CONTINUE_MSG(skin == nullptr, "invalid skin added to skin list [parser bug]");
 
 		const std::vector<const FBXDocParser::Connection *> source_to_destination = p_document->GetConnectionsBySourceSequenced(skin_id);
+<<<<<<< HEAD
 		const std::vector<const FBXDocParser::Connection *> destination_to_source = p_document->GetConnectionsByDestinationSequenced(skin_id);
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		FBXDocParser::MeshGeometry *mesh = nullptr;
 		uint64_t mesh_id = 0;
 
@@ -409,6 +625,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 		// Validate the mesh exists and was retrieved
 		ERR_CONTINUE_MSG(mesh_id == 0, "mesh id is invalid");
+<<<<<<< HEAD
 
 		// NOTE: this will ONLY work on skinned bones (it is by design.)
 		// A cluster is a skinned bone so SKINS won't contain unskinned bones so we need to pre-add all bones and parent them in a step beforehand.
@@ -424,6 +641,15 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 			ERR_CONTINUE_MSG(deformer == nullptr, "invalid bone cluster");
 
 			const uint64_t deformer_id = deformer->ID();
+=======
+		const std::vector<const FBXDocParser::Cluster *> clusters = skin->Clusters();
+
+		// NOTE: this will ONLY work on skinned bones (it is by design.)
+		// A cluster is a skinned bone so SKINS won't contain unskinned bones so we need to pre-add all bones and parent them in a step beforehand.
+		for (const FBXDocParser::Cluster *cluster : clusters) {
+			ERR_CONTINUE_MSG(cluster == nullptr, "invalid bone cluster");
+			const uint64_t deformer_id = cluster->ID();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			std::vector<const FBXDocParser::Connection *> connections = p_document->GetConnectionsByDestinationSequenced(deformer_id);
 
 			// Weight data always has a node in the scene lets grab the limb's node in the scene :) (reverse set to true since it's the opposite way around)
@@ -444,8 +670,13 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 			//
 
 			// Cache Weight Information into bone for later usage if you want the raw data.
+<<<<<<< HEAD
 			const std::vector<unsigned int> &indexes = deformer->GetIndices();
 			const std::vector<float> &weights = deformer->GetWeights();
+=======
+			const std::vector<unsigned int> &indexes = cluster->GetIndices();
+			const std::vector<float> &weights = cluster->GetWeights();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			Ref<FBXMeshData> mesh_vertex_data;
 
 			// this data will pre-exist if vertex weight information is found
@@ -468,7 +699,11 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 				VertexWeightMapping &vm = mesh_vertex_data->vertex_weights[vertex_index];
 				vm.weights.push_back(influence_weight);
+<<<<<<< HEAD
 				vm.bones.push_back(0);
+=======
+				vm.bones.push_back(0); // bone id is pushed on here during sanitization phase
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				vm.bones_ref.push_back(bone_element);
 			}
 
@@ -503,7 +738,10 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		const std::vector<uint64_t> &materials = p_document->GetMaterialIDs();
 
 		for (uint64_t material_id : materials) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			FBXDocParser::LazyObject *lazy_material = p_document->GetObject(material_id);
 			FBXDocParser::Material *mat = (FBXDocParser::Material *)lazy_material->Get<FBXDocParser::Material>();
 			ERR_CONTINUE_MSG(!mat, "Could not convert fbx material by id: " + itos(material_id));
@@ -512,14 +750,22 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 			material.instance();
 			material->set_imported_material(mat);
 
+<<<<<<< HEAD
 			Ref<SpatialMaterial> godot_material = material->import_material(state);
+=======
+			Ref<StandardMaterial3D> godot_material = material->import_material(state);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 			state.cached_materials.insert(material_id, godot_material);
 		}
 	}
 
 	// build skin and skeleton information
+<<<<<<< HEAD
 	print_verbose("[doc] Skeleton Bone count: " + itos(state.fbx_bone_map.size()));
+=======
+	print_verbose("[doc] Skeleton3D Bone count: " + itos(state.fbx_bone_map.size()));
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	// Importing bones using document based method from FBX directly
 	// We do not use the assimp bone format to determine this information anymore.
@@ -531,6 +777,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		// we opted to merge the entire scene onto one skeleton for now
 		// if we need to change this we have an archive of the old code.
 
+<<<<<<< HEAD
 		const std::vector<uint64_t> &bind_pose_ids = p_document->GetBindPoseIDs();
 
 		for (uint64_t skin_id : bind_pose_ids) {
@@ -556,6 +803,8 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 			}
 		}
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// bind pose normally only has 1 per mesh but can have more than one
 		// this is the point of skins
 		// in FBX first bind pose is the master for the first skin
@@ -566,7 +815,11 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		// this means that the nodes from maya kLocators will be preserved as bones
 		// in the same rig without having to match this across skeletons and merge by detection
 		// we can just merge and undo any parent transforms
+<<<<<<< HEAD
 		for (Map<uint64_t, Ref<FBXBone> >::Element *bone_element = state.fbx_bone_map.front(); bone_element; bone_element = bone_element->next()) {
+=======
+		for (Map<uint64_t, Ref<FBXBone>>::Element *bone_element = state.fbx_bone_map.front(); bone_element; bone_element = bone_element->next()) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			Ref<FBXBone> bone = bone_element->value();
 			Ref<FBXSkeleton> fbx_skeleton_inst;
 
@@ -580,12 +833,18 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 			print_verbose("populating skeleton with bone: " + bone->bone_name);
 
+<<<<<<< HEAD
 			//			// populate bone skeleton - since fbx has no DOM for the skeleton just a node.
 			//			bone->bone_skeleton = fbx_skeleton_inst;
+=======
+			//// populate bone skeleton - since fbx has no DOM for the skeleton just a node.
+			//bone->bone_skeleton = fbx_skeleton_inst;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 			// now populate bone on the armature node list
 			fbx_skeleton_inst->skeleton_bones.push_back(bone);
 
+<<<<<<< HEAD
 			// we need to have a valid armature id and the model configured for the bone to be assigned fully.
 			// happens once per skeleton
 			if (state.fbx_target_map.has(armature_id) && !fbx_skeleton_inst->has_model()) {
@@ -595,24 +854,62 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 				fbx_skeleton_inst->fbx_node = node;
 				print_verbose("allocated fbx skeleton primary / armature node for the level: " + node->node_name);
 			} else if (!state.fbx_target_map.has(armature_id) && !fbx_skeleton_inst->has_model()) {
+=======
+			CRASH_COND_MSG(!state.fbx_target_map.has(armature_id), "invalid armature [serious]");
+
+			Ref<FBXNode> node = state.fbx_target_map[armature_id];
+
+			CRASH_COND_MSG(node.is_null(), "invalid node [serious]");
+			CRASH_COND_MSG(node->pivot_transform.is_null(), "invalid pivot transform [serious]");
+			fbx_skeleton_inst->fbx_node = node;
+
+			ERR_CONTINUE_MSG(fbx_skeleton_inst->fbx_node.is_null(), "invalid skeleton node [serious]");
+
+			// we need to have a valid armature id and the model configured for the bone to be assigned fully.
+			// happens once per skeleton
+
+			if (state.fbx_target_map.has(armature_id) && !fbx_skeleton_inst->fbx_node->has_model()) {
+				print_verbose("allocated fbx skeleton primary / armature node for the level: " + fbx_skeleton_inst->fbx_node->node_name);
+			} else if (!state.fbx_target_map.has(armature_id) && !fbx_skeleton_inst->fbx_node->has_model()) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				print_error("bones are not mapped to an armature node for armature id: " + itos(armature_id) + " bone: " + bone->bone_name);
 				// this means bone will be removed and not used, which is safe actually and no skeleton will be created.
 			}
 		}
 
 		// setup skeleton instances if required :)
+<<<<<<< HEAD
 		for (Map<uint64_t, Ref<FBXSkeleton> >::Element *skeleton_node = state.skeleton_map.front(); skeleton_node; skeleton_node = skeleton_node->next()) {
 			skeleton_node->value()->init_skeleton(state);
+=======
+		for (Map<uint64_t, Ref<FBXSkeleton>>::Element *skeleton_node = state.skeleton_map.front(); skeleton_node; skeleton_node = skeleton_node->next()) {
+			Ref<FBXSkeleton> &skeleton = skeleton_node->value();
+			skeleton->init_skeleton(state);
+
+			ERR_CONTINUE_MSG(skeleton->fbx_node.is_null(), "invalid fbx target map, missing skeleton");
+		}
+
+		// This list is not populated
+		for (Map<uint64_t, Ref<FBXNode>>::Element *skin_mesh = state.MeshNodes.front(); skin_mesh; skin_mesh = skin_mesh->next()) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
 	}
 
 	// build godot node tree
 	if (state.fbx_node_list.size() > 0) {
+<<<<<<< HEAD
 		for (List<Ref<FBXNode> >::Element *node_element = state.fbx_node_list.front();
 				node_element;
 				node_element = node_element->next()) {
 			Ref<FBXNode> fbx_node = node_element->get();
 			MeshInstance *mesh_node = nullptr;
+=======
+		for (List<Ref<FBXNode>>::Element *node_element = state.fbx_node_list.front();
+				node_element;
+				node_element = node_element->next()) {
+			Ref<FBXNode> fbx_node = node_element->get();
+			EditorSceneImporterMeshNode3D *mesh_node = nullptr;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			Ref<FBXMeshData> mesh_data_precached;
 
 			// check for valid geometry
@@ -623,8 +920,14 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 				for (const FBXDocParser::Geometry *mesh : geometry) {
 					print_verbose("[doc] [" + itos(mesh->ID()) + "] mesh: " + fbx_node->node_name);
 
+<<<<<<< HEAD
 					if (mesh == nullptr)
 						continue;
+=======
+					if (mesh == nullptr) {
+						continue;
+					}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 					const FBXDocParser::MeshGeometry *mesh_geometry = dynamic_cast<const FBXDocParser::MeshGeometry *>(mesh);
 					if (mesh_geometry) {
@@ -638,8 +941,15 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 							state.renderer_mesh_data.insert(mesh_id, mesh_data_precached);
 						}
 
+<<<<<<< HEAD
 						// mesh node, mesh id
 						mesh_node = mesh_data_precached->create_fbx_mesh(state, mesh_geometry, fbx_node->fbx_model, (p_flags & IMPORT_USE_COMPRESSION) != 0);
+=======
+						mesh_data_precached->mesh_node = fbx_node;
+
+						// mesh node, mesh id
+						mesh_node = mesh_data_precached->create_fbx_mesh(state, mesh_geometry, fbx_node->fbx_model, false);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 						if (!state.MeshNodes.has(mesh_id)) {
 							state.MeshNodes.insert(mesh_id, fbx_node);
 						}
@@ -655,10 +965,17 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 			Ref<FBXSkeleton> node_skeleton = fbx_node->skeleton_node;
 
 			if (node_skeleton.is_valid()) {
+<<<<<<< HEAD
 				Skeleton *skel = node_skeleton->skeleton;
 				fbx_node->godot_node = skel;
 			} else if (mesh_node == nullptr) {
 				fbx_node->godot_node = memnew(Spatial);
+=======
+				Skeleton3D *skel = node_skeleton->skeleton;
+				fbx_node->godot_node = skel;
+			} else if (mesh_node == nullptr) {
+				fbx_node->godot_node = memnew(Node3D);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			} else {
 				fbx_node->godot_node = mesh_node;
 			}
@@ -681,6 +998,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		}
 	}
 
+<<<<<<< HEAD
 	for (Map<uint64_t, Ref<FBXNode> >::Element *skin_mesh = state.MeshNodes.front(); skin_mesh; skin_mesh = skin_mesh->next()) {
 		const uint64_t mesh_id = skin_mesh->key();
 		Ref<FBXNode> fbx_node = skin_mesh->value();
@@ -715,6 +1033,78 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 		Ref<FBXMeshData> mesh = mesh_data->value();
 		const uint64_t mesh_id = mesh_data->key();
 		MeshInstance *mesh_instance = mesh->godot_mesh_instance;
+=======
+	for (Map<uint64_t, Ref<FBXMeshData>>::Element *mesh_data = state.renderer_mesh_data.front(); mesh_data; mesh_data = mesh_data->next()) {
+		const uint64_t mesh_id = mesh_data->key();
+		Ref<FBXMeshData> mesh = mesh_data->value();
+
+		const FBXDocParser::MeshGeometry *mesh_geometry = p_document->GetObject(mesh_id)->Get<FBXDocParser::MeshGeometry>();
+
+		ERR_CONTINUE_MSG(mesh->mesh_node.is_null(), "invalid mesh allocation");
+
+		const FBXDocParser::Skin *mesh_skin = mesh_geometry->DeformerSkin();
+
+		if (!mesh_skin) {
+			continue; // safe to continue
+		}
+
+		//
+		// Skin bone configuration
+		//
+
+		//
+		// Get Mesh Node Xform only
+		//
+		//ERR_CONTINUE_MSG(!state.fbx_target_map.has(mesh_id), "invalid xform for the skin pose: " + itos(mesh_id));
+		//Ref<FBXNode> mesh_node_xform_data = state.fbx_target_map[mesh_id];
+
+		if (!mesh_skin) {
+			continue; // not a deformer.
+		}
+
+		if (mesh_skin->Clusters().size() == 0) {
+			continue; // possibly buggy mesh
+		}
+
+		// Lookup skin or create it if it's not found.
+		Ref<Skin> skin;
+		if (!state.MeshSkins.has(mesh_id)) {
+			print_verbose("Created new skin");
+			skin.instance();
+			state.MeshSkins.insert(mesh_id, skin);
+		} else {
+			print_verbose("Grabbed skin");
+			skin = state.MeshSkins[mesh_id];
+		}
+
+		for (const FBXDocParser::Cluster *cluster : mesh_skin->Clusters()) {
+			// node or bone this cluster targets (in theory will only be a bone target)
+			uint64_t skin_target_id = cluster->TargetNode()->ID();
+
+			print_verbose("adding cluster [" + itos(cluster->ID()) + "] " + String(cluster->Name().c_str()) + " for target: [" + itos(skin_target_id) + "] " + String(cluster->TargetNode()->Name().c_str()));
+			ERR_CONTINUE_MSG(!state.fbx_bone_map.has(skin_target_id), "no bone found by that ID? locator");
+
+			const Ref<FBXBone> bone = state.fbx_bone_map[skin_target_id];
+			const Ref<FBXSkeleton> skeleton = bone->fbx_skeleton;
+			const Ref<FBXNode> skeleton_node = skeleton->fbx_node;
+
+			skin->add_named_bind(
+					bone->bone_name,
+					get_unscaled_transform(
+							skeleton_node->pivot_transform->GlobalTransform.affine_inverse() * cluster->TransformLink().affine_inverse(), state.scale));
+		}
+
+		print_verbose("cluster name / id: " + String(mesh_skin->Name().c_str()) + " [" + itos(mesh_skin->ID()) + "]");
+		print_verbose("skeleton has " + itos(state.fbx_bone_map.size()) + " binds");
+		print_verbose("fbx skin has " + itos(mesh_skin->Clusters().size()) + " binds");
+	}
+
+	// mesh data iteration for populating skeleton mapping
+	for (Map<uint64_t, Ref<FBXMeshData>>::Element *mesh_data = state.renderer_mesh_data.front(); mesh_data; mesh_data = mesh_data->next()) {
+		Ref<FBXMeshData> mesh = mesh_data->value();
+		const uint64_t mesh_id = mesh_data->key();
+		EditorSceneImporterMeshNode3D *mesh_instance = mesh->godot_mesh_instance;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		const int mesh_weights = mesh->max_weight_count;
 		Ref<FBXSkeleton> skeleton;
 		const bool valid_armature = mesh->valid_armature_id;
@@ -751,7 +1141,11 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	}
 
 	// build skin and skeleton information
+<<<<<<< HEAD
 	print_verbose("[doc] Skeleton Bone count: " + itos(state.fbx_bone_map.size()));
+=======
+	print_verbose("[doc] Skeleton3D Bone count: " + itos(state.fbx_bone_map.size()));
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	const FBXDocParser::FileGlobalSettings *FBXSettings = p_document->GlobalSettingsPtr();
 
 	// Configure constraints
@@ -820,7 +1214,11 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 					// target id, [ track name, [time index, vector] ]
 					// new map needs to be [ track name, keyframe_data ]
+<<<<<<< HEAD
 					Map<uint64_t, Map<StringName, FBXTrack> > AnimCurveNodes;
+=======
+					Map<uint64_t, Map<StringName, FBXTrack>> AnimCurveNodes;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 					// struct AnimTrack {
 					// 	// Animation track can be
@@ -862,7 +1260,11 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 						uint64_t target_id = target->ID();
 						String target_name = ImportUtils::FBXNodeToName(target->Name());
 
+<<<<<<< HEAD
 						const FBXDocParser::PropertyTable *properties = curve_node->Props();
+=======
+						const FBXDocParser::PropertyTable *properties = curve_node;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 						bool got_x = false, got_y = false, got_z = false;
 						float offset_x = FBXDocParser::PropertyGet<float>(properties, "d|X", got_x);
 						float offset_y = FBXDocParser::PropertyGet<float>(properties, "d|Y", got_y);
@@ -950,8 +1352,12 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 					// target id, [ track name, [time index, vector] ]
 					//std::map<uint64_t, std::map<StringName, FBXTrack > > AnimCurveNodes;
+<<<<<<< HEAD
 					for (Map<uint64_t, Map<StringName, FBXTrack> >::Element *track = AnimCurveNodes.front(); track; track = track->next()) {
 
+=======
+					for (Map<uint64_t, Map<StringName, FBXTrack>>::Element *track = AnimCurveNodes.front(); track; track = track->next()) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 						// 5 tracks
 						// current track index
 						// track count is 5
@@ -961,7 +1367,10 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 						int track_idx = animation->add_track(Animation::TYPE_TRANSFORM);
 
 						// animation->track_set_path(track_idx, node_path);
+<<<<<<< HEAD
 						// animation->track_set_path(track_idx, node_path);
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 						Ref<FBXBone> bone;
 
 						// note we must not run the below code if the entry doesn't exist, it will create dummy entries which is very bad.
@@ -971,7 +1380,11 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 							bone = state.fbx_bone_map[target_id];
 						}
 
+<<<<<<< HEAD
 						Transform target_transform;
+=======
+						Transform3D target_transform;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 						if (state.fbx_target_map.has(target_id)) {
 							Ref<FBXNode> node_ref = state.fbx_target_map[target_id];
@@ -986,7 +1399,10 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 						// if this is a skeleton mapped track we can just set the path for the track.
 						// todo: implement node paths here at some
 						if (state.fbx_bone_map.size() > 0 && state.fbx_bone_map.has(target_id)) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 							if (bone->fbx_skeleton.is_valid() && bone.is_valid()) {
 								Ref<FBXSkeleton> fbx_skeleton = bone->fbx_skeleton;
 								String bone_path = state.root->get_path_to(fbx_skeleton->skeleton);
@@ -1005,7 +1421,11 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 								//print_verbose("[doc] node animation path: " + node_path);
 							}
 						} else {
+<<<<<<< HEAD
 							// note: this could actually be unsafe this means we should be careful about continuing here, if we see bizzare effects later we should disable this.
+=======
+							// note: this could actually be unsafe this means we should be careful about continuing here, if we see bizarre effects later we should disable this.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 							// I am not sure if this is unsafe or not, testing will tell us this.
 							print_error("[doc] invalid fbx target detected for this track");
 							continue;
@@ -1019,7 +1439,11 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 						Ref<FBXNode> target_node = state.fbx_target_map[target_id];
 						const FBXDocParser::Model *model = target_node->fbx_model;
+<<<<<<< HEAD
 						const FBXDocParser::PropertyTable *props = model->Props();
+=======
+						const FBXDocParser::PropertyTable *props = dynamic_cast<const FBXDocParser::PropertyTable *>(model);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 						Map<StringName, FBXTrack> &track_data = track->value();
 						FBXTrack &translation_keys = track_data[StringName("T")];
@@ -1109,12 +1533,20 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 								max_duration = animation_track_time;
 							}
 
+<<<<<<< HEAD
 							rot_values.push_back(final_rotation);
+=======
+							rot_values.push_back(final_rotation.normalized());
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 							rot_times.push_back(animation_track_time);
 						}
 
 						bool valid_rest = false;
+<<<<<<< HEAD
 						Transform bone_rest;
+=======
+						Transform3D bone_rest;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 						int skeleton_bone = -1;
 						if (state.fbx_bone_map.has(target_id)) {
 							if (bone.is_valid() && bone->fbx_skeleton.is_valid()) {
@@ -1157,10 +1589,17 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 
 							// node animations must also include pivots
 							if (skeleton_bone >= 0) {
+<<<<<<< HEAD
 								Transform xform = Transform();
 								xform.basis.set_quat_scale(rot, scale);
 								xform.origin = pos;
 								const Transform t = bone_rest.affine_inverse() * xform;
+=======
+								Transform3D xform = Transform3D();
+								xform.basis.set_quat_scale(rot, scale);
+								xform.origin = pos;
+								const Transform3D t = bone_rest.affine_inverse() * xform;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 								// populate	this again
 								rot = t.basis.get_rotation_quat();
@@ -1208,6 +1647,7 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	state.fbx_target_map.clear();
 	state.fbx_node_list.clear();
 
+<<<<<<< HEAD
 	for (Map<uint64_t, Ref<FBXBone> >::Element *element = state.fbx_bone_map.front(); element; element = element->next()) {
 		Ref<FBXBone> bone = element->value();
 		bone->parent_bone.unref();
@@ -1216,6 +1656,16 @@ Spatial *EditorSceneImporterFBX::_generate_scene(
 	}
 
 	for (Map<uint64_t, Ref<FBXSkeleton> >::Element *element = state.skeleton_map.front(); element; element = element->next()) {
+=======
+	for (Map<uint64_t, Ref<FBXBone>>::Element *element = state.fbx_bone_map.front(); element; element = element->next()) {
+		Ref<FBXBone> bone = element->value();
+		bone->parent_bone.unref();
+		bone->node.unref();
+		bone->fbx_skeleton.unref();
+	}
+
+	for (Map<uint64_t, Ref<FBXSkeleton>>::Element *element = state.skeleton_map.front(); element; element = element->next()) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		Ref<FBXSkeleton> skel = element->value();
 		skel->fbx_node.unref();
 		skel->skeleton_bones.clear();
@@ -1303,6 +1753,7 @@ void EditorSceneImporterFBX::BuildDocumentBones(Ref<FBXBone> p_parent_bone,
 				}
 
 				uint64_t limb_id = limb_node->ID();
+<<<<<<< HEAD
 				const FBXDocParser::Cluster *deformer = ProcessDOMConnection<FBXDocParser::Cluster>(p_doc, limb_id);
 
 				bone_element->bone_name = ImportUtils::FBXNodeToName(model->Name());
@@ -1324,6 +1775,12 @@ void EditorSceneImporterFBX::BuildDocumentBones(Ref<FBXBone> p_parent_bone,
 					bone_element->bone_id = limb_id;
 				}
 
+=======
+				bone_element->bone_id = limb_id;
+				bone_element->bone_name = ImportUtils::FBXNodeToName(model->Name());
+				bone_element->parent_bone = p_parent_bone;
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				// insert limb by ID into list.
 				state.fbx_bone_map.insert(limb_node->ID(), bone_element);
 			}
@@ -1340,14 +1797,20 @@ void EditorSceneImporterFBX::BuildDocumentNodes(
 		const FBXDocParser::Document *p_doc,
 		uint64_t id,
 		Ref<FBXNode> parent_node) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// tree
 	// here we get the node 0 on the root by default
 	const std::vector<const FBXDocParser::Connection *> &conns = p_doc->GetConnectionsByDestinationSequenced(id, "Model");
 
 	// branch
 	for (const FBXDocParser::Connection *con : conns) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// ignore object-property links
 		if (con->PropertyName().length()) {
 			// really important we document why this is ignored.
@@ -1389,7 +1852,11 @@ void EditorSceneImporterFBX::BuildDocumentNodes(
 			if (state.fbx_bone_map.has(current_node_id)) {
 				Ref<FBXBone> bone = state.fbx_bone_map[current_node_id];
 				if (bone.is_valid()) {
+<<<<<<< HEAD
 					bone->set_pivot_xform(fbx_transform);
+=======
+					bone->set_node(new_node);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 					print_verbose("allocated bone data: " + bone->bone_name);
 				}
 			}
@@ -1403,6 +1870,11 @@ void EditorSceneImporterFBX::BuildDocumentNodes(
 				new_node->set_parent(state.fbx_root_node);
 			}
 
+<<<<<<< HEAD
+=======
+			CRASH_COND_MSG(new_node->pivot_transform.is_null(), "invalid fbx target map pivot transform [serious]");
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			// populate lookup tables with references
 			// [fbx_node_id, fbx_node]
 

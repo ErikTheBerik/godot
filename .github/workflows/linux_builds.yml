@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 # Global Settings
 env:
+<<<<<<< HEAD
   GODOT_BASE_BRANCH: 3.2
   SCONSFLAGS: platform=linuxbsd verbose=yes warnings=all werror=yes --jobs=2
   SCONS_CACHE_LIMIT: 4096
@@ -11,6 +12,16 @@ jobs:
   linux-editor-mono:
     runs-on: "ubuntu-20.04"
     name: Editor w/ Mono (target=release_debug, tools=yes)
+=======
+  GODOT_BASE_BRANCH: master
+  SCONSFLAGS: platform=linuxbsd verbose=yes warnings=extra werror=yes debug_symbols=no --jobs=2 module_text_server_fb_enabled=yes
+  SCONS_CACHE_LIMIT: 4096
+
+jobs:
+  linux-editor:
+    runs-on: "ubuntu-20.04"
+    name: Editor (target=release_debug, tools=yes, tests=yes)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
     steps:
       - uses: actions/checkout@v2
@@ -62,18 +73,52 @@ jobs:
         env:
           SCONS_CACHE: ${{github.workspace}}/.scons_cache/
         run: |
+<<<<<<< HEAD
           scons tools=yes target=release_debug module_mono_enabled=yes mono_glue=no
           ls -l bin/
 
+=======
+          scons tools=yes tests=yes target=release_debug
+          ls -l bin/
+
+      # Execute unit tests for the editor
+      - name: Unit Tests
+        run: |
+          ./bin/godot.linuxbsd.opt.tools.64 --test
+
+      # Download, unzip and setup SwiftShader library [d4550ab8d3f]
+      - name: Download SwiftShader
+        run: |
+          wget https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader.zip
+          unzip swiftshader.zip
+          rm swiftshader.zip
+          curr="$(pwd)/libvk_swiftshader.so"
+          sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
+
+      # Check class reference
+      - name: Check for class reference updates
+        run: |
+          echo "Running --doctool to see if this changes the public API without updating the documentation."
+          echo -e "If a diff is shown, it means that your code/doc changes are incomplete and you should update the class reference with --doctool.\n\n"
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run bin/godot.linuxbsd.opt.tools.64 --doctool . 2>&1 > /dev/null || true
+          git diff --color --exit-code
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ github.job }}
           path: bin/*
           retention-days: 14
 
+<<<<<<< HEAD
   linux-template-mono:
     runs-on: "ubuntu-20.04"
     name: Template w/ Mono (target=release, tools=no)
+=======
+  linux-editor-sanitizers:
+    runs-on: "ubuntu-20.04"
+    name: Editor and sanitizers (target=debug, tools=yes, tests=yes, use_asan=yes, use_ubsan=yes)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
     steps:
       - uses: actions/checkout@v2
@@ -89,11 +134,20 @@ jobs:
       - name: Configure dependencies
         run: |
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
+<<<<<<< HEAD
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
 
       # Upload cache on completion and check it out now
       - name: Load .scons_cache directory
         id: linux-template-cache
+=======
+            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
+            xvfb wget unzip
+
+      # Upload cache on completion and check it out now
+      - name: Load .scons_cache directory
+        id: linux-sanitizers-cache
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         uses: actions/cache@v2
         with:
           path: ${{github.workspace}}/.scons_cache/
@@ -103,7 +157,11 @@ jobs:
             ${{github.job}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}
             ${{github.job}}-${{env.GODOT_BASE_BRANCH}}
 
+<<<<<<< HEAD
       # Use python 3.x release (works cross platform)
+=======
+      # Use python 3.x release (works cross platform; best to keep self contained in it's own step)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
@@ -112,7 +170,11 @@ jobs:
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
 
+<<<<<<< HEAD
       # You can test your matrix by printing the current Python version
+=======
+      # Setup scons, print python version and scons version info, so if anything is broken it won't run the build.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       - name: Configuring Python packages
         run: |
           python -c "import sys; print(sys.version)"
@@ -120,10 +182,16 @@ jobs:
           python --version
           scons --version
 
+<<<<<<< HEAD
+=======
+      # We should always be explicit with our flags usage here since it's gonna be sure to always set those flags
+      # [Workaround] SwiftShader doesn't support tessellation, so we skip Godot check about it
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       - name: Compilation
         env:
           SCONS_CACHE: ${{github.workspace}}/.scons_cache/
         run: |
+<<<<<<< HEAD
           scons target=release tools=no module_mono_enabled=yes mono_glue=no debug_symbols=no
           ls -l bin/
 
@@ -136,6 +204,48 @@ jobs:
   linux-editor-sanitizers:
     runs-on: "ubuntu-20.04"
     name: Editor and exported project with sanitizers (target=debug/release, tools=yes/no, debug_symbols=yes/full, use_ubsan=yes, use_asan=yes)
+=======
+          sed -i "s|ERR_FAIL_COND_V(p_rasterization_state.patch_control_points|//ERR_FAIL_COND_V(p_rasterization_state.patch_control_points|" drivers/vulkan/rendering_device_vulkan.cpp
+          scons tools=yes tests=yes target=debug debug_symbols=no use_asan=yes use_ubsan=yes
+          ls -l bin/
+
+      # Execute unit tests for the editor
+      - name: Unit Tests
+        run: |
+          ./bin/godot.linuxbsd.tools.64s --test
+
+      # Download, unzip and setup SwiftShader library [d4550ab8d3f]
+      - name: Download SwiftShader
+        run: |
+          wget https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader.zip
+          unzip swiftshader.zip
+          rm swiftshader.zip
+          curr="$(pwd)/libvk_swiftshader.so"
+          sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
+
+      # Download and extract zip archive with project, folder is renamed to be able to easy change used project
+      - name: Download test project
+        run: |
+          wget https://github.com/qarmin/RegressionTestProject/archive/4.0.zip
+          unzip 4.0.zip
+          mv "RegressionTestProject-4.0" "test_project"
+
+      # Editor is quite complicated piece of software, so it is easy to introduce bug here
+      - name: Open and close editor
+        run: |
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run bin/godot.linuxbsd.tools.64s --audio-driver Dummy -e -q --path test_project 2>&1 | tee sanitizers_log.txt || true
+          misc/scripts/check_ci_log.py sanitizers_log.txt
+
+      # Run test project
+      - name: Run project
+        run: |
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run bin/godot.linuxbsd.tools.64s 40 --audio-driver Dummy --path test_project 2>&1 | tee sanitizers_log.txt || true
+          misc/scripts/check_ci_log.py sanitizers_log.txt
+
+  linux-template-mono:
+    runs-on: "ubuntu-20.04"
+    name: Template w/ Mono (target=release, tools=no)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
     steps:
       - uses: actions/checkout@v2
@@ -151,12 +261,20 @@ jobs:
       - name: Configure dependencies
         run: |
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
+<<<<<<< HEAD
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip
 
       # Upload cache on completion and check it out now
       - name: Load .scons_cache directory
         id: linux-sanitizer-cache
+=======
+            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
+
+      # Upload cache on completion and check it out now
+      - name: Load .scons_cache directory
+        id: linux-template-cache
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         uses: actions/cache@v2
         with:
           path: ${{github.workspace}}/.scons_cache/
@@ -166,7 +284,11 @@ jobs:
             ${{github.job}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}
             ${{github.job}}-${{env.GODOT_BASE_BRANCH}}
 
+<<<<<<< HEAD
       # Use python 3.x release (works cross platform; best to keep self contained in it's own step)
+=======
+      # Use python 3.x release (works cross platform)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
@@ -175,7 +297,11 @@ jobs:
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
 
+<<<<<<< HEAD
       # Setup scons, print python version and scons version info, so if anything is broken it won't run the build.
+=======
+      # You can test your matrix by printing the current Python version
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       - name: Configuring Python packages
         run: |
           python -c "import sys; print(sys.version)"
@@ -183,11 +309,15 @@ jobs:
           python --version
           scons --version
 
+<<<<<<< HEAD
       # We should always be explicit with our flags usage here since it's gonna be sure to always set those flags
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
       - name: Compilation
         env:
           SCONS_CACHE: ${{github.workspace}}/.scons_cache/
         run: |
+<<<<<<< HEAD
           scons tools=yes target=debug use_asan=yes use_ubsan=yes
           ls -l bin/
 #          scons tools=no target=release debug_symbols=full use_ubsan=yes use_asan=yes
@@ -227,3 +357,13 @@ jobs:
 #          misc/scripts/check_ci_log.py sanitizers_log.txt
 #          DRI_PRIME=0 xvfb-run exported_project/test_project 20 2>&1 | tee sanitizers_log.txt || true
 #          misc/scripts/check_ci_log.py sanitizers_log.txt
+=======
+          scons target=release tools=no module_mono_enabled=yes mono_glue=no
+          ls -l bin/
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.job }}
+          path: bin/*
+          retention-days: 14
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45

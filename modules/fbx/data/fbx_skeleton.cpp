@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -38,9 +43,14 @@ void FBXSkeleton::init_skeleton(const ImportState &state) {
 	int skeleton_bone_count = skeleton_bones.size();
 
 	if (skeleton == nullptr && skeleton_bone_count > 0) {
+<<<<<<< HEAD
 		skeleton = memnew(Skeleton);
 
 		Ref<FBXNode> skeleton_parent_node;
+=======
+		skeleton = memnew(Skeleton3D);
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		if (fbx_node.is_valid()) {
 			// cache skeleton attachment for later during node creation
 			// can't be done until after node hierarchy is built
@@ -51,7 +61,11 @@ void FBXSkeleton::init_skeleton(const ImportState &state) {
 				// root node must never be a skeleton to prevent cyclic skeletons from being allowed (skeleton in a skeleton)
 				fbx_node->godot_node->add_child(skeleton);
 				skeleton->set_owner(state.root_owner);
+<<<<<<< HEAD
 				skeleton->set_name("Skeleton");
+=======
+				skeleton->set_name("Skeleton3D");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				print_verbose("created armature skeleton for root");
 			}
 		} else {
@@ -70,7 +84,11 @@ void FBXSkeleton::init_skeleton(const ImportState &state) {
 			// Make sure the bone name is unique.
 			const String bone_name = bone->bone_name;
 			int same_name_count = 0;
+<<<<<<< HEAD
 			for (int y = x; y < skeleton_bone_count; y++) {
+=======
+			for (int y = x + 1; y < skeleton_bone_count; y++) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				Ref<FBXBone> other_bone = skeleton_bones[y];
 				if (other_bone.is_valid()) {
 					if (other_bone->bone_name == bone_name) {
@@ -82,7 +100,11 @@ void FBXSkeleton::init_skeleton(const ImportState &state) {
 		}
 	}
 
+<<<<<<< HEAD
 	Map<int, Ref<FBXBone> > bone_map;
+=======
+	Map<int, Ref<FBXBone>> bone_map;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// implement fbx cluster skin logic here this is where it goes
 	int bone_count = 0;
 	for (int x = 0; x < skeleton_bone_count; x++) {
@@ -99,12 +121,21 @@ void FBXSkeleton::init_skeleton(const ImportState &state) {
 
 	ERR_FAIL_COND_MSG(skeleton->get_bone_count() != bone_count, "Not all bones got added, is the file corrupted?");
 
+<<<<<<< HEAD
 	for (Map<int, Ref<FBXBone> >::Element *bone_element = bone_map.front(); bone_element; bone_element = bone_element->next()) {
 		Ref<FBXBone> bone = bone_element->value();
 		int bone_index = bone_element->key();
 		print_verbose("working on bone: " + itos(bone_index) + " bone name:" + bone->bone_name);
 
 		skeleton->set_bone_rest(bone->godot_bone_id, get_unscaled_transform(bone->pivot_xform->LocalTransform, state.scale));
+=======
+	for (Map<int, Ref<FBXBone>>::Element *bone_element = bone_map.front(); bone_element; bone_element = bone_element->next()) {
+		const Ref<FBXBone> bone = bone_element->value();
+		int bone_index = bone_element->key();
+		print_verbose("working on bone: " + itos(bone_index) + " bone name:" + bone->bone_name);
+
+		skeleton->set_bone_rest(bone->godot_bone_id, get_unscaled_transform(bone->node->pivot_transform->LocalTransform, state.scale));
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		// lookup parent ID
 		if (bone->valid_parent && state.fbx_bone_map.has(bone->parent_bone_id)) {

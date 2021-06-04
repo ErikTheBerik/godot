@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import build_scripts.tls_configure as tls_configure
 import build_scripts.mono_configure as mono_configure
 
 Import("env")
@@ -19,15 +18,18 @@ if env_mono["mono_glue"]:
     env_mono.Append(CPPDEFINES=["MONO_GLUE_ENABLED"])
 
     import os.path
+<<<<<<< HEAD
+
+    if not os.path.isfile("glue/mono_glue.gen.cpp"):
+        raise RuntimeError("Mono glue sources not found. Did you forget to run '--generate-mono-glue'?")
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
     if not os.path.isfile("glue/mono_glue.gen.cpp"):
         raise RuntimeError("Mono glue sources not found. Did you forget to run '--generate-mono-glue'?")
 
-# Configure Thread Local Storage
-
-conf = Configure(env_mono)
-tls_configure.configure(conf)
-env_mono = conf.Finish()
+if env_mono["tools"] or env_mono["target"] != "release":
+    env_mono.Append(CPPDEFINES=["GD_MONO_HOT_RELOAD"])
 
 # Configure Mono
 
@@ -43,6 +45,11 @@ if env_mono["tools"] and env_mono["mono_glue"] and env_mono["build_cil"]:
     import build_scripts.godot_tools_build as godot_tools_build
 
     godot_tools_build.build(env_mono, api_sln_cmd)
+
+    # Build Godot.NET.Sdk
+    import build_scripts.godot_net_sdk_build as godot_net_sdk_build
+
+    godot_net_sdk_build.build(env_mono)
 
 # Add sources
 

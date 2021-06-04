@@ -4,7 +4,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>7.2</LangVersion>
     <PackageId>GodotTools.IdeMessaging</PackageId>
+<<<<<<< HEAD
     <Version>1.1.0</Version>
+=======
+    <Version>1.1.1</Version>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <Authors>Godot Engine contributors</Authors>
     <Company />

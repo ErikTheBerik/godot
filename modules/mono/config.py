@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 supported_platforms = ["windows", "osx", "x11", "server", "android", "haiku", "javascript", "iphone"]
+=======
+supported_platforms = ["windows", "osx", "linuxbsd", "server", "android", "haiku", "javascript", "iphone"]
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 
 def can_build(env, platform):
@@ -11,7 +15,10 @@ def configure(env):
     if platform not in supported_platforms:
         raise RuntimeError("This module does not currently support building for this platform")
 
+<<<<<<< HEAD
     env.use_ptrcall = True
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     env.add_module_version_string("mono")
 
     from SCons.Script import BoolVariable, PathVariable, Variables, Help
@@ -28,6 +35,17 @@ def configure(env):
             PathVariable.PathAccept,
         )
     )
+<<<<<<< HEAD
+=======
+    envvars.Add(
+        PathVariable(
+            "mono_bcl",
+            "Path to a custom Mono BCL (Base Class Library) directory for the target platform",
+            "",
+            PathVariable.PathAccept,
+        )
+    )
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     envvars.Add(BoolVariable("mono_static", "Statically link Mono", default_mono_static))
     envvars.Add(BoolVariable("mono_glue", "Build with the Mono glue sources", True))
     envvars.Add(BoolVariable("build_cil", "Build C# solutions", True))

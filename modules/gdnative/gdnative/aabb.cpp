@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,12 +31,14 @@
 #include "gdnative/aabb.h"
 
 #include "core/math/aabb.h"
-#include "core/variant.h"
+
+static_assert(sizeof(godot_aabb) == sizeof(AABB), "AABB size mismatch");
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+<<<<<<< HEAD
 static_assert(sizeof(godot_aabb) == sizeof(AABB), "AABB size mismatch");
 
 void GDAPI godot_aabb_new(godot_aabb *r_dest, const godot_vector3 *p_pos, const godot_vector3 *p_size) {
@@ -207,12 +209,14 @@ godot_vector3 GDAPI godot_aabb_get_endpoint(const godot_aabb *p_self, const godo
 
 	*((Vector3 *)&dest) = self->get_endpoint(p_idx);
 	return dest;
+=======
+void GDAPI godot_aabb_new(godot_aabb *p_self) {
+	memnew_placement(p_self, AABB);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
-godot_bool GDAPI godot_aabb_operator_equal(const godot_aabb *p_self, const godot_aabb *p_b) {
-	const AABB *self = (const AABB *)p_self;
-	const AABB *b = (const AABB *)p_b;
-	return *self == *b;
+void GDAPI godot_aabb_new_copy(godot_aabb *r_dest, const godot_aabb *p_src) {
+	memnew_placement(r_dest, AABB(*(AABB *)p_src));
 }
 
 #ifdef __cplusplus

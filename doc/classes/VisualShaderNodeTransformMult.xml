@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="VisualShaderNodeTransformMult" inherits="VisualShaderNode" version="3.2">
+<class name="VisualShaderNodeTransformMult" inherits="VisualShaderNode" version="4.0">
 	<brief_description>
+<<<<<<< HEAD
 		Multiplies [Transform] by [Transform] within the visual shader graph.
+=======
+		Multiplies [Transform3D] by [Transform3D] within the visual shader graph.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</brief_description>
 	<description>
 		A multiplication operation on two transforms (4x4 matrices), with support for different multiplication operators.

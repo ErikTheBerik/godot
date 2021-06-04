@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,12 +31,14 @@
 #include "gdnative/transform2d.h"
 
 #include "core/math/transform_2d.h"
-#include "core/variant.h"
+
+static_assert(sizeof(godot_transform2d) == sizeof(Transform2D), "Transform2D size mismatch");
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+<<<<<<< HEAD
 static_assert(sizeof(godot_transform2d) == sizeof(Transform2D), "Transform2D size mismatch");
 
 void GDAPI godot_transform2d_new(godot_transform2d *r_dest, const godot_real p_rot, const godot_vector2 *p_pos) {
@@ -106,104 +108,24 @@ godot_transform2d GDAPI godot_transform2d_rotated(const godot_transform2d *p_sel
 
 	*((Transform2D *)&dest) = self->rotated(p_phi);
 	return dest;
+=======
+void GDAPI godot_transform2d_new(godot_transform2d *p_self) {
+	memnew_placement(p_self, Transform2D);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
-godot_transform2d GDAPI godot_transform2d_scaled(const godot_transform2d *p_self, const godot_vector2 *p_scale) {
-	godot_transform2d dest;
+void GDAPI godot_transform2d_new_copy(godot_transform2d *r_dest, const godot_transform2d *p_src) {
+	memnew_placement(r_dest, Transform2D(*(Transform2D *)p_src));
+}
+
+godot_vector2 GDAPI *godot_transform2d_operator_index(godot_transform2d *p_self, godot_int p_index) {
+	Transform2D *self = (Transform2D *)p_self;
+	return (godot_vector2 *)&self->operator[](p_index);
+}
+
+const godot_vector2 GDAPI *godot_transform2d_operator_index_const(const godot_transform2d *p_self, godot_int p_index) {
 	const Transform2D *self = (const Transform2D *)p_self;
-	const Vector2 *scale = (const Vector2 *)p_scale;
-	*((Transform2D *)&dest) = self->scaled(*scale);
-	return dest;
-}
-
-godot_transform2d GDAPI godot_transform2d_translated(const godot_transform2d *p_self, const godot_vector2 *p_offset) {
-	godot_transform2d dest;
-	const Transform2D *self = (const Transform2D *)p_self;
-	const Vector2 *offset = (const Vector2 *)p_offset;
-	*((Transform2D *)&dest) = self->translated(*offset);
-	return dest;
-}
-
-godot_vector2 GDAPI godot_transform2d_xform_vector2(const godot_transform2d *p_self, const godot_vector2 *p_v) {
-	godot_vector2 raw_dest;
-	Vector2 *dest = (Vector2 *)&raw_dest;
-	const Transform2D *self = (const Transform2D *)p_self;
-	const Vector2 *v = (const Vector2 *)p_v;
-	*dest = self->xform(*v);
-	return raw_dest;
-}
-
-godot_vector2 GDAPI godot_transform2d_xform_inv_vector2(const godot_transform2d *p_self, const godot_vector2 *p_v) {
-	godot_vector2 raw_dest;
-	Vector2 *dest = (Vector2 *)&raw_dest;
-	const Transform2D *self = (const Transform2D *)p_self;
-	const Vector2 *v = (const Vector2 *)p_v;
-	*dest = self->xform_inv(*v);
-	return raw_dest;
-}
-
-godot_vector2 GDAPI godot_transform2d_basis_xform_vector2(const godot_transform2d *p_self, const godot_vector2 *p_v) {
-	godot_vector2 raw_dest;
-	Vector2 *dest = (Vector2 *)&raw_dest;
-	const Transform2D *self = (const Transform2D *)p_self;
-	const Vector2 *v = (const Vector2 *)p_v;
-	*dest = self->basis_xform(*v);
-	return raw_dest;
-}
-
-godot_vector2 GDAPI godot_transform2d_basis_xform_inv_vector2(const godot_transform2d *p_self, const godot_vector2 *p_v) {
-	godot_vector2 raw_dest;
-	Vector2 *dest = (Vector2 *)&raw_dest;
-	const Transform2D *self = (const Transform2D *)p_self;
-	const Vector2 *v = (const Vector2 *)p_v;
-	*dest = self->basis_xform_inv(*v);
-	return raw_dest;
-}
-
-godot_transform2d GDAPI godot_transform2d_interpolate_with(const godot_transform2d *p_self, const godot_transform2d *p_m, const godot_real p_c) {
-	godot_transform2d dest;
-	const Transform2D *self = (const Transform2D *)p_self;
-	const Transform2D *m = (const Transform2D *)p_m;
-	*((Transform2D *)&dest) = self->interpolate_with(*m, p_c);
-	return dest;
-}
-
-godot_bool GDAPI godot_transform2d_operator_equal(const godot_transform2d *p_self, const godot_transform2d *p_b) {
-	const Transform2D *self = (const Transform2D *)p_self;
-	const Transform2D *b = (const Transform2D *)p_b;
-	return *self == *b;
-}
-
-godot_transform2d GDAPI godot_transform2d_operator_multiply(const godot_transform2d *p_self, const godot_transform2d *p_b) {
-	godot_transform2d raw_dest;
-	Transform2D *dest = (Transform2D *)&raw_dest;
-	const Transform2D *self = (const Transform2D *)p_self;
-	const Transform2D *b = (const Transform2D *)p_b;
-	*dest = *self * *b;
-	return raw_dest;
-}
-
-void GDAPI godot_transform2d_new_identity(godot_transform2d *r_dest) {
-	Transform2D *dest = (Transform2D *)r_dest;
-	*dest = Transform2D();
-}
-
-godot_rect2 GDAPI godot_transform2d_xform_rect2(const godot_transform2d *p_self, const godot_rect2 *p_v) {
-	godot_rect2 raw_dest;
-	Rect2 *dest = (Rect2 *)&raw_dest;
-	const Transform2D *self = (const Transform2D *)p_self;
-	const Rect2 *v = (const Rect2 *)p_v;
-	*dest = self->xform(*v);
-	return raw_dest;
-}
-
-godot_rect2 GDAPI godot_transform2d_xform_inv_rect2(const godot_transform2d *p_self, const godot_rect2 *p_v) {
-	godot_rect2 raw_dest;
-	Rect2 *dest = (Rect2 *)&raw_dest;
-	const Transform2D *self = (const Transform2D *)p_self;
-	const Rect2 *v = (const Rect2 *)p_v;
-	*dest = self->xform_inv(*v);
-	return raw_dest;
+	return (const godot_vector2 *)&self->operator[](p_index);
 }
 
 #ifdef __cplusplus

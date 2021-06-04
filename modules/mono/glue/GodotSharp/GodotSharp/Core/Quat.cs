@@ -120,6 +120,7 @@ namespace Godot
         /// <param name="b">The destination quaternion.</param>
         /// <param name="preA">A quaternion before this quaternion.</param>
         /// <param name="postB">A quaternion after `b`.</param>
+<<<<<<< HEAD
         /// <param name="t">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
         /// <returns>The interpolated quaternion.</returns>
         public Quat CubicSlerp(Quat b, Quat preA, Quat postB, real_t t)
@@ -127,6 +128,15 @@ namespace Godot
             real_t t2 = (1.0f - t) * t * 2f;
             Quat sp = Slerp(b, t);
             Quat sq = preA.Slerpni(postB, t);
+=======
+        /// <param name="weight">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
+        /// <returns>The interpolated quaternion.</returns>
+        public Quat CubicSlerp(Quat b, Quat preA, Quat postB, real_t weight)
+        {
+            real_t t2 = (1.0f - weight) * weight * 2f;
+            Quat sp = Slerp(b, weight);
+            Quat sq = preA.Slerpni(postB, weight);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             return sp.Slerpni(sq, t2);
         }
 
@@ -179,6 +189,7 @@ namespace Godot
         /// </summary>
         /// <returns>A bool for whether the quaternion is normalized or not.</returns>
         public bool IsNormalized()
+<<<<<<< HEAD
         {
             return Mathf.Abs(LengthSquared - 1) <= Mathf.Epsilon;
         }
@@ -209,14 +220,19 @@ namespace Godot
 
         [Obsolete("SetAxisAngle is deprecated. Use the Quat(" + nameof(Vector3) + ", " + nameof(real_t) + ") constructor instead.", error: true)]
         public void SetAxisAngle(Vector3 axis, real_t angle)
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         {
-            this = new Quat(axis, angle);
+            return Mathf.Abs(LengthSquared - 1) <= Mathf.Epsilon;
         }
 
-        [Obsolete("SetEuler is deprecated. Use the Quat(" + nameof(Vector3) + ") constructor instead.", error: true)]
-        public void SetEuler(Vector3 eulerYXZ)
+        /// <summary>
+        /// Returns a copy of the quaternion, normalized to unit length.
+        /// </summary>
+        /// <returns>The normalized quaternion.</returns>
+        public Quat Normalized()
         {
-            this = new Quat(eulerYXZ);
+            return this / Length;
         }
 
         /// <summary>

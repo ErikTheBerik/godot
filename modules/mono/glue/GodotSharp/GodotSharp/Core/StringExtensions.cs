@@ -12,7 +12,7 @@ namespace Godot
     {
         private static int GetSliceCount(this string instance, string splitter)
         {
-            if (instance.Empty() || splitter.Empty())
+            if (string.IsNullOrEmpty(instance) || string.IsNullOrEmpty(splitter))
                 return 0;
 
             int pos = 0;
@@ -29,7 +29,7 @@ namespace Godot
 
         private static string GetSliceCharacter(this string instance, char splitter, int slice)
         {
-            if (!instance.Empty() && slice >= 0)
+            if (!string.IsNullOrEmpty(instance) && slice >= 0)
             {
                 int i = 0;
                 int prev = 0;
@@ -95,6 +95,36 @@ namespace Godot
             }
 
             return b;
+        }
+
+        /// <summary>
+        /// Converts a string containing a binary number into an integer.
+        /// Binary strings can either be prefixed with `0b` or not,
+        /// and they can also start with a `-` before the optional prefix.
+        /// </summary>
+        /// <param name="instance">The string to convert.</param>
+        /// <returns>The converted string.</returns>
+        public static int BinToInt(this string instance)
+        {
+            if (instance.Length == 0)
+            {
+                return 0;
+            }
+
+            int sign = 1;
+
+            if (instance[0] == '-')
+            {
+                sign = -1;
+                instance = instance.Substring(1);
+            }
+
+            if (instance.StartsWith("0b"))
+            {
+                instance = instance.Substring(2);
+            }
+
+            return sign * Convert.ToInt32(instance, 2);;
         }
 
         // <summary>
@@ -237,10 +267,10 @@ namespace Godot
         // </summary>
         public static int CompareTo(this string instance, string to, bool caseSensitive = true)
         {
-            if (instance.Empty())
-                return to.Empty() ? 0 : -1;
+            if (string.IsNullOrEmpty(instance))
+                return string.IsNullOrEmpty(to) ? 0 : -1;
 
-            if (to.Empty())
+            if (string.IsNullOrEmpty(to))
                 return 1;
 
             int instanceIndex = 0;
@@ -284,14 +314,6 @@ namespace Godot
                     toIndex++;
                 }
             }
-        }
-
-        // <summary>
-        // Return true if the string is empty.
-        // </summary>
-        public static bool Empty(this string instance)
-        {
-            return string.IsNullOrEmpty(instance);
         }
 
         // <summary>
@@ -440,24 +462,28 @@ namespace Godot
         }
 
         // <summary>
-        // Hash the string and return a 32 bits integer.
+        // Hash the string and return a 32 bits unsigned integer.
         // </summary>
-        public static int Hash(this string instance)
+        public static uint Hash(this string instance)
         {
-            int index = 0;
-            int hashv = 5381;
-            int c;
+            uint hash = 5381;
 
-            while ((c = instance[index++]) != 0)
-                hashv = (hashv << 5) + hashv + c; // hash * 33 + c
+            foreach(uint c in instance)
+            {
+                hash = (hash << 5) + hash + c; // hash * 33 + c
+            }
 
-            return hashv;
+            return hash;
         }
 
         /// <summary>
         /// Returns a hexadecimal representation of this byte as a string.
         /// </summary>
+<<<<<<< HEAD
         /// <param name="bytes">The byte to encode.</param>
+=======
+        /// <param name="b">The byte to encode.</param>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// <returns>The hexadecimal representation of this byte.</returns>
         internal static string HexEncode(this byte b)
         {
@@ -501,11 +527,26 @@ namespace Godot
             return ret;
         }
 
+<<<<<<< HEAD
         // <summary>
         // Convert a string containing an hexadecimal number into an int.
         // </summary>
+=======
+        /// <summary>
+        /// Converts a string containing a hexadecimal number into an integer.
+        /// Hexadecimal strings can either be prefixed with `0x` or not,
+        /// and they can also start with a `-` before the optional prefix.
+        /// </summary>
+        /// <param name="instance">The string to convert.</param>
+        /// <returns>The converted string.</returns>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         public static int HexToInt(this string instance)
         {
+            if (instance.Length == 0)
+            {
+                return 0;
+            }
+
             int sign = 1;
 
             if (instance[0] == '-')
@@ -514,10 +555,12 @@ namespace Godot
                 instance = instance.Substring(1);
             }
 
-            if (!instance.StartsWith("0x"))
-                return 0;
+            if (instance.StartsWith("0x"))
+            {
+                instance = instance.Substring(2);
+            }
 
-            return sign * int.Parse(instance.Substring(2), NumberStyles.HexNumber);
+            return sign * int.Parse(instance, NumberStyles.HexNumber);
         }
 
         // <summary>
@@ -900,22 +943,6 @@ namespace Godot
         }
 
         // <summary>
-        // Decode a percent-encoded string. See [method percent_encode].
-        // </summary>
-        public static string PercentDecode(this string instance)
-        {
-            return Uri.UnescapeDataString(instance);
-        }
-
-        // <summary>
-        // Percent-encode a string. This is meant to encode parameters in a URL when sending a HTTP GET request and bodies of form-urlencoded POST request.
-        // </summary>
-        public static string PercentEncode(this string instance)
-        {
-            return Uri.EscapeDataString(instance);
-        }
-
-        // <summary>
         // If the string is a path, this concatenates [code]file[/code] at the end of the string as a subpath. E.g. [code]"this/is".plus_file("path") == "this/is/path"[/code].
         // </summary>
         public static string PlusFile(this string instance, string file)
@@ -1130,7 +1157,7 @@ namespace Godot
         }
 
         // <summary>
-        // Convert the String (which is a character array) to PoolByteArray (which is an array of bytes). The conversion is speeded up in comparison to to_utf8() with the assumption that all the characters the String contains are only ASCII characters.
+        // Convert the String (which is a character array) to PackedByteArray (which is an array of bytes). The conversion is speeded up in comparison to to_utf8() with the assumption that all the characters the String contains are only ASCII characters.
         // </summary>
         public static byte[] ToAscii(this string instance)
         {
@@ -1170,11 +1197,38 @@ namespace Godot
         }
 
         // <summary>
-        // Convert the String (which is an array of characters) to PoolByteArray (which is an array of bytes). The conversion is a bit slower than to_ascii(), but supports all UTF-8 characters. Therefore, you should prefer this function over to_ascii().
+        // Convert the String (which is an array of characters) to PackedByteArray (which is an array of bytes). The conversion is a bit slower than to_ascii(), but supports all UTF-8 characters. Therefore, you should prefer this function over to_ascii().
         // </summary>
         public static byte[] ToUTF8(this string instance)
         {
             return Encoding.UTF8.GetBytes(instance);
+        }
+
+        /// <summary>
+        /// Decodes a string in URL encoded format. This is meant to
+        /// decode parameters in a URL when receiving an HTTP request.
+        /// This mostly wraps around `System.Uri.UnescapeDataString()`,
+        /// but also handles `+`.
+        /// See <see cref="URIEncode"/> for encoding.
+        /// </summary>
+        /// <param name="instance">The string to decode.</param>
+        /// <returns>The unescaped string.</returns>
+        public static string URIDecode(this string instance)
+        {
+            return Uri.UnescapeDataString(instance.Replace("+", "%20"));
+        }
+
+        /// <summary>
+        /// Encodes a string to URL friendly format. This is meant to
+        /// encode parameters in a URL when sending an HTTP request.
+        /// This wraps around `System.Uri.EscapeDataString()`.
+        /// See <see cref="URIDecode"/> for decoding.
+        /// </summary>
+        /// <param name="instance">The string to encode.</param>
+        /// <returns>The escaped string.</returns>
+        public static string URIEncode(this string instance)
+        {
+            return Uri.EscapeDataString(instance);
         }
 
         // <summary>

@@ -345,6 +345,7 @@ namespace Godot
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Deprecated, please use the array operator instead.
         /// </summary>
         /// <param name="index">Which column.</param>
@@ -378,6 +379,8 @@ namespace Godot
         }
 
         /// <summary>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// This function considers a discretization of rotations into
         /// 24 points on unit sphere, lying along the vectors (x, y, z) with
         /// each component being either -1, 0, or 1, and returns the index

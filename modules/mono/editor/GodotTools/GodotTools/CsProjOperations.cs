@@ -1,11 +1,15 @@
 using Godot;
 using System;
+<<<<<<< HEAD
 using System.Linq;
 using Godot.Collections;
 using GodotTools.Internals;
 using GodotTools.ProjectEditor;
 using File = GodotTools.Utils.File;
 using Directory = GodotTools.Utils.Directory;
+=======
+using GodotTools.ProjectEditor;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 namespace GodotTools
 {
@@ -23,6 +27,7 @@ namespace GodotTools
                 return string.Empty;
             }
         }
+<<<<<<< HEAD
 
         private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
@@ -104,5 +109,7 @@ namespace GodotTools
 
             File.WriteAllText(outputPath, json);
         }
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     }
 }

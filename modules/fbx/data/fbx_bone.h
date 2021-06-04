@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -49,9 +54,12 @@ struct FBXBone : public Reference {
 		return !valid_parent;
 	}
 
+<<<<<<< HEAD
 	uint64_t target_node_id; // the node target id for the skeleton element
 	bool valid_target = false; // only applies to bones with a mesh / in the skin.
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// Godot specific data
 	int godot_bone_id = -2; // godot internal bone id assigned after import
 
@@ -60,6 +68,7 @@ struct FBXBone : public Reference {
 	bool valid_armature_id = false;
 	uint64_t armature_id = 0;
 
+<<<<<<< HEAD
 	// Vertex Weight information
 	Transform transform_link; // todo remove
 	Transform transform_matrix; // todo remove
@@ -90,6 +99,36 @@ struct FBXBone : public Reference {
 	Ref<FBXBone> parent_bone = Ref<FBXBone>();
 	Ref<PivotTransform> pivot_xform = Ref<PivotTransform>();
 	Ref<FBXSkeleton> fbx_skeleton = Ref<FBXSkeleton>();
+=======
+	/* link node is the parent bone */
+	mutable const FBXDocParser::Geometry *geometry = nullptr;
+	mutable const FBXDocParser::ModelLimbNode *limb_node = nullptr;
+
+	void set_node(Ref<FBXNode> p_node) {
+		node = p_node;
+	}
+
+	// Stores the pivot xform for this bone
+
+	Ref<FBXNode> node = nullptr;
+	Ref<FBXBone> parent_bone = nullptr;
+	Ref<FBXSkeleton> fbx_skeleton = nullptr;
+};
+
+struct FBXSkinDeformer {
+	FBXSkinDeformer(Ref<FBXBone> p_bone, const FBXDocParser::Cluster *p_cluster) :
+			cluster(p_cluster), bone(p_bone) {}
+	~FBXSkinDeformer() {}
+	const FBXDocParser::Cluster *cluster;
+	Ref<FBXBone> bone;
+
+	/* get associate model - the model can be invalid sometimes */
+	Ref<FBXBone> get_associate_model() const {
+		return bone->parent_bone;
+	}
+
+	Ref<FBXNode> get_link(const ImportState &state) const;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 };
 
 #endif // FBX_BONE_H

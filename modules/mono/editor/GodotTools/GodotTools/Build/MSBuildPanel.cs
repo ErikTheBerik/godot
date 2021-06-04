@@ -33,13 +33,29 @@ namespace GodotTools.Build
             if (!File.Exists(GodotSharpDirs.ProjectSlnPath))
                 return; // No solution to build
 
+<<<<<<< HEAD
             BuildManager.GenerateEditorScriptMetadata();
+=======
+            try
+            {
+                // Make sure our packages are added to the fallback folder
+                NuGetUtils.AddBundledPackagesToFallbackFolder(NuGetUtils.GodotFallbackFolderPath);
+            }
+            catch (Exception e)
+            {
+                GD.PushError("Failed to setup Godot NuGet Offline Packages: " + e.Message);
+            }
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             if (!BuildManager.BuildProjectBlocking("Debug"))
                 return; // Build failed
 
             // Notify running game for hot-reload
+<<<<<<< HEAD
             Internal.ScriptEditorDebuggerReloadScripts();
+=======
+            Internal.EditorDebuggerNodeReloadScripts();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             // Hot-reload in the editor
             GodotSharpEditor.Instance.GetNode<HotReloadAssemblyWatcher>("HotReloadAssemblyWatcher").RestartTimer();
@@ -54,13 +70,29 @@ namespace GodotTools.Build
             if (!File.Exists(GodotSharpDirs.ProjectSlnPath))
                 return; // No solution to build
 
+<<<<<<< HEAD
             BuildManager.GenerateEditorScriptMetadata();
+=======
+            try
+            {
+                // Make sure our packages are added to the fallback folder
+                NuGetUtils.AddBundledPackagesToFallbackFolder(NuGetUtils.GodotFallbackFolderPath);
+            }
+            catch (Exception e)
+            {
+                GD.PushError("Failed to setup Godot NuGet Offline Packages: " + e.Message);
+            }
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             if (!BuildManager.BuildProjectBlocking("Debug", targets: new[] {"Rebuild"}))
                 return; // Build failed
 
             // Notify running game for hot-reload
+<<<<<<< HEAD
             Internal.ScriptEditorDebuggerReloadScripts();
+=======
+            Internal.EditorDebuggerNodeReloadScripts();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             // Hot-reload in the editor
             GodotSharpEditor.Instance.GetNode<HotReloadAssemblyWatcher>("HotReloadAssemblyWatcher").RestartTimer();
@@ -80,9 +112,15 @@ namespace GodotTools.Build
 
         private void ViewLogToggled(bool pressed) => BuildOutputView.LogVisible = pressed;
 
+<<<<<<< HEAD
         private void BuildMenuOptionPressed(BuildMenuOptions id)
         {
             switch (id)
+=======
+        private void BuildMenuOptionPressed(int id)
+        {
+            switch ((BuildMenuOptions)id)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             {
                 case BuildMenuOptions.BuildSolution:
                     BuildSolution();
@@ -115,37 +153,61 @@ namespace GodotTools.Build
             var toolBarHBox = new HBoxContainer {SizeFlagsHorizontal = (int)SizeFlags.ExpandFill};
             AddChild(toolBarHBox);
 
+<<<<<<< HEAD
             var buildMenuBtn = new MenuButton {Text = "Build", Icon = GetIcon("Play", "EditorIcons")};
+=======
+            var buildMenuBtn = new MenuButton {Text = "Build", Icon = GetThemeIcon("Play", "EditorIcons")};
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             toolBarHBox.AddChild(buildMenuBtn);
 
             var buildMenu = buildMenuBtn.GetPopup();
             buildMenu.AddItem("Build Solution".TTR(), (int)BuildMenuOptions.BuildSolution);
             buildMenu.AddItem("Rebuild Solution".TTR(), (int)BuildMenuOptions.RebuildSolution);
             buildMenu.AddItem("Clean Solution".TTR(), (int)BuildMenuOptions.CleanSolution);
+<<<<<<< HEAD
             buildMenu.Connect("id_pressed", this, nameof(BuildMenuOptionPressed));
+=======
+            buildMenu.IdPressed += BuildMenuOptionPressed;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             errorsBtn = new Button
             {
                 HintTooltip = "Show Errors".TTR(),
+<<<<<<< HEAD
                 Icon = GetIcon("StatusError", "EditorIcons"),
+=======
+                Icon = GetThemeIcon("StatusError", "EditorIcons"),
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                 ExpandIcon = false,
                 ToggleMode = true,
                 Pressed = true,
                 FocusMode = FocusModeEnum.None
             };
+<<<<<<< HEAD
             errorsBtn.Connect("toggled", this, nameof(ErrorsToggled));
+=======
+            errorsBtn.Toggled += ErrorsToggled;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             toolBarHBox.AddChild(errorsBtn);
 
             warningsBtn = new Button
             {
                 HintTooltip = "Show Warnings".TTR(),
+<<<<<<< HEAD
                 Icon = GetIcon("NodeWarning", "EditorIcons"),
+=======
+                Icon = GetThemeIcon("NodeWarning", "EditorIcons"),
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                 ExpandIcon = false,
                 ToggleMode = true,
                 Pressed = true,
                 FocusMode = FocusModeEnum.None
             };
+<<<<<<< HEAD
             warningsBtn.Connect("toggled", this, nameof(WarningsToggled));
+=======
+            warningsBtn.Toggled += WarningsToggled;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             toolBarHBox.AddChild(warningsBtn);
 
             viewLogBtn = new Button
@@ -155,7 +217,11 @@ namespace GodotTools.Build
                 Pressed = true,
                 FocusMode = FocusModeEnum.None
             };
+<<<<<<< HEAD
             viewLogBtn.Connect("toggled", this, nameof(ViewLogToggled));
+=======
+            viewLogBtn.Toggled += ViewLogToggled;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             toolBarHBox.AddChild(viewLogBtn);
 
             BuildOutputView = new BuildOutputView();

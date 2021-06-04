@@ -12,6 +12,7 @@ def _spaced(e):
 
 
 def _build_gdnative_api_struct_header(api):
+<<<<<<< HEAD
     gdnative_api_init_macro = ["\textern const godot_gdnative_core_api_struct *_gdnative_wrapper_api_struct;"]
 
     for ext in api["extensions"]:
@@ -37,6 +38,8 @@ def _build_gdnative_api_struct_header(api):
     gdnative_api_init_macro.append("\t\t}")
     gdnative_api_init_macro.append("\t}")
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     out = [
         "/* THIS FILE IS GENERATED DO NOT EDIT */",
         "#ifndef GODOT_GDNATIVE_API_STRUCT_H",
@@ -44,13 +47,21 @@ def _build_gdnative_api_struct_header(api):
         "",
         "#include <gdnative/gdnative.h>",
         "#include <android/godot_android.h>",
+<<<<<<< HEAD
         "#include <arvr/godot_arvr.h>",
+=======
+        "#include <xr/godot_xr.h>",
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         "#include <nativescript/godot_nativescript.h>",
         "#include <net/godot_net.h>",
         "#include <pluginscript/godot_pluginscript.h>",
         "#include <videodecoder/godot_videodecoder.h>",
+<<<<<<< HEAD
         "",
         "#define GDNATIVE_API_INIT(options) do {  \\\n" + "  \\\n".join(gdnative_api_init_macro) + "  \\\n } while (0)",
+=======
+        "#include <text/godot_text.h>",
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         "",
         "#ifdef __cplusplus",
         'extern "C" {',
@@ -101,7 +112,11 @@ def _build_gdnative_api_struct_header(api):
 
         ret_val += [
             "typedef struct godot_gdnative_core_"
+<<<<<<< HEAD
             + ("{0}_{1}".format(core["version"]["major"], core["version"]["minor"]))
+=======
+            + "{0}_{1}".format(core["version"]["major"], core["version"]["minor"])
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             + "_api_struct {",
             "\tunsigned int type;",
             "\tgodot_gdnative_api_version version;",
@@ -190,7 +205,11 @@ def _build_gdnative_api_struct_source(api):
             "\t{" + str(ext["version"]["major"]) + ", " + str(ext["version"]["minor"]) + "},",
             "\t"
             + (
+<<<<<<< HEAD
                 "NULL"
+=======
+                "nullptr"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                 if not ext["next"]
                 else ("(const godot_gdnative_api_struct *)&" + get_extension_struct_instance_name(name, ext["next"]))
             )
@@ -212,13 +231,21 @@ def _build_gdnative_api_struct_source(api):
 
         ret_val += [
             "extern const godot_gdnative_core_"
+<<<<<<< HEAD
             + ("{0}_{1}_api_struct api_{0}_{1}".format(core["version"]["major"], core["version"]["minor"]))
+=======
+            + "{0}_{1}_api_struct api_{0}_{1}".format(core["version"]["major"], core["version"]["minor"])
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             + " = {",
             "\tGDNATIVE_" + core["type"] + ",",
             "\t{" + str(core["version"]["major"]) + ", " + str(core["version"]["minor"]) + "},",
             "\t"
             + (
+<<<<<<< HEAD
                 "NULL"
+=======
+                "nullptr"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                 if not core["next"]
                 else (
                     "(const godot_gdnative_api_struct *)& api_{0}_{1}".format(
@@ -255,7 +282,20 @@ def _build_gdnative_api_struct_source(api):
         "extern const godot_gdnative_core_api_struct api_struct = {",
         "\tGDNATIVE_" + api["core"]["type"] + ",",
         "\t{" + str(api["core"]["version"]["major"]) + ", " + str(api["core"]["version"]["minor"]) + "},",
+<<<<<<< HEAD
         "\t(const godot_gdnative_api_struct *)&api_1_1,",
+=======
+        "\t"
+        + (
+            "nullptr, "
+            if not api["core"]["next"]
+            else (
+                "(const godot_gdnative_api_struct *)& api_{0}_{1},".format(
+                    api["core"]["next"]["version"]["major"], api["core"]["next"]["version"]["minor"]
+                )
+            )
+        ),
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         "\t" + str(len(api["extensions"])) + ",",
         "\tgdnative_extensions_pointers,",
     ]
@@ -279,6 +319,7 @@ def build_gdnative_api_struct(target, source, env):
         fd.write(_build_gdnative_api_struct_source(api))
 
 
+<<<<<<< HEAD
 def _build_gdnative_wrapper_code(api):
     out = [
         "/* THIS FILE IS GENERATED DO NOT EDIT */",
@@ -346,5 +387,7 @@ def build_gdnative_wrapper_code(target, source, env):
         fd.write(_build_gdnative_wrapper_code(api))
 
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 if __name__ == "__main__":
     subprocess_main(globals())

@@ -7,7 +7,10 @@ using JetBrains.Annotations;
 using static GodotTools.Internals.Globals;
 using File = GodotTools.Utils.File;
 using OS = GodotTools.Utils.OS;
+<<<<<<< HEAD
 using Path = System.IO.Path;
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 namespace GodotTools.Build
 {
@@ -209,6 +212,7 @@ namespace GodotTools.Build
             if (!File.Exists(GodotSharpDirs.ProjectSlnPath))
                 return true; // No solution to build
 
+<<<<<<< HEAD
             GenerateEditorScriptMetadata();
 
             if (GodotSharpEditor.Instance.SkipBuildBeforePlaying)
@@ -244,6 +248,22 @@ namespace GodotTools.Build
             string scriptsMetadataPath = Path.Combine(GodotSharpDirs.ResMetadataDir, $"scripts_metadata.{(isDebug ? "debug" : "release")}");
             CsProjOperations.GenerateScriptsMetadata(GodotSharpDirs.ProjectCsProjPath, scriptsMetadataPath);
             return scriptsMetadataPath;
+=======
+            try
+            {
+                // Make sure our packages are added to the fallback folder
+                NuGetUtils.AddBundledPackagesToFallbackFolder(NuGetUtils.GodotFallbackFolderPath);
+            }
+            catch (Exception e)
+            {
+                Godot.GD.PushError("Failed to setup Godot NuGet Offline Packages: " + e.Message);
+            }
+
+            if (GodotSharpEditor.Instance.SkipBuildBeforePlaying)
+                return true; // Requested play from an external editor/IDE which already built the project
+
+            return BuildProjectBlocking("Debug");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         }
 
         public static void Initialize()

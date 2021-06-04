@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,7 +34,6 @@
 #include "scene/main/node.h"
 
 class Tween : public Node {
-
 	GDCLASS(Tween, Node);
 
 public:
@@ -70,7 +69,6 @@ public:
 
 private:
 	enum InterpolateType {
-
 		INTER_PROPERTY,
 		INTER_METHOD,
 		FOLLOW_PROPERTY,
@@ -81,11 +79,11 @@ private:
 	};
 
 	struct InterpolateData {
-		bool active;
-		InterpolateType type;
-		bool finish;
-		bool call_deferred;
-		real_t elapsed;
+		bool active = false;
+		InterpolateType type = INTER_CALLBACK;
+		bool finish = false;
+		bool call_deferred = false;
+		real_t elapsed = 0.0;
 		ObjectID id;
 		Vector<StringName> key;
 		StringName concatenated_key;
@@ -94,33 +92,28 @@ private:
 		Variant final_val;
 		ObjectID target_id;
 		Vector<StringName> target_key;
-		real_t duration;
-		TransitionType trans_type;
-		EaseType ease_type;
-		real_t delay;
-		int args;
+		real_t duration = 0.0;
+		TransitionType trans_type = TransitionType::TRANS_BACK;
+		EaseType ease_type = EaseType::EASE_COUNT;
+		real_t delay = 0.0;
+		int args = 0;
 		Variant arg[5];
-		int uid;
-		InterpolateData() {
-			active = false;
-			finish = false;
-			call_deferred = false;
-			uid = 0;
-		}
+		int uid = 0;
 	};
 
 	String autoplay;
-	TweenProcessMode tween_process_mode;
-	bool repeat;
-	float speed_scale;
-	mutable int pending_update;
-	int uid;
+	TweenProcessMode tween_process_mode = TWEEN_PROCESS_IDLE;
+	bool repeat = false;
+	float speed_scale = 1.0;
+	mutable int pending_update = 0;
+	int uid = 0;
+	bool was_stopped = false;
 
 	List<InterpolateData> interpolates;
 
 	struct PendingCommand {
 		StringName key;
-		int args;
+		int args = 0;
 		Variant arg[10];
 	};
 	List<PendingCommand> pending_commands;
@@ -142,7 +135,7 @@ private:
 	void _tween_process(float p_delta);
 	void _remove_by_uid(int uid);
 	void _push_interpolate_data(InterpolateData &p_data);
-	bool _build_interpolation(InterpolateType p_interpolation_type, Object *p_object, NodePath *p_property, StringName *p_method, Variant p_initial_val, Variant p_final_val, real_t p_duration, TransitionType p_trans_type, EaseType p_ease_type, real_t p_delay);
+	void _build_interpolation(InterpolateType p_interpolation_type, Object *p_object, NodePath *p_property, StringName *p_method, Variant p_initial_val, Variant p_final_val, real_t p_duration, TransitionType p_trans_type, EaseType p_ease_type, real_t p_delay);
 
 protected:
 	bool _set(const StringName &p_name, const Variant &p_value);
@@ -165,28 +158,28 @@ public:
 	void set_speed_scale(float p_speed);
 	float get_speed_scale() const;
 
-	bool start();
-	bool reset(Object *p_object, StringName p_key);
-	bool reset_all();
-	bool stop(Object *p_object, StringName p_key);
-	bool stop_all();
-	bool resume(Object *p_object, StringName p_key);
-	bool resume_all();
-	bool remove(Object *p_object, StringName p_key);
-	bool remove_all();
+	void start();
+	void reset(Object *p_object, StringName p_key);
+	void reset_all();
+	void stop(Object *p_object, StringName p_key);
+	void stop_all();
+	void resume(Object *p_object, StringName p_key);
+	void resume_all();
+	void remove(Object *p_object, StringName p_key);
+	void remove_all();
 
-	bool seek(real_t p_time);
+	void seek(real_t p_time);
 	real_t tell() const;
 	real_t get_runtime() const;
 
-	bool interpolate_property(Object *p_object, NodePath p_property, Variant p_initial_val, Variant p_final_val, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
-	bool interpolate_method(Object *p_object, StringName p_method, Variant p_initial_val, Variant p_final_val, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
-	bool interpolate_callback(Object *p_object, real_t p_duration, String p_callback, VARIANT_ARG_DECLARE);
-	bool interpolate_deferred_callback(Object *p_object, real_t p_duration, String p_callback, VARIANT_ARG_DECLARE);
-	bool follow_property(Object *p_object, NodePath p_property, Variant p_initial_val, Object *p_target, NodePath p_target_property, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
-	bool follow_method(Object *p_object, StringName p_method, Variant p_initial_val, Object *p_target, StringName p_target_method, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
-	bool targeting_property(Object *p_object, NodePath p_property, Object *p_initial, NodePath p_initial_property, Variant p_final_val, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
-	bool targeting_method(Object *p_object, StringName p_method, Object *p_initial, StringName p_initial_method, Variant p_final_val, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
+	void interpolate_property(Object *p_object, NodePath p_property, Variant p_initial_val, Variant p_final_val, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
+	void interpolate_method(Object *p_object, StringName p_method, Variant p_initial_val, Variant p_final_val, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
+	void interpolate_callback(Object *p_object, real_t p_duration, String p_callback, VARIANT_ARG_DECLARE);
+	void interpolate_deferred_callback(Object *p_object, real_t p_duration, String p_callback, VARIANT_ARG_DECLARE);
+	void follow_property(Object *p_object, NodePath p_property, Variant p_initial_val, Object *p_target, NodePath p_target_property, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
+	void follow_method(Object *p_object, StringName p_method, Variant p_initial_val, Object *p_target, StringName p_target_method, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
+	void targeting_property(Object *p_object, NodePath p_property, Object *p_initial, NodePath p_initial_property, Variant p_final_val, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
+	void targeting_method(Object *p_object, StringName p_method, Object *p_initial, StringName p_initial_method, Variant p_final_val, real_t p_duration, TransitionType p_trans_type = TRANS_LINEAR, EaseType p_ease_type = EASE_IN_OUT, real_t p_delay = 0);
 
 	Tween();
 	~Tween();

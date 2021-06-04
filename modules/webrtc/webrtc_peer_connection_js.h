@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -50,9 +50,13 @@ extern void godot_js_rtc_pc_remote_description_set(int p_id, const char *p_type,
 extern void godot_js_rtc_pc_ice_candidate_add(int p_id, const char *p_mid_name, int p_mline_idx, const char *p_sdo);
 extern int godot_js_rtc_pc_datachannel_create(int p_id, const char *p_label, const char *p_config);
 }
+<<<<<<< HEAD
 
 class WebRTCPeerConnectionJS : public WebRTCPeerConnection {
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
+class WebRTCPeerConnectionJS : public WebRTCPeerConnection {
 private:
 	int _js_id;
 	ConnectionState _conn_state;

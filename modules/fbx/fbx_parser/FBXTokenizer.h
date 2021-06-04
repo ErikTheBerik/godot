@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -77,7 +82,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define FBX_TOKENIZER_H
 
 #include "FBXParseTools.h"
+<<<<<<< HEAD
 #include "core/ustring.h"
+=======
+#include "core/string/ustring.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #include <iostream>
 #include <memory>
 #include <string>
@@ -187,7 +196,11 @@ typedef std::vector<TokenPtr> TokenList;
  * @param output_tokens Receives a list of all tokens in the input data.
  * @param input_buffer Textual input buffer to be processed, 0-terminated.
  * @print_error if something goes wrong */
+<<<<<<< HEAD
 void Tokenize(TokenList &output_tokens, const char *input);
+=======
+void Tokenize(TokenList &output_tokens, const char *input, size_t length, bool &corrupt);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 /** Tokenizer function for binary FBX files.
  *
@@ -197,8 +210,12 @@ void Tokenize(TokenList &output_tokens, const char *input);
  * @param input_buffer Binary input buffer to be processed.
  * @param length Length of input buffer, in bytes. There is no 0-terminal.
  * @print_error if something goes wrong */
+<<<<<<< HEAD
 void TokenizeBinary(TokenList &output_tokens, const char *input, size_t length);
 
+=======
+void TokenizeBinary(TokenList &output_tokens, const char *input, size_t length, bool &corrupt);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser
 
 #endif // FBX_TOKENIZER_H

@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -32,14 +32,14 @@
 #define OS_JAVASCRIPT_H
 
 #include "audio_driver_javascript.h"
+#include "core/input/input.h"
 #include "drivers/unix/os_unix.h"
-#include "main/input_default.h"
 #include "servers/audio_server.h"
-#include "servers/visual/rasterizer.h"
 
 #include <emscripten/html5.h>
 
 class OS_JavaScript : public OS_Unix {
+<<<<<<< HEAD
 private:
 	VideoMode video_mode;
 	Vector2 windowed_size;
@@ -91,8 +91,17 @@ private:
 
 	static EM_BOOL gamepad_change_callback(int p_event_type, const EmscriptenGamepadEvent *p_event, void *p_user_data);
 	void process_joypads();
+=======
+	MainLoop *main_loop = nullptr;
+	AudioDriverJavaScript *audio_driver_javascript = nullptr;
+
+	bool idb_is_syncing = false;
+	bool idb_available = false;
+	bool idb_needs_sync = false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	static void file_access_close_callback(const String &p_file, int p_flags);
+	static void fs_sync_callback();
 
 	static void request_quit_callback();
 	static void drop_files_callback(char **p_filev, int p_filec);
@@ -101,19 +110,23 @@ private:
 	static void update_clipboard_callback(const char *p_text);
 
 protected:
+<<<<<<< HEAD
 	void resume_audio();
 
 	virtual int get_current_video_driver() const;
 
 	virtual void initialize_core();
 	virtual Error initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver);
+=======
+	void initialize() override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	virtual void set_main_loop(MainLoop *p_main_loop);
-	virtual void delete_main_loop();
+	void set_main_loop(MainLoop *p_main_loop) override;
+	void delete_main_loop() override;
 
-	virtual void finalize();
+	void finalize() override;
 
-	virtual bool _check_internal_feature_support(const String &p_feature);
+	bool _check_internal_feature_support(const String &p_feature) override;
 
 public:
 	bool check_size_force_redraw();
@@ -121,6 +134,7 @@ public:
 	// Override return type to make writing static callbacks less tedious.
 	static OS_JavaScript *get_singleton();
 
+<<<<<<< HEAD
 	virtual bool get_swap_ok_cancel();
 	virtual void swap_buffers();
 	virtual void set_video_mode(const VideoMode &p_video_mode, int p_screen = 0);
@@ -160,12 +174,20 @@ public:
 	virtual String get_clipboard() const;
 
 	virtual MainLoop *get_main_loop() const;
+=======
+	void initialize_joypads() override;
+
+	MainLoop *get_main_loop() const override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	bool main_loop_iterate();
 
-	virtual Error execute(const String &p_path, const List<String> &p_arguments, bool p_blocking = true, ProcessID *r_child_id = NULL, String *r_pipe = NULL, int *r_exitcode = NULL, bool read_stderr = false, Mutex *p_pipe_mutex = NULL);
-	virtual Error kill(const ProcessID &p_pid);
-	virtual int get_process_id() const;
+	Error execute(const String &p_path, const List<String> &p_arguments, String *r_pipe = nullptr, int *r_exitcode = nullptr, bool read_stderr = false, Mutex *p_pipe_mutex = nullptr) override;
+	Error create_process(const String &p_path, const List<String> &p_arguments, ProcessID *r_child_id = nullptr) override;
+	Error kill(const ProcessID &p_pid) override;
+	int get_process_id() const override;
+	int get_processor_count() const override;
 
+<<<<<<< HEAD
 	virtual void alert(const String &p_alert, const String &p_title = "ALERT!");
 	virtual void set_window_title(const String &p_title);
 	virtual void set_icon(const Ref<Image> &p_icon);
@@ -179,12 +201,28 @@ public:
 	virtual String get_config_path() const;
 	virtual String get_data_path() const;
 	virtual String get_user_data_dir() const;
+=======
+	String get_executable_path() const override;
+	Error shell_open(String p_uri) override;
+	String get_name() const override;
+	// Override default OS implementation which would block the main thread with delay_usec.
+	// Implemented in javascript_main.cpp loop callback instead.
+	void add_frame_delay(bool p_can_draw) override {}
 
-	virtual OS::PowerState get_power_state();
-	virtual int get_power_seconds_left();
-	virtual int get_power_percent_left();
+	String get_cache_path() const override;
+	String get_config_path() const override;
+	String get_data_path() const override;
+	String get_user_data_dir() const override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
+	bool is_userfs_persistent() const override;
+	Error open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path) override;
+
+<<<<<<< HEAD
 	virtual bool is_userfs_persistent() const;
+=======
+	void resume_audio();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	OS_JavaScript();
 };

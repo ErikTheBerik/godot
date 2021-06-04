@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -38,6 +38,7 @@ typedef void (*RTCChOnOpen)(void *p_obj);
 typedef void (*RTCChOnMessage)(void *p_obj, const uint8_t *p_buffer, int p_size, int p_is_string);
 typedef void (*RTCChOnClose)(void *p_obj);
 typedef void (*RTCChOnError)(void *p_obj);
+<<<<<<< HEAD
 
 extern int godot_js_rtc_datachannel_ready_state_get(int p_id);
 extern int godot_js_rtc_datachannel_send(int p_id, const uint8_t *p_buffer, int p_length, int p_raw);
@@ -70,6 +71,39 @@ void WebRTCDataChannelJS::_on_error(void *p_obj) {
 
 void WebRTCDataChannelJS::_on_message(void *p_obj, const uint8_t *p_data, int p_size, int p_is_string) {
 
+=======
+
+extern int godot_js_rtc_datachannel_ready_state_get(int p_id);
+extern int godot_js_rtc_datachannel_send(int p_id, const uint8_t *p_buffer, int p_length, int p_raw);
+extern int godot_js_rtc_datachannel_is_ordered(int p_id);
+extern int godot_js_rtc_datachannel_id_get(int p_id);
+extern int godot_js_rtc_datachannel_max_packet_lifetime_get(int p_id);
+extern int godot_js_rtc_datachannel_max_retransmits_get(int p_id);
+extern int godot_js_rtc_datachannel_is_negotiated(int p_id);
+extern char *godot_js_rtc_datachannel_label_get(int p_id); // Must free the returned string.
+extern char *godot_js_rtc_datachannel_protocol_get(int p_id); // Must free the returned string.
+extern void godot_js_rtc_datachannel_destroy(int p_id);
+extern void godot_js_rtc_datachannel_connect(int p_id, void *p_obj, RTCChOnOpen p_on_open, RTCChOnMessage p_on_message, RTCChOnError p_on_error, RTCChOnClose p_on_close);
+extern void godot_js_rtc_datachannel_close(int p_id);
+}
+
+void WebRTCDataChannelJS::_on_open(void *p_obj) {
+	WebRTCDataChannelJS *peer = static_cast<WebRTCDataChannelJS *>(p_obj);
+	peer->in_buffer.resize(peer->_in_buffer_shift);
+}
+
+void WebRTCDataChannelJS::_on_close(void *p_obj) {
+	WebRTCDataChannelJS *peer = static_cast<WebRTCDataChannelJS *>(p_obj);
+	peer->close();
+}
+
+void WebRTCDataChannelJS::_on_error(void *p_obj) {
+	WebRTCDataChannelJS *peer = static_cast<WebRTCDataChannelJS *>(p_obj);
+	peer->close();
+}
+
+void WebRTCDataChannelJS::_on_message(void *p_obj, const uint8_t *p_data, int p_size, int p_is_string) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	WebRTCDataChannelJS *peer = static_cast<WebRTCDataChannelJS *>(p_obj);
 	RingBuffer<uint8_t> &in_buffer = peer->in_buffer;
 
@@ -183,16 +217,9 @@ bool WebRTCDataChannelJS::is_negotiated() const {
 }
 
 WebRTCDataChannelJS::WebRTCDataChannelJS() {
-	queue_count = 0;
-	_was_string = false;
-	_write_mode = WRITE_MODE_BINARY;
-	_js_id = 0;
 }
 
 WebRTCDataChannelJS::WebRTCDataChannelJS(int js_id) {
-	queue_count = 0;
-	_was_string = false;
-	_write_mode = WRITE_MODE_BINARY;
 	_js_id = js_id;
 
 	godot_js_rtc_datachannel_connect(js_id, this, &_on_open, &_on_message, &_on_error, &_on_close);

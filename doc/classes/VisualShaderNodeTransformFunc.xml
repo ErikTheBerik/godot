@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="VisualShaderNodeTransformFunc" inherits="VisualShaderNode" version="3.2">
+<class name="VisualShaderNodeTransformFunc" inherits="VisualShaderNode" version="4.0">
 	<brief_description>
+<<<<<<< HEAD
 		Computes a [Transform] function within the visual shader graph.
 	</brief_description>
 	<description>
 		Computes an inverse or transpose function on the provided [Transform].
+=======
+		Computes a [Transform3D] function within the visual shader graph.
+	</brief_description>
+	<description>
+		Computes an inverse or transpose function on the provided [Transform3D].
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	</description>
 	<tutorials>
 	</tutorials>
@@ -17,10 +24,17 @@
 	</members>
 	<constants>
 		<constant name="FUNC_INVERSE" value="0" enum="Function">
+<<<<<<< HEAD
 			Perform the inverse operation on the [Transform] matrix.
 		</constant>
 		<constant name="FUNC_TRANSPOSE" value="1" enum="Function">
 			Perform the transpose operation on the [Transform] matrix.
+=======
+			Perform the inverse operation on the [Transform3D] matrix.
+		</constant>
+		<constant name="FUNC_TRANSPOSE" value="1" enum="Function">
+			Perform the transpose operation on the [Transform3D] matrix.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		</constant>
 	</constants>
 </class>

@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -128,17 +133,26 @@ AnimationCurve::~AnimationCurve() {
 
 // ------------------------------------------------------------------------------------------------
 AnimationCurveNode::AnimationCurveNode(uint64_t id, const ElementPtr element, const std::string &name,
+<<<<<<< HEAD
 		const Document &doc, const char *const *target_prop_whitelist /*= NULL*/,
 		size_t whitelist_size /*= 0*/) :
 		Object(id, element, name), target(), doc(doc) {
 	const ScopePtr sc = GetRequiredScope(element);
 
+=======
+		const Document &doc, const char *const *target_prop_whitelist /*= nullptr*/,
+		size_t whitelist_size /*= 0*/) :
+		Object(id, element, name), target(), doc(doc) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// find target node
 	const char *whitelist[] = { "Model", "NodeAttribute", "Deformer" };
 	const std::vector<const Connection *> &conns = doc.GetConnectionsBySourceSequenced(ID(), whitelist, 3);
 
 	for (const Connection *con : conns) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// link should go for a property
 		if (!con->PropertyName().length()) {
 			continue;
@@ -155,8 +169,11 @@ AnimationCurveNode::AnimationCurveNode(uint64_t id, const ElementPtr element, co
 		prop = con->PropertyName();
 		break;
 	}
+<<<<<<< HEAD
 
 	props = GetPropertyTable(doc, "AnimationCurveNode.FbxAnimCurveNode", element, sc, false);
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -188,10 +205,13 @@ const AnimationMap &AnimationCurveNode::Curves() const {
 // ------------------------------------------------------------------------------------------------
 AnimationLayer::AnimationLayer(uint64_t id, const ElementPtr element, const std::string &name, const Document &doc) :
 		Object(id, element, name), doc(doc) {
+<<<<<<< HEAD
 	const ScopePtr sc = GetRequiredScope(element);
 
 	// note: the props table here bears little importance and is usually absent
 	props = GetPropertyTable(doc, "AnimationLayer.FbxAnimLayer", element, sc, true);
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -209,7 +229,10 @@ const AnimationCurveNodeList AnimationLayer::Nodes(const char *const *target_pro
 	nodes.reserve(conns.size());
 
 	for (const Connection *con : conns) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// link should not go to a property
 		if (con->PropertyName().length()) {
 			continue;
@@ -250,17 +273,23 @@ const AnimationCurveNodeList AnimationLayer::Nodes(const char *const *target_pro
 // ------------------------------------------------------------------------------------------------
 AnimationStack::AnimationStack(uint64_t id, const ElementPtr element, const std::string &name, const Document &doc) :
 		Object(id, element, name) {
+<<<<<<< HEAD
 	const ScopePtr sc = GetRequiredScope(element);
 
 	// note: we don't currently use any of these properties so we shouldn't bother if it is missing
 	props = GetPropertyTable(doc, "AnimationStack.FbxAnimStack", element, sc, true);
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// resolve attached animation layers
 	const std::vector<const Connection *> &conns = doc.GetConnectionsByDestinationSequenced(ID(), "AnimationLayer");
 	layers.reserve(conns.size());
 
 	for (const Connection *con : conns) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// link should not go to a property
 		if (con->PropertyName().length()) {
 			continue;
@@ -285,10 +314,14 @@ AnimationStack::AnimationStack(uint64_t id, const ElementPtr element, const std:
 
 // ------------------------------------------------------------------------------------------------
 AnimationStack::~AnimationStack() {
+<<<<<<< HEAD
 	if (props != nullptr) {
 		delete props;
 		props = nullptr;
 	}
 }
 
+=======
+}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser

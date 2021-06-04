@@ -5,11 +5,19 @@ Import("env")
 env.servers_sources = []
 env.add_source_files(env.servers_sources, "*.cpp")
 
+<<<<<<< HEAD
 SConscript("arvr/SCsub")
 SConscript("camera/SCsub")
 SConscript("physics/SCsub")
 SConscript("physics_2d/SCsub")
 SConscript("visual/SCsub")
+=======
+SConscript("xr/SCsub")
+SConscript("camera/SCsub")
+SConscript("physics_3d/SCsub")
+SConscript("physics_2d/SCsub")
+SConscript("rendering/SCsub")
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 SConscript("audio/SCsub")
 
 lib = env.add_library("servers", env.servers_sources)

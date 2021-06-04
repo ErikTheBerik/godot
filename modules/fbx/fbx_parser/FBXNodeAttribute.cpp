@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -84,6 +89,7 @@ using namespace Util;
 
 // ------------------------------------------------------------------------------------------------
 NodeAttribute::NodeAttribute(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name) :
+<<<<<<< HEAD
 		Object(id, element, name), props() {
 	const ScopePtr sc = GetRequiredScope(element);
 
@@ -94,6 +100,9 @@ NodeAttribute::NodeAttribute(uint64_t id, const ElementPtr element, const Docume
 	// for it.
 	const bool is_null_or_limb = !strcmp(classname.c_str(), "Null") || !strcmp(classname.c_str(), "LimbNode");
 	props = GetPropertyTable(doc, "NodeAttribute.Fbx" + classname, element, sc, is_null_or_limb);
+=======
+		Object(id, element, name) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -180,5 +189,8 @@ LimbNode::LimbNode(uint64_t id, const ElementPtr element, const Document &doc, c
 // ------------------------------------------------------------------------------------------------
 LimbNode::~LimbNode() {
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser

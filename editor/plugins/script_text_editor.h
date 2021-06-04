@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -37,13 +37,12 @@
 #include "script_editor_plugin.h"
 
 class ConnectionInfoDialog : public AcceptDialog {
-
 	GDCLASS(ConnectionInfoDialog, AcceptDialog);
 
-	Label *method;
-	Tree *tree;
+	Label *method = nullptr;
+	Tree *tree = nullptr;
 
-	virtual void ok_pressed();
+	virtual void ok_pressed() override;
 
 public:
 	void popup_connections(String p_method, Vector<Node *> p_nodes);
@@ -52,15 +51,19 @@ public:
 };
 
 class ScriptTextEditor : public ScriptEditorBase {
-
 	GDCLASS(ScriptTextEditor, ScriptEditorBase);
 
-	CodeTextEditor *code_editor;
-	RichTextLabel *warnings_panel;
+	CodeTextEditor *code_editor = nullptr;
+	RichTextLabel *warnings_panel = nullptr;
 
 	Ref<Script> script;
+<<<<<<< HEAD
 	bool script_is_valid;
 	bool editor_enabled;
+=======
+	bool script_is_valid = false;
+	bool editor_enabled = false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	Vector<String> functions;
 
@@ -68,8 +71,9 @@ class ScriptTextEditor : public ScriptEditorBase {
 
 	Vector<String> member_keywords;
 
-	HBoxContainer *edit_hb;
+	HBoxContainer *edit_hb = nullptr;
 
+<<<<<<< HEAD
 	MenuButton *edit_menu;
 	MenuButton *search_menu;
 	MenuButton *goto_menu;
@@ -78,29 +82,37 @@ class ScriptTextEditor : public ScriptEditorBase {
 	PopupMenu *highlighter_menu;
 	PopupMenu *context_menu;
 	PopupMenu *convert_case;
+=======
+	MenuButton *edit_menu = nullptr;
+	MenuButton *search_menu = nullptr;
+	MenuButton *goto_menu = nullptr;
+	PopupMenu *bookmarks_menu = nullptr;
+	PopupMenu *breakpoints_menu = nullptr;
+	PopupMenu *highlighter_menu = nullptr;
+	PopupMenu *context_menu = nullptr;
+	PopupMenu *convert_case = nullptr;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	GotoLineDialog *goto_line_dialog;
-	ScriptEditorQuickOpen *quick_open;
-	ConnectionInfoDialog *connection_info_dialog;
+	GotoLineDialog *goto_line_dialog = nullptr;
+	ScriptEditorQuickOpen *quick_open = nullptr;
+	ConnectionInfoDialog *connection_info_dialog = nullptr;
 
-	PopupPanel *color_panel;
-	ColorPicker *color_picker;
+	int connection_gutter = -1;
+	void _gutter_clicked(int p_line, int p_gutter);
+	void _update_gutter_indexes();
+
+	int line_number_gutter = -1;
+	Color default_line_number_color = Color(1, 1, 1);
+	Color safe_line_number_color = Color(1, 1, 1);
+
+	Color marked_line_color = Color(1, 1, 1);
+
+	PopupPanel *color_panel = nullptr;
+	ColorPicker *color_picker = nullptr;
 	Vector2 color_position;
 	String color_args;
 
-	void _update_member_keywords();
-
-	struct ColorsCache {
-		Color symbol_color;
-		Color keyword_color;
-		Color basetype_color;
-		Color type_color;
-		Color usertype_color;
-		Color comment_color;
-		Color string_color;
-	} colors_cache;
-
-	bool theme_loaded;
+	bool theme_loaded = false;
 
 	enum {
 		EDIT_UNDO,
@@ -136,6 +148,7 @@ class ScriptTextEditor : public ScriptEditorBase {
 		SEARCH_LOCATE_FUNCTION,
 		SEARCH_GOTO_LINE,
 		SEARCH_IN_FILES,
+		REPLACE_IN_FILES,
 		BOOKMARK_TOGGLE,
 		BOOKMARK_GOTO_NEXT,
 		BOOKMARK_GOTO_PREV,
@@ -169,7 +182,7 @@ protected:
 
 	static void _bind_methods();
 
-	Map<String, SyntaxHighlighter *> highlighters;
+	Map<String, Ref<EditorSyntaxHighlighter>> highlighters;
 	void _change_syntax_highlighter(int p_idx);
 
 	void _edit_option(int p_op);
@@ -180,8 +193,7 @@ protected:
 
 	void _goto_line(int p_line) { goto_line(p_line); }
 	void _lookup_symbol(const String &p_symbol, int p_row, int p_column);
-
-	void _lookup_connections(int p_row, String p_method);
+	void _validate_symbol(const String &p_symbol);
 
 	void _convert_case(CodeTextEditor::CaseStyle p_case);
 
@@ -194,10 +206,11 @@ protected:
 public:
 	void _update_connected_methods();
 
-	virtual void add_syntax_highlighter(SyntaxHighlighter *p_highlighter);
-	virtual void set_syntax_highlighter(SyntaxHighlighter *p_highlighter);
+	virtual void add_syntax_highlighter(Ref<EditorSyntaxHighlighter> p_highlighter) override;
+	virtual void set_syntax_highlighter(Ref<EditorSyntaxHighlighter> p_highlighter) override;
 	void update_toggle_scripts_button();
 
+<<<<<<< HEAD
 	virtual void apply_code();
 	virtual RES get_edited_resource() const;
 	virtual void set_edited_resource(const RES &p_res);
@@ -217,28 +230,51 @@ public:
 	virtual void tag_saved_version();
 
 	virtual void goto_line(int p_line, bool p_with_error = false);
+=======
+	virtual void apply_code() override;
+	virtual RES get_edited_resource() const override;
+	virtual void set_edited_resource(const RES &p_res) override;
+	virtual void enable_editor() override;
+	virtual Vector<String> get_functions() override;
+	virtual void reload_text() override;
+	virtual String get_name() override;
+	virtual Ref<Texture2D> get_theme_icon() override;
+	virtual bool is_unsaved() override;
+	virtual Variant get_edit_state() override;
+	virtual void set_edit_state(const Variant &p_state) override;
+	virtual void ensure_focus() override;
+	virtual void trim_trailing_whitespace() override;
+	virtual void insert_final_newline() override;
+	virtual void convert_indent_to_spaces() override;
+	virtual void convert_indent_to_tabs() override;
+	virtual void tag_saved_version() override;
+
+	virtual void goto_line(int p_line, bool p_with_error = false) override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	void goto_line_selection(int p_line, int p_begin, int p_end);
 	void goto_line_centered(int p_line);
-	virtual void set_executing_line(int p_line);
-	virtual void clear_executing_line();
+	virtual void set_executing_line(int p_line) override;
+	virtual void clear_executing_line() override;
 
-	virtual void reload(bool p_soft);
-	virtual void get_breakpoints(List<int> *p_breakpoints);
+	virtual void reload(bool p_soft) override;
+	virtual Array get_breakpoints() override;
 
-	virtual void add_callback(const String &p_function, PoolStringArray p_args);
-	virtual void update_settings();
+	virtual void add_callback(const String &p_function, PackedStringArray p_args) override;
+	virtual void update_settings() override;
 
-	virtual bool show_members_overview();
+	virtual bool show_members_overview() override;
 
-	virtual void set_tooltip_request_func(String p_method, Object *p_obj);
+	virtual void set_tooltip_request_func(String p_method, Object *p_obj) override;
 
-	virtual void set_debugger_active(bool p_active);
+	virtual void set_debugger_active(bool p_active) override;
 
-	Control *get_edit_menu();
-	virtual void clear_edit_menu();
+	Control *get_edit_menu() override;
+	virtual void clear_edit_menu() override;
 	static void register_editor();
 
-	virtual void validate();
+	virtual Control *get_base_editor() const override;
+
+	virtual void validate() override;
 
 	ScriptTextEditor();
 	~ScriptTextEditor();

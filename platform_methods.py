@@ -7,10 +7,7 @@ import subprocess
 
 # NOTE: The multiprocessing module is not compatible with SCons due to conflict on cPickle
 
-if sys.version_info[0] < 3:
-    JSON_SERIALIZABLE_TYPES = (bool, int, long, float, basestring)
-else:
-    JSON_SERIALIZABLE_TYPES = (bool, int, float, str)
+JSON_SERIALIZABLE_TYPES = (bool, int, float, str)
 
 
 def run_in_subprocess(builder_function):
@@ -47,17 +44,26 @@ def run_in_subprocess(builder_function):
             json.dump(data, json_file, indent=2)
         json_file_size = os.stat(json_path).st_size
 
+<<<<<<< HEAD
         print(
             "Executing builder function in subprocess: "
             "module_path=%r, parameter_file=%r, parameter_file_size=%r, target=%r, source=%r"
             % (module_path, json_path, json_file_size, target, source)
         )
+=======
+        if env["verbose"]:
+            print(
+                "Executing builder function in subprocess: "
+                "module_path=%r, parameter_file=%r, parameter_file_size=%r, target=%r, source=%r"
+                % (module_path, json_path, json_file_size, target, source)
+            )
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         try:
             exit_code = subprocess.call([sys.executable, module_path, json_path], env=subprocess_env)
         finally:
             try:
                 os.remove(json_path)
-            except (OSError, IOError) as e:
+            except OSError as e:
                 # Do not fail the entire build if it cannot delete a temporary file
                 print(
                     "WARNING: Could not delete temporary file: path=%r; [%s] %s" % (json_path, e.__class__.__name__, e)

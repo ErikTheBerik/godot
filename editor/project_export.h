@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -135,6 +135,11 @@ private:
 	CheckBox *export_debug;
 	CheckBox *export_pck_zip_debug;
 
+	CheckButton *enc_pck;
+	CheckButton *enc_directory;
+	LineEdit *enc_in_filters;
+	LineEdit *enc_ex_filters;
+
 	void _open_export_template_manager();
 
 	void _export_pck_zip();
@@ -151,13 +156,20 @@ private:
 	void _custom_features_changed(const String &p_text);
 
 	bool updating_script_key;
+	bool updating_enc_filters;
+	void _enc_pck_changed(bool p_pressed);
+	void _enc_directory_changed(bool p_pressed);
+	void _enc_filters_changed(const String &p_text);
 	void _script_export_mode_changed(int p_mode);
 	void _script_encryption_key_changed(const String &p_key);
 	bool _validate_script_encryption_key(const String &p_key);
 
+	void _open_key_help_link();
+
 	void _tab_changed(int);
 
 protected:
+	void _theme_changed();
 	void _notification(int p_what);
 	static void _bind_methods();
 

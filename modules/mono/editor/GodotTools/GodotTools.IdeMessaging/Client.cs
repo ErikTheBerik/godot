@@ -19,9 +19,18 @@ namespace GodotTools.IdeMessaging
         private readonly string identity;
 
         private string MetaFilePath { get; }
+<<<<<<< HEAD
         private GodotIdeMetadata godotIdeMetadata;
         private readonly FileSystemWatcher fsWatcher;
 
+=======
+        private DateTime? metaFileModifiedTime;
+        private GodotIdeMetadata godotIdeMetadata;
+        private readonly FileSystemWatcher fsWatcher;
+
+        public string GodotEditorExecutablePath => godotIdeMetadata.EditorExecutablePath;
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         private readonly IMessageHandler messageHandler;
 
         private Peer peer;
@@ -118,12 +127,20 @@ namespace GodotTools.IdeMessaging
             this.messageHandler = messageHandler;
             this.logger = logger;
 
+<<<<<<< HEAD
             string projectMetadataDir = Path.Combine(godotProjectDir, ".mono", "metadata");
+=======
+            string projectMetadataDir = Path.Combine(godotProjectDir, ".godot", "mono", "metadata");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
             MetaFilePath = Path.Combine(projectMetadataDir, GodotIdeMetadata.DefaultFileName);
 
             // FileSystemWatcher requires an existing directory
+<<<<<<< HEAD
             if (!File.Exists(projectMetadataDir))
+=======
+            if (!Directory.Exists(projectMetadataDir))
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                 Directory.CreateDirectory(projectMetadataDir);
 
             fsWatcher = new FileSystemWatcher(projectMetadataDir, GodotIdeMetadata.DefaultFileName);
@@ -142,6 +159,16 @@ namespace GodotTools.IdeMessaging
                 if (!File.Exists(MetaFilePath))
                     return;
 
+<<<<<<< HEAD
+=======
+                var lastWriteTime = File.GetLastWriteTime(MetaFilePath);
+
+                if (lastWriteTime == metaFileModifiedTime)
+                    return;
+
+                metaFileModifiedTime = lastWriteTime;
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                 var metadata = ReadMetadataFile();
 
                 if (metadata != null && metadata != godotIdeMetadata)
@@ -173,6 +200,16 @@ namespace GodotTools.IdeMessaging
                 if (IsConnected || !File.Exists(MetaFilePath))
                     return;
 
+<<<<<<< HEAD
+=======
+                var lastWriteTime = File.GetLastWriteTime(MetaFilePath);
+
+                if (lastWriteTime == metaFileModifiedTime)
+                    return;
+
+                metaFileModifiedTime = lastWriteTime;
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                 var metadata = ReadMetadataFile();
 
                 if (metadata != null)
@@ -185,7 +222,12 @@ namespace GodotTools.IdeMessaging
 
         private GodotIdeMetadata? ReadMetadataFile()
         {
+<<<<<<< HEAD
             using (var reader = File.OpenText(MetaFilePath))
+=======
+            using (var fileStream = new FileStream(MetaFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var reader = new StreamReader(fileStream))
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             {
                 string portStr = reader.ReadLine();
 
@@ -272,6 +314,10 @@ namespace GodotTools.IdeMessaging
         // ReSharper disable once UnusedMember.Global
         public async void Start()
         {
+<<<<<<< HEAD
+=======
+            fsWatcher.Created += OnMetaFileChanged;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             fsWatcher.Changed += OnMetaFileChanged;
             fsWatcher.Deleted += OnMetaFileDeleted;
             fsWatcher.EnableRaisingEvents = true;

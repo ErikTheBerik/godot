@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,30 +31,40 @@
 #ifndef OS_WINDOWS_H
 #define OS_WINDOWS_H
 
-#include "context_gl_windows.h"
-#include "core/os/input.h"
+#include "core/config/project_settings.h"
+#include "core/input/input.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
 #include "crash_handler_windows.h"
 #include "drivers/unix/ip_unix.h"
 #include "drivers/wasapi/audio_driver_wasapi.h"
 #include "drivers/winmidi/midi_driver_winmidi.h"
 #include "key_mapping_windows.h"
-#include "main/input_default.h"
-#include "power_windows.h"
 #include "servers/audio_server.h"
-#include "servers/visual/rasterizer.h"
-#include "servers/visual_server.h"
+#include "servers/rendering/renderer_compositor.h"
+#include "servers/rendering_server.h"
 #ifdef XAUDIO2_ENABLED
 #include "drivers/xaudio2/audio_driver_xaudio2.h"
 #endif
 
+<<<<<<< HEAD
 #include <dwmapi.h>
+=======
+#if defined(OPENGL_ENABLED)
+#include "context_gl_windows.h"
+#endif
+
+#if defined(VULKAN_ENABLED)
+#include "drivers/vulkan/rendering_device_vulkan.h"
+#include "platform/windows/vulkan_context_win.h"
+#endif
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #include <fcntl.h>
 #include <io.h>
 #include <stdio.h>
 #include <windows.h>
 #include <windowsx.h>
+<<<<<<< HEAD
 // WinTab API
 #define WT_PACKET 0x7FF0
 #define WT_PROXIMITY 0x7FF5
@@ -280,24 +290,19 @@ class OS_Windows : public OS {
 		KEY_EVENT_BUFFER_SIZE = 512
 	};
 
+=======
+
+class JoypadWindows;
+class OS_Windows : public OS {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #ifdef STDOUT_FILE
 	FILE *stdo;
 #endif
 
-	struct KeyEvent {
-
-		bool alt, shift, control, meta;
-		UINT uMsg;
-		WPARAM wParam;
-		LPARAM lParam;
-	};
-
-	KeyEvent key_event_buffer[KEY_EVENT_BUFFER_SIZE];
-	int key_event_pos;
-
 	uint64_t ticks_start;
 	uint64_t ticks_per_second;
 
+<<<<<<< HEAD
 	bool old_invalid;
 	bool outside;
 	int old_x, old_y;
@@ -326,37 +331,11 @@ class OS_Windows : public OS {
 	VideoMode video_mode;
 	bool preserve_window_size = false;
 
+=======
+	HINSTANCE hInstance;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	MainLoop *main_loop;
 
-	WNDPROC user_proc;
-
-	// IME
-	HIMC im_himc;
-	Vector2 im_position;
-
-	MouseMode mouse_mode;
-	bool alt_mem;
-	bool gr_mem;
-	bool shift_mem;
-	bool control_mem;
-	bool meta_mem;
-	bool force_quit;
-	bool window_has_focus;
-	uint32_t last_button_state;
-	bool use_raw_input;
-	bool drop_events;
-
-	HCURSOR cursors[CURSOR_MAX] = { NULL };
-	CursorShape cursor_shape;
-	Map<CursorShape, Vector<Variant> > cursors_cache;
-
-	InputDefault *input;
-	JoypadWindows *joypad;
-	Map<int, Vector2> touch_state;
-
-	PowerWindows *power_manager;
-
-	int video_driver_index;
 #ifdef WASAPI_ENABLED
 	AudioDriverWASAPI driver_wasapi;
 #endif
@@ -369,6 +348,7 @@ class OS_Windows : public OS {
 
 	CrashHandler crash_handler;
 
+<<<<<<< HEAD
 	void _drag_event(float p_x, float p_y, int idx);
 	void _touch_event(bool p_pressed, float p_x, float p_y, int idx);
 
@@ -376,42 +356,34 @@ class OS_Windows : public OS {
 	void _update_window_mouse_passthrough();
 
 	void _set_mouse_mode_impl(MouseMode p_mode);
+=======
+	bool force_quit;
+	HWND main_window;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	// functions used by main to initialize/deinitialize the OS
 protected:
-	virtual int get_current_video_driver() const;
+	virtual void initialize() override;
 
-	virtual void initialize_core();
-	virtual Error initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver);
+	virtual void set_main_loop(MainLoop *p_main_loop) override;
+	virtual void delete_main_loop() override;
 
-	virtual void set_main_loop(MainLoop *p_main_loop);
-	virtual void delete_main_loop();
+	virtual void finalize() override;
+	virtual void finalize_core() override;
+	virtual String get_stdin_string(bool p_block) override;
 
-	virtual void finalize();
-	virtual void finalize_core();
-
-	void process_events();
-	void process_key_events();
+	String _quote_command_line_argument(const String &p_text) const;
 
 	String _quote_command_line_argument(const String &p_text) const;
 
 	struct ProcessInfo {
-
 		STARTUPINFO si;
 		PROCESS_INFORMATION pi;
 	};
 	Map<ProcessID, ProcessInfo> *process_map;
 
-	bool pre_fs_valid;
-	RECT pre_fs_rect;
-	bool maximized;
-	bool minimized;
-	bool borderless;
-	bool window_focused;
-	bool console_visible;
-	bool was_maximized;
-
 public:
+<<<<<<< HEAD
 	LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	virtual void alert(const String &p_alert, const String &p_title = "ALERT!");
@@ -467,53 +439,60 @@ public:
 	virtual bool is_console_visible() const;
 	virtual void request_attention();
 	virtual void *get_native_handle(int p_handle_type);
+=======
+	virtual Error open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path = false) override;
+	virtual Error close_dynamic_library(void *p_library_handle) override;
+	virtual Error get_dynamic_library_symbol_handle(void *p_library_handle, const String p_name, void *&p_symbol_handle, bool p_optional = false) override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	virtual void set_borderless_window(bool p_borderless);
-	virtual bool get_borderless_window();
+	virtual MainLoop *get_main_loop() const override;
 
-	virtual bool get_window_per_pixel_transparency_enabled() const;
-	virtual void set_window_per_pixel_transparency_enabled(bool p_enabled);
+	virtual String get_name() const override;
 
+<<<<<<< HEAD
 	virtual Error open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path = false);
 	virtual Error close_dynamic_library(void *p_library_handle);
 	virtual Error get_dynamic_library_symbol_handle(void *p_library_handle, const String p_name, void *&p_symbol_handle, bool p_optional = false);
+=======
+	virtual void initialize_joypads() override {}
 
-	virtual MainLoop *get_main_loop() const;
+	virtual Date get_date(bool utc) const override;
+	virtual Time get_time(bool utc) const override;
+	virtual TimeZoneInfo get_time_zone_info() const override;
+	virtual double get_unix_time() const override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	virtual String get_name() const;
+	virtual Error set_cwd(const String &p_cwd) override;
 
-	virtual Date get_date(bool utc) const;
-	virtual Time get_time(bool utc) const;
-	virtual TimeZoneInfo get_time_zone_info() const;
-	virtual uint64_t get_unix_time() const;
-	virtual uint64_t get_system_time_secs() const;
-	virtual uint64_t get_system_time_msecs() const;
+	virtual void delay_usec(uint32_t p_usec) const override;
+	virtual uint64_t get_ticks_usec() const override;
 
-	virtual bool can_draw() const;
-	virtual Error set_cwd(const String &p_cwd);
+	virtual Error execute(const String &p_path, const List<String> &p_arguments, String *r_pipe = nullptr, int *r_exitcode = nullptr, bool read_stderr = false, Mutex *p_pipe_mutex = nullptr) override;
+	virtual Error create_process(const String &p_path, const List<String> &p_arguments, ProcessID *r_child_id = nullptr) override;
+	virtual Error kill(const ProcessID &p_pid) override;
+	virtual int get_process_id() const override;
 
-	virtual void delay_usec(uint32_t p_usec) const;
-	virtual uint64_t get_ticks_usec() const;
+	virtual bool has_environment(const String &p_var) const override;
+	virtual String get_environment(const String &p_var) const override;
+	virtual bool set_environment(const String &p_var, const String &p_value) const override;
 
-	virtual Error execute(const String &p_path, const List<String> &p_arguments, bool p_blocking = true, ProcessID *r_child_id = NULL, String *r_pipe = NULL, int *r_exitcode = NULL, bool read_stderr = false, Mutex *p_pipe_mutex = NULL);
-	virtual Error kill(const ProcessID &p_pid);
-	virtual int get_process_id() const;
+	virtual String get_executable_path() const override;
 
-	virtual bool has_environment(const String &p_var) const;
-	virtual String get_environment(const String &p_var) const;
-	virtual bool set_environment(const String &p_var, const String &p_value) const;
+	virtual String get_locale() const override;
 
-	virtual void set_clipboard(const String &p_text);
-	virtual String get_clipboard() const;
+	virtual int get_processor_count() const override;
 
-	void set_cursor_shape(CursorShape p_shape);
-	CursorShape get_cursor_shape() const;
-	virtual void set_custom_mouse_cursor(const RES &p_cursor, CursorShape p_shape, const Vector2 &p_hotspot);
-	void GetMaskBitmaps(HBITMAP hSourceBitmap, COLORREF clrTransparent, OUT HBITMAP &hAndMaskBitmap, OUT HBITMAP &hXorMaskBitmap);
+	virtual String get_config_path() const override;
+	virtual String get_data_path() const override;
+	virtual String get_cache_path() const override;
+	virtual String get_godot_dir_name() const override;
 
-	void set_native_icon(const String &p_filename);
-	void set_icon(const Ref<Image> &p_icon);
+	virtual String get_system_dir(SystemDir p_dir) const override;
+	virtual String get_user_data_dir() const override;
 
+	virtual String get_unique_id() const override;
+
+<<<<<<< HEAD
 	virtual String get_executable_path() const;
 
 	virtual String get_locale() const;
@@ -548,33 +527,23 @@ public:
 	virtual void swap_buffers();
 
 	virtual Error shell_open(String p_uri);
+=======
+	virtual Error shell_open(String p_uri) override;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	void run();
 
-	virtual bool get_swap_ok_cancel() { return true; }
+	virtual bool _check_internal_feature_support(const String &p_feature) override;
 
-	virtual bool is_joy_known(int p_device);
-	virtual String get_joy_guid(int p_device) const;
+	virtual void disable_crash_handler() override;
+	virtual bool is_disable_crash_handler() const override;
+	virtual void initialize_debugging() override;
 
-	virtual void _set_use_vsync(bool p_enable);
-	//virtual bool is_vsync_enabled() const;
+	virtual Error move_to_trash(const String &p_path) override;
 
-	virtual OS::PowerState get_power_state();
-	virtual int get_power_seconds_left();
-	virtual int get_power_percent_left();
+	void set_main_window(HWND p_main_window) { main_window = p_main_window; }
 
-	virtual bool _check_internal_feature_support(const String &p_feature);
-
-	void disable_crash_handler();
-	bool is_disable_crash_handler() const;
-	virtual void initialize_debugging();
-
-	void force_process_input();
-
-	virtual Error move_to_trash(const String &p_path);
-
-	virtual void process_and_drop_events();
-
+	HINSTANCE get_hinstance() { return hInstance; }
 	OS_Windows(HINSTANCE _hInstance);
 	~OS_Windows();
 };

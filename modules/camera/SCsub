@@ -5,6 +5,7 @@ Import("env_modules")
 
 env_camera = env_modules.Clone()
 
+<<<<<<< HEAD
 if env["platform"] == "iphone":
     # (iOS) Enable module support
     env_camera.Append(CCFLAGS=["-fmodules", "-fcxx-modules"])
@@ -16,6 +17,9 @@ if env["platform"] == "iphone":
     mod_lib = env_modules.add_library("#bin/libgodot_camera_module" + env["LIBSUFFIX"], modules_sources)
 
 elif env["platform"] == "windows":
+=======
+if env["platform"] == "windows":
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
     env_camera.add_source_files(env.modules_sources, "register_types.cpp")
     env_camera.add_source_files(env.modules_sources, "camera_win.cpp")
 

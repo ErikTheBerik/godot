@@ -105,6 +105,7 @@ namespace GodotTools.IdeMessaging
 
                     try
                     {
+<<<<<<< HEAD
                         try
                         {
                             if (msg.Kind == MessageKind.Request)
@@ -137,17 +138,55 @@ namespace GodotTools.IdeMessaging
                         catch (Exception e)
                         {
                             Logger.LogError($"Message handler for '{msg}' failed with exception", e);
+=======
+                        if (msg.Kind == MessageKind.Request)
+                        {
+                            var responseContent = await messageHandler.HandleRequest(this, msg.Id, msg.Content, Logger);
+                            await WriteMessage(new Message(MessageKind.Response, msg.Id, responseContent));
+                        }
+                        else if (msg.Kind == MessageKind.Response)
+                        {
+                            ResponseAwaiter responseAwaiter;
+
+                            using (await requestsSem.UseAsync())
+                            {
+                                if (!requestAwaiterQueues.TryGetValue(msg.Id, out var queue) || queue.Count <= 0)
+                                {
+                                    Logger.LogError($"Received unexpected response: {msg.Id}");
+                                    return;
+                                }
+
+                                responseAwaiter = queue.Dequeue();
+                            }
+
+                            responseAwaiter.SetResult(msg.Content);
+                        }
+                        else
+                        {
+                            throw new IndexOutOfRangeException($"Invalid message kind {msg.Kind}");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                         }
                     }
                     catch (Exception e)
                     {
+<<<<<<< HEAD
                         Logger.LogError($"Exception thrown from message handler. Message: {msg}", e);
+=======
+                        Logger.LogError($"Message handler for '{msg}' failed with exception", e);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
                     }
                 }
             }
             catch (Exception e)
             {
+<<<<<<< HEAD
                 Logger.LogError("Unhandled exception in the peer loop", e);
+=======
+                if (!IsDisposed || !(e is SocketException || e.InnerException is SocketException))
+                {
+                    Logger.LogError("Unhandled exception in the peer loop", e);
+                }
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
             }
         }
 

@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -45,10 +45,15 @@ class CreateDialog;
 class ScriptCreateDialog : public ConfirmationDialog {
 	GDCLASS(ScriptCreateDialog, ConfirmationDialog);
 
+	GridContainer *gc;
 	LineEdit *class_name;
 	Label *error_label;
 	Label *path_error_label;
 	Label *builtin_warning_label;
+<<<<<<< HEAD
+=======
+	Label *script_name_warning_label;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	PanelContainer *status_panel;
 	LineEdit *parent_name;
 	Button *parent_browse_button;
@@ -85,8 +90,8 @@ class ScriptCreateDialog : public ConfirmationDialog {
 		SCRIPT_ORIGIN_EDITOR,
 	};
 	struct ScriptTemplateInfo {
-		int id;
-		ScriptOrigin origin;
+		int id = 0;
+		ScriptOrigin origin = ScriptOrigin::SCRIPT_ORIGIN_EDITOR;
 		String dir;
 		String name;
 		String extension;
@@ -94,7 +99,7 @@ class ScriptCreateDialog : public ConfirmationDialog {
 
 	String script_template;
 	Vector<ScriptTemplateInfo> template_list;
-	Map<String, Vector<int> > template_overrides; // name : indices
+	Map<String, Vector<int>> template_overrides; // name : indices
 
 	void _update_script_templates(const String &p_extension);
 
@@ -109,6 +114,7 @@ class ScriptCreateDialog : public ConfirmationDialog {
 	bool _validate_parent(const String &p_string);
 	bool _validate_class(const String &p_string);
 	String _validate_path(const String &p_path, bool p_file_must_exist);
+	String _get_class_name() const;
 	void _class_name_changed(const String &p_name);
 	void _parent_name_changed(const String &p_parent);
 	void _template_changed(int p_template = 0);
@@ -116,7 +122,7 @@ class ScriptCreateDialog : public ConfirmationDialog {
 	void _file_selected(const String &p_file);
 	void _create();
 	void _browse_class_in_tree();
-	virtual void ok_pressed();
+	virtual void ok_pressed() override;
 	void _create_new();
 	void _load_exist();
 	void _msg_script_valid(bool valid, const String &p_msg = String());
@@ -124,6 +130,7 @@ class ScriptCreateDialog : public ConfirmationDialog {
 	void _update_dialog();
 
 protected:
+	void _theme_changed();
 	void _notification(int p_what);
 	static void _bind_methods();
 

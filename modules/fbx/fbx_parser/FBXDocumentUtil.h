@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -98,6 +103,7 @@ void DOMWarning(const std::string &message, const Element *element);
 void DOMWarning(const std::string &message, const std::shared_ptr<Token> token);
 void DOMWarning(const std::string &message, const std::shared_ptr<Element> element);
 
+<<<<<<< HEAD
 // fetch a property table and the corresponding property template
 const PropertyTable *GetPropertyTable(const Document &doc,
 		const std::string &templateName,
@@ -105,6 +111,8 @@ const PropertyTable *GetPropertyTable(const Document &doc,
 		const ScopePtr sc,
 		bool no_warn = false);
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 // ------------------------------------------------------------------------------------------------
 template <typename T>
 const T *ProcessSimpleConnection(const Connection &con,
@@ -135,7 +143,10 @@ const T *ProcessSimpleConnection(const Connection &con,
 	ERR_FAIL_COND_V_MSG(!ob, nullptr, "Failed to load object from SourceObject ptr");
 	return dynamic_cast<const T *>(ob);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace Util
 } // namespace FBXDocParser
 

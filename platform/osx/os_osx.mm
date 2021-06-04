@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,32 +30,21 @@
 
 #include "os_osx.h"
 
+<<<<<<< HEAD
 #include "core/math/geometry.h"
 #include "core/os/keyboard.h"
 #include "core/print_string.h"
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #include "core/version_generated.gen.h"
+
 #include "dir_access_osx.h"
-#include "drivers/gles2/rasterizer_gles2.h"
-#include "drivers/gles3/rasterizer_gles3.h"
+#include "display_server_osx.h"
 #include "main/main.h"
-#include "semaphore_osx.h"
-#include "servers/visual/visual_server_raster.h"
-
-#include <mach-o/dyld.h>
-
-#include <Carbon/Carbon.h>
-#import <Cocoa/Cocoa.h>
-#include <IOKit/IOCFPlugIn.h>
-#include <IOKit/IOKitLib.h>
-#include <IOKit/hid/IOHIDKeys.h>
-#include <IOKit/hid/IOHIDLib.h>
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 101200
-#include <os/log.h>
-#endif
 
 #include <dlfcn.h>
-#include <fcntl.h>
 #include <libproc.h>
+<<<<<<< HEAD
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -350,10 +339,16 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 
 		const NSRect contentRect = [OS_OSX::singleton->window_view frame];
 		const NSRect fbRect = contentRect;
+=======
+#include <mach-o/dyld.h>
+#include <os/log.h>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-		OS_OSX::singleton->window_size.width = fbRect.size.width * newDisplayScale;
-		OS_OSX::singleton->window_size.height = fbRect.size.height * newDisplayScale;
+/*************************************************************************/
+/* OSXTerminalLogger                                                     */
+/*************************************************************************/
 
+<<<<<<< HEAD
 		if (OS_OSX::singleton->context) {
 			GLint dim[2];
 			dim[0] = OS_OSX::singleton->window_size.width;
@@ -366,16 +361,16 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 		if (OS_OSX::singleton->main_loop) {
 			//Force window resize event
 			[self windowDidResize:notification];
+=======
+class OSXTerminalLogger : public StdLogger {
+public:
+	virtual void log_error(const char *p_function, const char *p_file, int p_line, const char *p_code, const char *p_rationale, ErrorType p_type = ERR_ERROR) {
+		if (!should_log(true)) {
+			return;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		}
-	}
-}
 
-- (void)windowDidResize:(NSNotification *)notification {
-	[OS_OSX::singleton->context update];
-
-	const NSRect contentRect = [OS_OSX::singleton->window_view frame];
-	const NSRect fbRect = contentRect;
-
+<<<<<<< HEAD
 	float displayScale = OS_OSX::singleton->get_screen_max_scale();
 	OS_OSX::singleton->window_size.width = fbRect.size.width * displayScale;
 	OS_OSX::singleton->window_size.height = fbRect.size.height * displayScale;
@@ -716,11 +711,56 @@ static void _mouseDownEvent(NSEvent *event, int index, int mask, bool pressed) {
 		_mouseDownEvent(event, BUTTON_LEFT, BUTTON_MASK_LEFT, true);
 	}
 }
+=======
+		const char *err_details;
+		if (p_rationale && p_rationale[0])
+			err_details = p_rationale;
+		else
+			err_details = p_code;
 
-- (void)mouseDragged:(NSEvent *)event {
-	[self mouseMoved:event];
-}
+		switch (p_type) {
+			case ERR_WARNING:
+				os_log_info(OS_LOG_DEFAULT,
+						"WARNING: %{public}s\nat: %{public}s (%{public}s:%i)",
+						err_details, p_function, p_file, p_line);
+				logf_error("\E[1;33mWARNING:\E[0;93m %s\n", err_details);
+				logf_error("\E[0;90m     at: %s (%s:%i)\E[0m\n", p_function, p_file, p_line);
+				break;
+			case ERR_SCRIPT:
+				os_log_error(OS_LOG_DEFAULT,
+						"SCRIPT ERROR: %{public}s\nat: %{public}s (%{public}s:%i)",
+						err_details, p_function, p_file, p_line);
+				logf_error("\E[1;35mSCRIPT ERROR:\E[0;95m %s\n", err_details);
+				logf_error("\E[0;90m          at: %s (%s:%i)\E[0m\n", p_function, p_file, p_line);
+				break;
+			case ERR_SHADER:
+				os_log_error(OS_LOG_DEFAULT,
+						"SHADER ERROR: %{public}s\nat: %{public}s (%{public}s:%i)",
+						err_details, p_function, p_file, p_line);
+				logf_error("\E[1;36mSHADER ERROR:\E[0;96m %s\n", err_details);
+				logf_error("\E[0;90m          at: %s (%s:%i)\E[0m\n", p_function, p_file, p_line);
+				break;
+			case ERR_ERROR:
+			default:
+				os_log_error(OS_LOG_DEFAULT,
+						"ERROR: %{public}s\nat: %{public}s (%{public}s:%i)",
+						err_details, p_function, p_file, p_line);
+				logf_error("\E[1;31mERROR:\E[0;91m %s\n", err_details);
+				logf_error("\E[0;90m   at: %s (%s:%i)\E[0m\n", p_function, p_file, p_line);
+				break;
+		}
+	}
+};
 
+/*************************************************************************/
+/* OS_OSX                                                                */
+/*************************************************************************/
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
+
+String OS_OSX::get_unique_id() const {
+	static String serial_number;
+
+<<<<<<< HEAD
 - (void)mouseUp:(NSEvent *)event {
 	if (mouse_down_control) {
 		_mouseDownEvent(event, BUTTON_RIGHT, BUTTON_MASK_RIGHT, false);
@@ -1474,12 +1514,16 @@ String OS_OSX::get_unique_id() const {
 	static String serial_number;
 
 	if (serial_number.empty()) {
+=======
+	if (serial_number.is_empty()) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		io_service_t platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"));
-		CFStringRef serialNumberAsCFString = NULL;
+		CFStringRef serialNumberAsCFString = nullptr;
 		if (platformExpert) {
 			serialNumberAsCFString = (CFStringRef)IORegistryEntryCreateCFProperty(platformExpert, CFSTR(kIOPlatformSerialNumberKey), kCFAllocatorDefault, 0);
 			IOObjectRelease(platformExpert);
 		}
+<<<<<<< HEAD
 
 		NSString *serialNumberAsNSString = nil;
 		if (serialNumberAsCFString) {
@@ -2772,59 +2816,77 @@ void OS_OSX::set_window_resizable(bool p_enabled) {
 };
 
 bool OS_OSX::is_window_resizable() const {
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	return [window_object styleMask] & NSWindowStyleMaskResizable;
-};
+		NSString *serialNumberAsNSString = nil;
+		if (serialNumberAsCFString) {
+			serialNumberAsNSString = [NSString stringWithString:(NSString *)serialNumberAsCFString];
+			CFRelease(serialNumberAsCFString);
+		}
 
+<<<<<<< HEAD
 void OS_OSX::set_window_minimized(bool p_enabled) {
 	if (is_no_window_mode_enabled()) {
 		return;
+=======
+		serial_number = [serialNumberAsNSString UTF8String];
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
-	if (p_enabled)
-		[window_object performMiniaturize:nil];
-	else
-		[window_object deminiaturize:nil];
-};
+	return serial_number;
+}
 
-bool OS_OSX::is_window_minimized() const {
+void OS_OSX::initialize_core() {
+	OS_Unix::initialize_core();
 
-	if ([window_object respondsToSelector:@selector(isMiniaturized)])
-		return [window_object isMiniaturized];
+	DirAccess::make_default<DirAccessOSX>(DirAccess::ACCESS_RESOURCES);
+	DirAccess::make_default<DirAccessOSX>(DirAccess::ACCESS_USERDATA);
+	DirAccess::make_default<DirAccessOSX>(DirAccess::ACCESS_FILESYSTEM);
+}
 
-	return minimized;
-};
+void OS_OSX::initialize_joypads() {
+	joypad_osx = memnew(JoypadOSX(Input::get_singleton()));
+}
 
+<<<<<<< HEAD
 void OS_OSX::set_window_maximized(bool p_enabled) {
 	if (is_no_window_mode_enabled()) {
 		return;
 	}
+=======
+void OS_OSX::initialize() {
+	crash_handler.initialize();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	if (p_enabled) {
-		restore_rect = Rect2(get_window_position(), get_window_size());
-		[window_object setFrame:[[[NSScreen screens] objectAtIndex:get_current_screen()] visibleFrame] display:YES];
-	} else {
-		set_window_size(restore_rect.size);
-		set_window_position(restore_rect.position);
-	};
-	maximized = p_enabled;
-};
+	initialize_core();
+	//ensure_user_data_dir();
+}
 
-bool OS_OSX::is_window_maximized() const {
+void OS_OSX::finalize() {
+#ifdef COREMIDI_ENABLED
+	midi_driver.close();
+#endif
 
-	// don't know
-	return maximized;
-};
+	delete_main_loop();
 
+<<<<<<< HEAD
 void OS_OSX::move_window_to_foreground() {
 	if (is_no_window_mode_enabled()) {
 		return;
 	}
+=======
+	if (joypad_osx) {
+		memdelete(joypad_osx);
+	}
+}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-	[window_object makeKeyAndOrderFront:nil];
+void OS_OSX::set_main_loop(MainLoop *p_main_loop) {
+	main_loop = p_main_loop;
 }
 
+<<<<<<< HEAD
 void OS_OSX::set_window_always_on_top(bool p_enabled) {
 	if (is_no_window_mode_enabled()) {
 		return;
@@ -2833,38 +2895,75 @@ void OS_OSX::set_window_always_on_top(bool p_enabled) {
 	on_top = p_enabled;
 
 	if (is_window_always_on_top() == p_enabled)
+=======
+void OS_OSX::delete_main_loop() {
+	if (!main_loop)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		return;
-
-	if (p_enabled)
-		[window_object setLevel:NSFloatingWindowLevel];
-	else
-		[window_object setLevel:NSNormalWindowLevel];
+	memdelete(main_loop);
+	main_loop = nullptr;
 }
 
-bool OS_OSX::is_window_always_on_top() const {
-	return [window_object level] == NSFloatingWindowLevel;
+String OS_OSX::get_name() const {
+	return "macOS";
 }
 
-bool OS_OSX::is_window_focused() const {
-	return window_focused;
-}
+Error OS_OSX::open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path) {
+	String path = p_path;
 
+	if (!FileAccess::exists(path)) {
+		//this code exists so gdnative can load .dylib files from within the executable path
+		path = get_executable_path().get_base_dir().plus_file(p_path.get_file());
+	}
+
+<<<<<<< HEAD
 void OS_OSX::request_attention() {
 	if (is_no_window_mode_enabled()) {
 		return;
+=======
+	if (!FileAccess::exists(path)) {
+		//this code exists so gdnative can load .dylib files from a standard macOS location
+		path = get_executable_path().get_base_dir().plus_file("../Frameworks").plus_file(p_path.get_file());
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
-	[NSApp requestUserAttention:NSCriticalRequest];
+	p_library_handle = dlopen(path.utf8().get_data(), RTLD_NOW);
+	ERR_FAIL_COND_V_MSG(!p_library_handle, ERR_CANT_OPEN, "Can't open dynamic library: " + p_path + ", error: " + dlerror() + ".");
+	return OK;
 }
 
-bool OS_OSX::get_window_per_pixel_transparency_enabled() const {
-
-	if (!is_layered_allowed()) return false;
-	return layered_window;
+MainLoop *OS_OSX::get_main_loop() const {
+	return main_loop;
 }
 
-void OS_OSX::set_window_per_pixel_transparency_enabled(bool p_enabled) {
+String OS_OSX::get_config_path() const {
+	// The XDG Base Directory specification technically only applies on Linux/*BSD, but it doesn't hurt to support it on macOS as well.
+	if (has_environment("XDG_CONFIG_HOME")) {
+		if (get_environment("XDG_CONFIG_HOME").is_abs_path()) {
+			return get_environment("XDG_CONFIG_HOME");
+		} else {
+			WARN_PRINT_ONCE("`XDG_CONFIG_HOME` is a relative path. Ignoring its value and falling back to `$HOME/Library/Application Support` or `.` per the XDG Base Directory specification.");
+		}
+	}
+	if (has_environment("HOME")) {
+		return get_environment("HOME").plus_file("Library/Application Support");
+	}
+	return ".";
+}
 
+String OS_OSX::get_data_path() const {
+	// The XDG Base Directory specification technically only applies on Linux/*BSD, but it doesn't hurt to support it on macOS as well.
+	if (has_environment("XDG_DATA_HOME")) {
+		if (get_environment("XDG_DATA_HOME").is_abs_path()) {
+			return get_environment("XDG_DATA_HOME");
+		} else {
+			WARN_PRINT_ONCE("`XDG_DATA_HOME` is a relative path. Ignoring its value and falling back to `get_config_path()` per the XDG Base Directory specification.");
+		}
+	}
+	return get_config_path();
+}
+
+<<<<<<< HEAD
 	if (!is_layered_allowed()) return;
 	if (layered_window != p_enabled) {
 		if (p_enabled) {
@@ -2889,43 +2988,112 @@ void OS_OSX::set_window_per_pixel_transparency_enabled(bool p_enabled) {
 			[window_object setFrame:NSMakeRect(frame.origin.x, frame.origin.y, 1, 1) display:YES];
 			[window_object setFrame:frame display:YES];
 		}
+=======
+String OS_OSX::get_cache_path() const {
+	// The XDG Base Directory specification technically only applies on Linux/*BSD, but it doesn't hurt to support it on macOS as well.
+	if (has_environment("XDG_CACHE_HOME")) {
+		if (get_environment("XDG_CACHE_HOME").is_abs_path()) {
+			return get_environment("XDG_CACHE_HOME");
+		} else {
+			WARN_PRINT_ONCE("`XDG_CACHE_HOME` is a relative path. Ignoring its value and falling back to `$HOME/Libary/Caches` or `get_config_path()` per the XDG Base Directory specification.");
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
+	if (has_environment("HOME")) {
+		return get_environment("HOME").plus_file("Library/Caches");
+	}
+	return get_config_path();
 }
 
+<<<<<<< HEAD
 void OS_OSX::set_borderless_window(bool p_borderless) {
 	if (is_no_window_mode_enabled()) {
 		return;
 	}
+=======
+String OS_OSX::get_bundle_resource_dir() const {
+	NSBundle *main = [NSBundle mainBundle];
+	NSString *resourcePath = [main resourcePath];
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	// OrderOut prevents a lose focus bug with the window
-	[window_object orderOut:nil];
+	char *utfs = strdup([resourcePath UTF8String]);
+	String ret;
+	ret.parse_utf8(utfs);
+	free(utfs);
 
+<<<<<<< HEAD
 	if (p_borderless) {
 		[window_object setStyleMask:NSWindowStyleMaskBorderless];
 	} else {
 		[window_object setStyleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | (resizable ? NSWindowStyleMaskResizable : 0)];
-
-		// Force update of the window styles
-		NSRect frameRect = [window_object frame];
-		[window_object setFrame:NSMakeRect(frameRect.origin.x, frameRect.origin.y, frameRect.size.width + 1, frameRect.size.height) display:NO];
-		[window_object setFrame:frameRect display:NO];
-
-		// Restore the window title
-		[window_object setTitle:[NSString stringWithUTF8String:title.utf8().get_data()]];
-	}
-
-	_update_window();
-
-	[window_object makeKeyAndOrderFront:nil];
+=======
+	return ret;
 }
 
-bool OS_OSX::get_borderless_window() {
+// Get properly capitalized engine name for system paths
+String OS_OSX::get_godot_dir_name() const {
+	return String(VERSION_SHORT_NAME).capitalize();
+}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
-	return [window_object styleMask] == NSWindowStyleMaskBorderless;
+String OS_OSX::get_system_dir(SystemDir p_dir) const {
+	NSSearchPathDirectory id;
+	bool found = true;
+
+	switch (p_dir) {
+		case SYSTEM_DIR_DESKTOP: {
+			id = NSDesktopDirectory;
+		} break;
+		case SYSTEM_DIR_DOCUMENTS: {
+			id = NSDocumentDirectory;
+		} break;
+		case SYSTEM_DIR_DOWNLOADS: {
+			id = NSDownloadsDirectory;
+		} break;
+		case SYSTEM_DIR_MOVIES: {
+			id = NSMoviesDirectory;
+		} break;
+		case SYSTEM_DIR_MUSIC: {
+			id = NSMusicDirectory;
+		} break;
+		case SYSTEM_DIR_PICTURES: {
+			id = NSPicturesDirectory;
+		} break;
+		default: {
+			found = false;
+		}
+	}
+
+	String ret;
+	if (found) {
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(id, NSUserDomainMask, YES);
+		if (paths && [paths count] >= 1) {
+			char *utfs = strdup([[paths firstObject] UTF8String]);
+			ret.parse_utf8(utfs);
+			free(utfs);
+		}
+	}
+
+	return ret;
+}
+
+Error OS_OSX::shell_open(String p_uri) {
+	NSString *string = [NSString stringWithUTF8String:p_uri.utf8().get_data()];
+	NSURL *uri = [[NSURL alloc] initWithString:string];
+	// Escape special characters in filenames
+	if (!uri || !uri.scheme || [uri.scheme isEqual:@"file"]) {
+		uri = [[NSURL alloc] initWithString:[string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
+	}
+	[[NSWorkspace sharedWorkspace] openURL:uri];
+	return OK;
+}
+
+String OS_OSX::get_locale() const {
+	NSString *locale_code = [[NSLocale preferredLanguages] objectAtIndex:0];
+	return String([locale_code UTF8String]).replace("-", "_");
 }
 
 String OS_OSX::get_executable_path() const {
-
 	int ret;
 	pid_t pid;
 	char pathbuf[PROC_PIDPATHINFO_MAXSIZE];
@@ -2942,6 +3110,7 @@ String OS_OSX::get_executable_path() const {
 	}
 }
 
+<<<<<<< HEAD
 // Returns string representation of keys, if they are printable.
 //
 static NSString *createStringForKeys(const CGKeyCode *keyCode, int length) {
@@ -3233,41 +3402,32 @@ void OS_OSX::force_process_input() {
 	joypad_osx->process_joypads();
 }
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 void OS_OSX::run() {
-
 	force_quit = false;
 
 	if (!main_loop)
 		return;
 
-	main_loop->init();
-
-	if (zoomed) {
-		zoomed = false;
-		set_window_fullscreen(true);
-	}
-
-	//uint64_t last_ticks=get_ticks_usec();
-
-	//int frames=0;
-	//uint64_t frame=0;
+	main_loop->initialize();
 
 	bool quit = false;
-
 	while (!force_quit && !quit) {
-
 		@try {
-
-			process_events(); // get rid of pending events
+			if (DisplayServer::get_singleton()) {
+				DisplayServer::get_singleton()->process_events(); // get rid of pending events
+			}
 			joypad_osx->process_joypads();
 
 			if (Main::iteration()) {
 				quit = true;
 			}
 		} @catch (NSException *exception) {
-			ERR_PRINTS("NSException: " + String([exception reason].UTF8String));
+			ERR_PRINT("NSException: " + String([exception reason].UTF8String));
 		}
 	};
+<<<<<<< HEAD
 
 	main_loop->finish();
 }
@@ -3327,6 +3487,9 @@ int OS_OSX::get_power_seconds_left() {
 
 int OS_OSX::get_power_percent_left() {
 	return power_manager->get_power_percent_left();
+=======
+	main_loop->finalize();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 Error OS_OSX::move_to_trash(const String &p_path) {
@@ -3335,24 +3498,15 @@ Error OS_OSX::move_to_trash(const String &p_path) {
 	NSError *err;
 
 	if (![fm trashItemAtURL:url resultingItemURL:nil error:&err]) {
-		ERR_PRINTS("trashItemAtURL error: " + String(err.localizedDescription.UTF8String));
+		ERR_PRINT("trashItemAtURL error: " + String(err.localizedDescription.UTF8String));
 		return FAILED;
 	}
 
 	return OK;
 }
 
-void OS_OSX::_set_use_vsync(bool p_enable) {
-	CGLContextObj ctx = CGLGetCurrentContext();
-	if (ctx) {
-		GLint swapInterval = p_enable ? 1 : 0;
-		CGLSetParameter(ctx, kCGLCPSwapInterval, &swapInterval);
-	}
-}
-
-OS_OSX *OS_OSX::singleton = NULL;
-
 OS_OSX::OS_OSX() {
+<<<<<<< HEAD
 
 	context = nullptr;
 
@@ -3446,28 +3600,20 @@ OS_OSX::OS_OSX() {
 	resizable = false;
 	window_focused = true;
 	on_top = false;
+=======
+	main_loop = nullptr;
+	force_quit = false;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	Vector<Logger *> loggers;
 	loggers.push_back(memnew(OSXTerminalLogger));
 	_set_logger(memnew(CompositeLogger(loggers)));
 
-	//process application:openFile: event
-	while (true) {
-		NSEvent *event = [NSApp
-				nextEventMatchingMask:NSEventMaskAny
-							untilDate:[NSDate distantPast]
-							   inMode:NSDefaultRunLoopMode
-							  dequeue:YES];
-
-		if (event == nil)
-			break;
-
-		[NSApp sendEvent:event];
-	}
-
 #ifdef COREAUDIO_ENABLED
 	AudioDriverManager::add_driver(&audio_driver);
 #endif
+
+	DisplayServerOSX::register_osx_driver();
 }
 
 bool OS_OSX::_check_internal_feature_support(const String &p_feature) {

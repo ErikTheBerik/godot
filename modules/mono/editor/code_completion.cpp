@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,7 +35,11 @@
 
 #include "code_completion.h"
 
+<<<<<<< HEAD
 #include "core/project_settings.h"
+=======
+#include "core/config/project_settings.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #include "editor/editor_file_system.h"
 #include "editor/editor_settings.h"
 #include "scene/gui/control.h"
@@ -44,9 +53,16 @@ _FORCE_INLINE_ String quoted(const String &p_str) {
 	return "\"" + p_str + "\"";
 }
 
+<<<<<<< HEAD
 void _add_nodes_suggestions(const Node *p_base, const Node *p_node, PoolStringArray &r_suggestions) {
 	if (p_node != p_base && !p_node->get_owner())
 		return;
+=======
+void _add_nodes_suggestions(const Node *p_base, const Node *p_node, PackedStringArray &r_suggestions) {
+	if (p_node != p_base && !p_node->get_owner()) {
+		return;
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	String path_relative_to_orig = p_base->get_path_to(p_node);
 
@@ -58,6 +74,7 @@ void _add_nodes_suggestions(const Node *p_base, const Node *p_node, PoolStringAr
 }
 
 Node *_find_node_for_script(Node *p_base, Node *p_current, const Ref<Script> &p_script) {
+<<<<<<< HEAD
 	if (p_current->get_owner() != p_base && p_base != p_current)
 		return nullptr;
 
@@ -70,12 +87,33 @@ Node *_find_node_for_script(Node *p_base, Node *p_current, const Ref<Script> &p_
 		Node *found = _find_node_for_script(p_base, p_current->get_child(i), p_script);
 		if (found)
 			return found;
+=======
+	if (p_current->get_owner() != p_base && p_base != p_current) {
+		return nullptr;
+	}
+
+	Ref<Script> c = p_current->get_script();
+
+	if (c == p_script) {
+		return p_current;
+	}
+
+	for (int i = 0; i < p_current->get_child_count(); i++) {
+		Node *found = _find_node_for_script(p_base, p_current->get_child(i), p_script);
+		if (found) {
+			return found;
+		}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	}
 
 	return nullptr;
 }
 
+<<<<<<< HEAD
 void _get_directory_contents(EditorFileSystemDirectory *p_dir, PoolStringArray &r_suggestions) {
+=======
+void _get_directory_contents(EditorFileSystemDirectory *p_dir, PackedStringArray &r_suggestions) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	for (int i = 0; i < p_dir->get_file_count(); i++) {
 		r_suggestions.push_back(quoted(p_dir->get_file_path(i)));
 	}
@@ -87,8 +125,14 @@ void _get_directory_contents(EditorFileSystemDirectory *p_dir, PoolStringArray &
 
 Node *_try_find_owner_node_in_tree(const Ref<Script> p_script) {
 	SceneTree *tree = SceneTree::get_singleton();
+<<<<<<< HEAD
 	if (!tree)
 		return nullptr;
+=======
+	if (!tree) {
+		return nullptr;
+	}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	Node *base = tree->get_edited_scene_root();
 	if (base) {
 		base = _find_node_for_script(base, base, p_script);
@@ -96,8 +140,13 @@ Node *_try_find_owner_node_in_tree(const Ref<Script> p_script) {
 	return base;
 }
 
+<<<<<<< HEAD
 PoolStringArray get_code_completion(CompletionKind p_kind, const String &p_script_file) {
 	PoolStringArray suggestions;
+=======
+PackedStringArray get_code_completion(CompletionKind p_kind, const String &p_script_file) {
+	PackedStringArray suggestions;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	switch (p_kind) {
 		case CompletionKind::INPUT_ACTIONS: {
@@ -107,8 +156,14 @@ PoolStringArray get_code_completion(CompletionKind p_kind, const String &p_scrip
 			for (List<PropertyInfo>::Element *E = project_props.front(); E; E = E->next()) {
 				const PropertyInfo &prop = E->get();
 
+<<<<<<< HEAD
 				if (!prop.name.begins_with("input/"))
 					continue;
+=======
+				if (!prop.name.begins_with("input/")) {
+					continue;
+				}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 				String name = prop.name.substr(prop.name.find("/") + 1, prop.name.length());
 				suggestions.push_back(quoted(name));
@@ -117,6 +172,7 @@ PoolStringArray get_code_completion(CompletionKind p_kind, const String &p_scrip
 		case CompletionKind::NODE_PATHS: {
 			{
 				// AutoLoads
+<<<<<<< HEAD
 				List<PropertyInfo> props;
 				ProjectSettings::get_singleton()->get_property_list(&props);
 
@@ -127,6 +183,13 @@ PoolStringArray get_code_completion(CompletionKind p_kind, const String &p_scrip
 					}
 					String name = s.get_slice("/", 1);
 					suggestions.push_back(quoted("/root/" + name));
+=======
+				Map<StringName, ProjectSettings::AutoloadInfo> autoloads = ProjectSettings::get_singleton()->get_autoload_list();
+
+				for (Map<StringName, ProjectSettings::AutoloadInfo>::Element *E = autoloads.front(); E; E = E->next()) {
+					const ProjectSettings::AutoloadInfo &info = E->value();
+					suggestions.push_back(quoted("/root/" + String(info.name)));
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				}
 			}
 
@@ -149,7 +212,11 @@ PoolStringArray get_code_completion(CompletionKind p_kind, const String &p_scrip
 			List<String> directories;
 			directories.push_back(dir_access->get_current_dir());
 
+<<<<<<< HEAD
 			while (!directories.empty()) {
+=======
+			while (!directories.is_empty()) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				dir_access->change_dir(directories.back()->get());
 				directories.pop_back();
 
@@ -227,6 +294,21 @@ PoolStringArray get_code_completion(CompletionKind p_kind, const String &p_scrip
 				}
 			}
 		} break;
+<<<<<<< HEAD
+=======
+		case CompletionKind::THEME_FONT_SIZES: {
+			Ref<Script> script = ResourceLoader::load(p_script_file.simplify_path());
+			Node *base = _try_find_owner_node_in_tree(script);
+			if (base && Object::cast_to<Control>(base)) {
+				List<StringName> sn;
+				Theme::get_default()->get_font_size_list(base->get_class(), &sn);
+
+				for (List<StringName>::Element *E = sn.front(); E; E = E->next()) {
+					suggestions.push_back(quoted(E->get()));
+				}
+			}
+		} break;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		case CompletionKind::THEME_STYLES: {
 			Ref<Script> script = ResourceLoader::load(p_script_file.simplify_path());
 			Node *base = _try_find_owner_node_in_tree(script);
@@ -245,5 +327,8 @@ PoolStringArray get_code_completion(CompletionKind p_kind, const String &p_scrip
 
 	return suggestions;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace gdmono

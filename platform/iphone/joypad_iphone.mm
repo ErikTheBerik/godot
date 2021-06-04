@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -29,11 +34,20 @@
 /*************************************************************************/
 
 #import "joypad_iphone.h"
+<<<<<<< HEAD
 
 #include "core/project_settings.h"
 #include "drivers/coreaudio/audio_driver_coreaudio.h"
 #import "godot_view.h"
 #include "main/main.h"
+=======
+#include "core/config/project_settings.h"
+#include "drivers/coreaudio/audio_driver_coreaudio.h"
+#include "main/main.h"
+
+#import "godot_view.h"
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #include "os_iphone.h"
 
 JoypadIPhone::JoypadIPhone() {
@@ -145,7 +159,11 @@ void JoypadIPhone::start_processing() {
 
 - (void)addiOSJoypad:(GCController *)controller {
 	//     get a new id for our controller
+<<<<<<< HEAD
 	int joy_id = OSIPhone::get_singleton()->get_unused_joy_id();
+=======
+	int joy_id = Input::get_singleton()->get_unused_joy_id();
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	if (joy_id == -1) {
 		printf("Couldn't retrieve new joy id\n");
@@ -158,7 +176,11 @@ void JoypadIPhone::start_processing() {
 	};
 
 	// tell Godot about our new controller
+<<<<<<< HEAD
 	OSIPhone::get_singleton()->joy_connection_changed(joy_id, true, [controller.vendorName UTF8String]);
+=======
+	Input::get_singleton()->joy_connection_changed(joy_id, true, [controller.vendorName UTF8String]);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	// add it to our dictionary, this will retain our controllers
 	[self.connectedJoypads setObject:controller forKey:[NSNumber numberWithInt:joy_id]];
@@ -197,7 +219,11 @@ void JoypadIPhone::start_processing() {
 	for (NSNumber *key in keys) {
 		// tell Godot this joystick is no longer there
 		int joy_id = [key intValue];
+<<<<<<< HEAD
 		OSIPhone::get_singleton()->joy_connection_changed(joy_id, false, "");
+=======
+		Input::get_singleton()->joy_connection_changed(joy_id, false, "");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 		// and remove it from our dictionary
 		[self.connectedJoypads removeObjectForKey:key];
@@ -258,6 +284,7 @@ void JoypadIPhone::start_processing() {
 			int joy_id = [self getJoyIdForController:controller];
 
 			if (element == gamepad.buttonA) {
+<<<<<<< HEAD
 				OSIPhone::get_singleton()->joy_button(joy_id, JOY_BUTTON_0,
 						gamepad.buttonA.isPressed);
 			} else if (element == gamepad.buttonB) {
@@ -311,6 +338,55 @@ void JoypadIPhone::start_processing() {
 				jx.value = gamepad.rightTrigger.value;
 				OSIPhone::get_singleton()->joy_axis(joy_id, JOY_ANALOG_R2, jx);
 			}
+=======
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_A,
+						gamepad.buttonA.isPressed);
+			} else if (element == gamepad.buttonB) {
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_B,
+						gamepad.buttonB.isPressed);
+			} else if (element == gamepad.buttonX) {
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_X,
+						gamepad.buttonX.isPressed);
+			} else if (element == gamepad.buttonY) {
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_Y,
+						gamepad.buttonY.isPressed);
+			} else if (element == gamepad.leftShoulder) {
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_LEFT_SHOULDER,
+						gamepad.leftShoulder.isPressed);
+			} else if (element == gamepad.rightShoulder) {
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_RIGHT_SHOULDER,
+						gamepad.rightShoulder.isPressed);
+			} else if (element == gamepad.dpad) {
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_DPAD_UP,
+						gamepad.dpad.up.isPressed);
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_DPAD_DOWN,
+						gamepad.dpad.down.isPressed);
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_DPAD_LEFT,
+						gamepad.dpad.left.isPressed);
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_DPAD_RIGHT,
+						gamepad.dpad.right.isPressed);
+			};
+
+			Input::JoyAxisValue jx;
+			jx.min = -1;
+			if (element == gamepad.leftThumbstick) {
+				jx.value = gamepad.leftThumbstick.xAxis.value;
+				Input::get_singleton()->joy_axis(joy_id, JOY_AXIS_LEFT_X, jx);
+				jx.value = -gamepad.leftThumbstick.yAxis.value;
+				Input::get_singleton()->joy_axis(joy_id, JOY_AXIS_LEFT_Y, jx);
+			} else if (element == gamepad.rightThumbstick) {
+				jx.value = gamepad.rightThumbstick.xAxis.value;
+				Input::get_singleton()->joy_axis(joy_id, JOY_AXIS_RIGHT_X, jx);
+				jx.value = -gamepad.rightThumbstick.yAxis.value;
+				Input::get_singleton()->joy_axis(joy_id, JOY_AXIS_RIGHT_Y, jx);
+			} else if (element == gamepad.leftTrigger) {
+				jx.value = gamepad.leftTrigger.value;
+				Input::get_singleton()->joy_axis(joy_id, JOY_AXIS_TRIGGER_LEFT, jx);
+			} else if (element == gamepad.rightTrigger) {
+				jx.value = gamepad.rightTrigger.value;
+				Input::get_singleton()->joy_axis(joy_id, JOY_AXIS_TRIGGER_RIGHT, jx);
+			};
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		};
 	} else if (controller.microGamepad != nil) {
 		// micro gamepads were added in OS 9 and feature just 2 buttons and a d-pad
@@ -324,6 +400,7 @@ void JoypadIPhone::start_processing() {
 			int joy_id = [self getJoyIdForController:controller];
 
 			if (element == gamepad.buttonA) {
+<<<<<<< HEAD
 				OSIPhone::get_singleton()->joy_button(joy_id, JOY_BUTTON_0,
 						gamepad.buttonA.isPressed);
 			} else if (element == gamepad.buttonX) {
@@ -339,6 +416,21 @@ void JoypadIPhone::start_processing() {
 				OSIPhone::get_singleton()->joy_button(joy_id, JOY_DPAD_RIGHT,
 						gamepad.dpad.right.isPressed);
 			}
+=======
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_A,
+						gamepad.buttonA.isPressed);
+			} else if (element == gamepad.buttonX) {
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_X,
+						gamepad.buttonX.isPressed);
+			} else if (element == gamepad.dpad) {
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_DPAD_UP,
+						gamepad.dpad.up.isPressed);
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_DPAD_DOWN,
+						gamepad.dpad.down.isPressed);
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_DPAD_LEFT, gamepad.dpad.left.isPressed);
+				Input::get_singleton()->joy_button(joy_id, JOY_BUTTON_DPAD_RIGHT, gamepad.dpad.right.isPressed);
+			};
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		};
 	}
 

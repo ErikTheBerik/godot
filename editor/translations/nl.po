@@ -1,6 +1,6 @@
 # Dutch translation of the Godot Engine editor
-# Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.
-# Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).
+# Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.
+# Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).
 # This file is distributed under the same license as the Godot source code.
 # aelspire <aelspire@gmail.com>, 2017.
 # Aram Nap <xyphex.aram@gmail.com>, 2017.
@@ -28,7 +28,7 @@
 # rxadmin <r.van.eeghem@gmail.com>, 2018.
 # Peter Goelst <muis24@gmail.com>, 2019.
 # Wouter Buckens <wou.buc@gmail.com>, 2019.
-# Stijn Hinlopen <f.a.hinlopen@gmail.com>, 2019, 2020.
+# Stijn Hinlopen <f.a.hinlopen@gmail.com>, 2019, 2020, 2021.
 # jef dered <themen098s@vivaldi.net>, 2019.
 # Alex H. <sandertjeh13@hotmail.com>, 2019.
 # edouardgr <edouard.gruyters@gmail.com>, 2019.
@@ -43,11 +43,21 @@
 # kitfka <philipthuijs@gmail.com>, 2020.
 # Mike van Leeuwen <mkvanleeuwen@gmail.com>, 2020.
 # marnicq van loon <marnicqvanloon@gmail.com>, 2020.
+<<<<<<< HEAD
+=======
+# T-rex08 <ipadtriceratops@gmail.com>, 2021.
+# Dwarffish <hoogvlietjohan@gmail.com>, 2021.
+# Arthur de Roos <arthur.de.roos@gmail.com>, 2021.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid ""
 msgstr ""
 "Project-Id-Version: Godot Engine editor\n"
 "POT-Creation-Date: \n"
+<<<<<<< HEAD
 "PO-Revision-Date: 2020-10-30 10:21+0000\n"
+=======
+"PO-Revision-Date: 2021-05-29 13:49+0000\n"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 "Last-Translator: Stijn Hinlopen <f.a.hinlopen@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/godot-engine/godot/"
 "nl/>\n"
@@ -56,7 +66,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+<<<<<<< HEAD
 "X-Generator: Weblate 4.3.2-dev\n"
+=======
+"X-Generator: Weblate 4.7-dev\n"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: core/math/expression.cpp modules/gdscript/gdscript_functions.cpp
 #: modules/visual_script/visual_script_builtin_funcs.cpp
@@ -686,7 +700,7 @@ msgstr "Selecteer sporen om te kopieren"
 #: editor/plugins/animation_player_editor_plugin.cpp
 #: editor/plugins/script_text_editor.cpp
 #: editor/plugins/sprite_frames_editor_plugin.cpp editor/property_editor.cpp
-#: scene/gui/line_edit.cpp scene/gui/text_edit.cpp
+#: editor/scene_tree_dock.cpp scene/gui/line_edit.cpp scene/gui/text_edit.cpp
 msgid "Copy"
 msgstr "Kopiëren"
 
@@ -940,9 +954,14 @@ msgid "Signals"
 msgstr "Signalen"
 
 #: editor/connections_dialog.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "Filter signals"
 msgstr "Filter tegels"
+=======
+msgid "Filter signals"
+msgstr "Signalen filteren"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/connections_dialog.cpp
 msgid "Are you sure you want to remove all connections from this signal?"
@@ -1071,13 +1090,18 @@ msgid "Owners Of:"
 msgstr "Eigenaren van:"
 
 #: editor/dependency_editor.cpp
+<<<<<<< HEAD
 #, fuzzy
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid ""
 "Remove selected files from the project? (no undo)\n"
 "You can find the removed files in the system trash to restore them."
 msgstr ""
 "Geselecteerde bestanden uit het project verwijderen? (Kan niet ongedaan "
-"gemaakt worden)"
+"gemaakt worden)\n"
+"De bestanden kunnen mogelijk vanuit de prullenbak van het systeem hersteld "
+"worden."
 
 #: editor/dependency_editor.cpp
 #, fuzzy
@@ -1089,7 +1113,13 @@ msgid ""
 msgstr ""
 "De bestanden die verwijderd worden zijn nodig om andere bronnen te laten "
 "werken.\n"
+<<<<<<< HEAD
 "Toch verwijderen? (Onomkeerbaar)"
+=======
+"Toch verwijderen? (Onomkeerbaar)\n"
+"De bestanden kunnen mogelijk vanuit de prullenbak van het systeem hersteld "
+"worden."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/dependency_editor.cpp
 msgid "Cannot remove:"
@@ -1133,7 +1163,7 @@ msgstr "Weesbronnen bekijken"
 
 #: editor/dependency_editor.cpp editor/editor_audio_buses.cpp
 #: editor/editor_file_dialog.cpp editor/editor_node.cpp
-#: editor/filesystem_dock.cpp editor/plugins/item_list_editor_plugin.cpp
+#: editor/plugins/item_list_editor_plugin.cpp
 #: editor/plugins/sprite_frames_editor_plugin.cpp editor/project_export.cpp
 #: editor/project_settings_editor.cpp editor/scene_tree_dock.cpp
 msgid "Delete"
@@ -1195,6 +1225,7 @@ msgid "Gold Sponsors"
 msgstr "Gouden Sponsors"
 
 #: editor/editor_about.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "Silver Sponsors"
 msgstr "Zilveren Donors"
@@ -1203,6 +1234,14 @@ msgstr "Zilveren Donors"
 #, fuzzy
 msgid "Bronze Sponsors"
 msgstr "Bronzen Donors"
+=======
+msgid "Silver Sponsors"
+msgstr "Zilveren Sponsors"
+
+#: editor/editor_about.cpp
+msgid "Bronze Sponsors"
+msgstr "Bronzen Sponsors"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_about.cpp
 msgid "Mini Sponsors"
@@ -1644,34 +1683,57 @@ msgstr ""
 "'Driver Fallback Enabled' uit."
 
 #: editor/editor_export.cpp
+<<<<<<< HEAD
 #, fuzzy
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid ""
 "Target platform requires 'PVRTC' texture compression for GLES2. Enable "
 "'Import Pvrtc' in Project Settings."
 msgstr ""
+<<<<<<< HEAD
 "Doelplatform vereist 'ETC' textuurcompressie voor GLES2. Schakel 'Import "
 "Etc' in bij de Projectinstellingen."
 
 #: editor/editor_export.cpp
 #, fuzzy
+=======
+"Doelplatform vereist 'PVRTC' textuurcompressie voor GLES2. Schakel 'Import "
+"Etc' in bij de Projectinstellingen."
+
+#: editor/editor_export.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid ""
 "Target platform requires 'ETC2' or 'PVRTC' texture compression for GLES3. "
 "Enable 'Import Etc 2' or 'Import Pvrtc' in Project Settings."
 msgstr ""
+<<<<<<< HEAD
 "Doelplatform vereist 'ETC2' textuurcompressie voor GLES3. Schakel 'Import "
 "Etc 2' in de Projectinstellingen in."
 
 #: editor/editor_export.cpp
 #, fuzzy
+=======
+"Doelplatform vereist 'ETC2' of 'PVRTC' textuurcompressie voor GLES3. Schakel "
+"'Import Etc 2' of 'Import Pvrtc' in de Projectinstellingen in."
+
+#: editor/editor_export.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid ""
 "Target platform requires 'PVRTC' texture compression for the driver fallback "
 "to GLES2.\n"
 "Enable 'Import Pvrtc' in Project Settings, or disable 'Driver Fallback "
 "Enabled'."
 msgstr ""
+<<<<<<< HEAD
 "Doelplatform vereist 'ETC' textuurcompressie zodat het stuurprogramma kan "
 "terugvallen op GLES2.\n"
 "Schakel 'Import Etc' in bij de Projectinstellingen, of schakel de optie "
+=======
+"Doelplatform vereist 'PVRTC' textuurcompressie zodat het stuurprogramma kan "
+"terugvallen op GLES2.\n"
+"Schakel 'Import Pvrtc' in bij de Projectinstellingen, of schakel de optie "
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 "'Driver Fallback Enabled' uit."
 
 #: editor/editor_export.cpp platform/android/export/export.cpp
@@ -1704,7 +1766,7 @@ msgstr "Script Editor"
 
 #: editor/editor_feature_profile.cpp
 msgid "Asset Library"
-msgstr "Asset bibliotheek"
+msgstr "Materiaalbibliotheek"
 
 #: editor/editor_feature_profile.cpp
 msgid "Scene Tree Editing"
@@ -1715,9 +1777,14 @@ msgid "Node Dock"
 msgstr "Knooptabblad"
 
 #: editor/editor_feature_profile.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "FileSystem Dock"
 msgstr "Bestandssysteem"
+=======
+msgid "FileSystem Dock"
+msgstr "Bestandssysteempaneel"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_feature_profile.cpp
 msgid "Import Dock"
@@ -1901,8 +1968,8 @@ msgid "Open a File or Directory"
 msgstr "Bestand of map openen"
 
 #: editor/editor_file_dialog.cpp editor/editor_node.cpp
-#: editor/editor_properties.cpp editor/inspector_dock.cpp
-#: editor/plugins/animation_player_editor_plugin.cpp
+#: editor/editor_properties.cpp editor/import_defaults_editor.cpp
+#: editor/inspector_dock.cpp editor/plugins/animation_player_editor_plugin.cpp
 #: editor/plugins/script_editor_plugin.cpp scene/gui/file_dialog.cpp
 msgid "Save"
 msgstr "Opslaan"
@@ -1933,7 +2000,7 @@ msgstr "Favoriet Omschakelen"
 
 #: editor/editor_file_dialog.cpp
 msgid "Toggle Mode"
-msgstr "Modus omschakelen"
+msgstr "Modus wisselen"
 
 #: editor/editor_file_dialog.cpp
 msgid "Focus Path"
@@ -1993,10 +2060,6 @@ msgstr "Voorbeeld:"
 msgid "File:"
 msgstr "Bestand:"
 
-#: editor/editor_file_dialog.cpp scene/gui/file_dialog.cpp
-msgid "Must use a valid extension."
-msgstr "Een geldige extensie moet gebruikt worden."
-
 #: editor/editor_file_system.cpp
 msgid "ScanSources"
 msgstr "Scan Bronnen"
@@ -2036,7 +2099,7 @@ msgstr "Beschrijving"
 
 #: editor/editor_help.cpp
 msgid "Online Tutorials"
-msgstr "Online Zelfstudie"
+msgstr "Online Handleidingen"
 
 #: editor/editor_help.cpp
 msgid "Properties"
@@ -2359,6 +2422,11 @@ msgid ""
 "An error occurred while trying to save the editor layout.\n"
 "Make sure the editor's user data path is writable."
 msgstr ""
+<<<<<<< HEAD
+=======
+"Fout tijdens het opslaan van de editorindeling.\n"
+"Zorg dat er naar het pad voor editorgebruikgegevens beschrijfbaar is."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_node.cpp
 msgid ""
@@ -2366,15 +2434,26 @@ msgid ""
 "To restore the Default layout to its base settings, use the Delete Layout "
 "option and delete the Default layout."
 msgstr ""
+<<<<<<< HEAD
+=======
+"Standaardindeling overschreven.\n"
+"Om de oorspronkelijke instellingen van de standaardindeling te herstellen, "
+"moet je de standaardindeling verwijderen met de optie 'Indeling verwijderen'."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_node.cpp
 msgid "Layout name not found!"
 msgstr "Indelingsnaam niet gevonden!"
 
 #: editor/editor_node.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "Restored the Default layout to its base settings."
 msgstr "Standaardindeling teruggezet naar basisinstellingen."
+=======
+msgid "Restored the Default layout to its base settings."
+msgstr "Standaardindeling teruggezet naar oorspronkelijke instellingen."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_node.cpp
 msgid ""
@@ -2431,6 +2510,13 @@ msgid "There is no defined scene to run."
 msgstr "Er is geen startscène ingesteld."
 
 #: editor/editor_node.cpp
+<<<<<<< HEAD
+=======
+msgid "Save scene before running..."
+msgstr "Scène opslaan voor het afspelen..."
+
+#: editor/editor_node.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Could not start subprocess!"
 msgstr "Kon het subproces niet opstarten!"
 
@@ -2473,18 +2559,6 @@ msgstr "Een wortelknoop is nodig om de scène op te slaan."
 #: editor/editor_node.cpp
 msgid "Save Scene As..."
 msgstr "Scène opslaan als..."
-
-#: editor/editor_node.cpp
-msgid "No"
-msgstr "Nee"
-
-#: editor/editor_node.cpp
-msgid "Yes"
-msgstr "Ja"
-
-#: editor/editor_node.cpp
-msgid "This scene has never been saved. Save before running?"
-msgstr "Deze scene is nooit opgeslagen. Sla op voor het uitvoeren?"
 
 #: editor/editor_node.cpp editor/scene_tree_dock.cpp
 msgid "This operation can't be done without a scene."
@@ -2536,6 +2610,10 @@ msgid "Quit"
 msgstr "Afsluiten"
 
 #: editor/editor_node.cpp
+msgid "Yes"
+msgstr "Ja"
+
+#: editor/editor_node.cpp
 msgid "Exit the editor?"
 msgstr "Editor afsluiten?"
 
@@ -2583,9 +2661,8 @@ msgstr ""
 "mislukt."
 
 #: editor/editor_node.cpp
-msgid "Unable to find script field for addon plugin at: 'res://addons/%s'."
-msgstr ""
-"Onmogelijk om scriptveld te vinden voor de plugin op: 'res://addons/%s'."
+msgid "Unable to find script field for addon plugin at: '%s'."
+msgstr "Onmogelijk om scriptveld te vinden voor de plugin op: '%s'."
 
 #: editor/editor_node.cpp
 msgid "Unable to load addon script from path: '%s'."
@@ -2593,11 +2670,13 @@ msgstr "Volgend script kon niet geladen worden: '%s'."
 
 #: editor/editor_node.cpp
 msgid ""
-"Unable to load addon script from path: '%s' There seems to be an error in "
-"the code, please check the syntax."
+"Unable to load addon script from path: '%s'. This might be due to a code "
+"error in that script.\n"
+"Disabling the addon at '%s' to prevent further errors."
 msgstr ""
-"Script kon niet geladen worden van het pad: '%s'. Er lijkt een fout in de "
-"code te zijn, controleer de syntax."
+"Extra script kon niet geladen worden van het pad: '%s'. Dit kan veroorzaakt "
+"worden door een fout in dat script.\n"
+"Schakel de extra uit op '%s' om toekomstige fouten te vermijden."
 
 #: editor/editor_node.cpp
 msgid ""
@@ -2867,7 +2946,7 @@ msgstr "Debuggen"
 
 #: editor/editor_node.cpp
 msgid "Deploy with Remote Debug"
-msgstr "Opstarten met debugging op afstand"
+msgstr "Uitrollen met debugging op afstand"
 
 #: editor/editor_node.cpp
 msgid ""
@@ -2878,11 +2957,23 @@ msgid ""
 "mobile device).\n"
 "You don't need to enable it to use the GDScript debugger locally."
 msgstr ""
+<<<<<<< HEAD
 
 #: editor/editor_node.cpp
 #, fuzzy
 msgid "Small Deploy with Network Filesystem"
 msgstr "Klein uitvoerbaar bestand opstarten met netwerk bestandsserver"
+=======
+"Als deze optie geactiveerd is, zal één-klik uitrol het programma proberen "
+"een verbinding te sarten met het IP-adres van deze computer.\n"
+"Deze optie is bedoeld om op afstand fouten op te sporen (gewoonlijk met een "
+"mobiel toestel).\n"
+"Je hebt dit niet nodig om het draaiende programma lokaal te inspecteren."
+
+#: editor/editor_node.cpp
+msgid "Small Deploy with Network Filesystem"
+msgstr "Kleine uitrol met netwerkbestandssysteem"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_node.cpp
 #, fuzzy
@@ -2894,16 +2985,16 @@ msgid ""
 "On Android, deploying will use the USB cable for faster performance. This "
 "option speeds up testing for projects with large assets."
 msgstr ""
-"Wanneer deze optie is ingeschakeld, zal export of deploy een minimaal "
-"uitvoerbaar bestand creëren.\n"
+"Wanneer deze optie is ingeschakeld, zal op Android een uitvoerbaar bestand "
+"zonder de project data geëxporteerd worden.\n"
 "Het bestandssysteem wordt beschikbaar gesteld aan het project door de editor "
 "over het netwerk.\n"
-"Op Android zal deploy de USB verbinding gebruiken voor hogere prestaties. "
+"Op Android zal de USB verbinding gebruikt worden voor hogere prestaties. "
 "Deze optie versnelt het testen van spellen met veel data."
 
 #: editor/editor_node.cpp
 msgid "Visible Collision Shapes"
-msgstr "Toon collision shapes"
+msgstr "Botsingsvormen tonen"
 
 #: editor/editor_node.cpp
 #, fuzzy
@@ -2911,8 +3002,8 @@ msgid ""
 "When this option is enabled, collision shapes and raycast nodes (for 2D and "
 "3D) will be visible in the running project."
 msgstr ""
-"Botsingsdetectievormen en raycast knopen (voor 2D en 3D) zullen zichtbaar "
-"zijn in het draaiend spel wanneer deze optie aan staat."
+"Wanneer deze optie aan staat zullen botsingsdetectievormen en raycast knopen "
+"(voor 2D en 3D) zichtbaar zijn in het draaiend spel."
 
 #: editor/editor_node.cpp
 msgid "Visible Navigation"
@@ -2924,13 +3015,18 @@ msgid ""
 "When this option is enabled, navigation meshes and polygons will be visible "
 "in the running project."
 msgstr ""
-"Navigatie meshes en polygonen zijn zichtbaar in het draaiend spel wanneer "
-"deze optie aanstaat."
+"Navigatie vormen zijn zichtbaar in het draaiend spel wanneer deze optie "
+"aanstaat."
 
 #: editor/editor_node.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "Synchronize Scene Changes"
 msgstr "Scèneveranderingen synchroniseren"
+=======
+msgid "Synchronize Scene Changes"
+msgstr "Veranderingen in de scène synchroniseren"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_node.cpp
 #, fuzzy
@@ -2941,14 +3037,19 @@ msgid ""
 "filesystem option is enabled."
 msgstr ""
 "Wanneer deze optie aanstaat, wordt elke verandering gemaakt in de editor "
-"toegepast op het draaiend spel.\n"
+"toegepast op het lopende spel.\n"
 "Wanneer dit op afstand wordt gebruikt op een andere machine, is dit "
 "efficiënter met het netwerk bestandssysteem."
 
 #: editor/editor_node.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "Synchronize Script Changes"
 msgstr "Scriptveranderingen synchroniseren"
+=======
+msgid "Synchronize Script Changes"
+msgstr "Veranderingen in scripts synchroniseren"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/editor_node.cpp
 #, fuzzy
@@ -2958,10 +3059,10 @@ msgid ""
 "When used remotely on a device, this is more efficient when the network "
 "filesystem option is enabled."
 msgstr ""
-"Wanneer deze optie aanstaat wordt ieder script dat wordt opgeslagen "
-"toegepast op het draaiend spel.\n"
+"Wanneer deze optie aanstaat wordt ieder script dat is opgeslagen herlopen in "
+"het draaiende spel.\n"
 "Wanneer dit op afstand wordt gebruikt op een andere machine, is dit "
-"efficiënter met het netwerk bestandssysteem."
+"efficiënter met de netwerk bestandssysteem optie aan."
 
 #: editor/editor_node.cpp editor/script_create_dialog.cpp
 msgid "Editor"
@@ -3015,6 +3116,7 @@ msgstr "Exportsjablonen beheren..."
 msgid "Help"
 msgstr "Help"
 
+<<<<<<< HEAD
 #: editor/editor_node.cpp editor/plugins/script_editor_plugin.cpp
 #: editor/plugins/script_text_editor.cpp
 #: editor/plugins/shader_editor_plugin.cpp editor/plugins/text_editor.cpp
@@ -3023,6 +3125,8 @@ msgstr "Help"
 msgid "Search"
 msgstr "Zoeken"
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #: editor/editor_node.cpp editor/plugins/script_editor_plugin.cpp
 #: editor/plugins/shader_editor_plugin.cpp
 msgid "Online Docs"
@@ -3047,6 +3151,10 @@ msgstr "Gemeenschap"
 #: editor/editor_node.cpp
 msgid "About"
 msgstr "Over"
+
+#: editor/editor_node.cpp
+msgid "Support Godot Development"
+msgstr "Ondersteun Godot Development"
 
 #: editor/editor_node.cpp
 msgid "Play the project."
@@ -3190,6 +3298,24 @@ msgid "Open & Run a Script"
 msgstr "Voer Een Script Uit"
 
 #: editor/editor_node.cpp
+msgid ""
+"The following files are newer on disk.\n"
+"What action should be taken?"
+msgstr ""
+"De volgende bestanden zijn nieuwer op de schijf.\n"
+"Welke actie moet worden genomen?"
+
+#: editor/editor_node.cpp editor/plugins/script_editor_plugin.cpp
+#: editor/plugins/shader_editor_plugin.cpp
+msgid "Reload"
+msgstr "Herladen"
+
+#: editor/editor_node.cpp editor/plugins/script_editor_plugin.cpp
+#: editor/plugins/shader_editor_plugin.cpp
+msgid "Resave"
+msgstr "Heropslaan"
+
+#: editor/editor_node.cpp
 msgid "New Inherited"
 msgstr "Nieuw afgeleid type"
 
@@ -3215,7 +3341,7 @@ msgstr "Open Script Bewerker"
 
 #: editor/editor_node.cpp editor/project_manager.cpp
 msgid "Open Asset Library"
-msgstr "Open Asset Bibliotheek"
+msgstr "Open Materiaalbibliotheek"
 
 #: editor/editor_node.cpp
 msgid "Open the next Editor"
@@ -3401,7 +3527,7 @@ msgstr "Maak Uniek"
 #: editor/plugins/script_text_editor.cpp
 #: editor/plugins/sprite_frames_editor_plugin.cpp
 #: editor/plugins/tile_map_editor_plugin.cpp editor/property_editor.cpp
-#: scene/gui/line_edit.cpp scene/gui/text_edit.cpp
+#: editor/scene_tree_dock.cpp scene/gui/line_edit.cpp scene/gui/text_edit.cpp
 msgid "Paste"
 msgstr "Plakken"
 
@@ -3445,7 +3571,7 @@ msgid ""
 "Please add a runnable preset in the Export menu or define an existing preset "
 "as runnable."
 msgstr ""
-"Geen uitvoerbare export preset gevonden voor dit platform.\n"
+"Geen uitvoerbare exporteer preset gevonden voor dit platform.\n"
 "Voeg een uitvoerbare preset toe in het exportmenu."
 
 #: editor/editor_run_script.cpp
@@ -3719,6 +3845,13 @@ msgstr ""
 "handmatig."
 
 #: editor/filesystem_dock.cpp
+msgid ""
+"Importing has been disabled for this file, so it can't be opened for editing."
+msgstr ""
+"Importeren is uitgeschakeld voor dit bestand, het kan niet worden geopend om "
+"te bewerken."
+
+#: editor/filesystem_dock.cpp
 msgid "Cannot move/rename resources root."
 msgstr "Kan de hoofdmap voor bronnen niet verplaatsen of van naam veranderen."
 
@@ -3753,6 +3886,22 @@ msgstr "Er bestaat al een bestand of map met deze naam."
 #: editor/filesystem_dock.cpp
 msgid "Name contains invalid characters."
 msgstr "Naam bevat ongeldige tekens."
+
+#: editor/filesystem_dock.cpp
+msgid ""
+"The following files or folders conflict with items in the target location "
+"'%s':\n"
+"\n"
+"%s\n"
+"\n"
+"Do you wish to overwrite them?"
+msgstr ""
+"De volgende bestanden of folders conflicteren met de bestanden in de locatie "
+"'%s':\n"
+"\n"
+"%s\n"
+"\n"
+"Wilt u deze bestanden overschrijven?"
 
 #: editor/filesystem_dock.cpp
 msgid "Renaming file:"
@@ -3802,14 +3951,6 @@ msgstr "Afhankelijkheden aanpassen..."
 msgid "View Owners..."
 msgstr "Bekijk eigenaren..."
 
-#: editor/filesystem_dock.cpp editor/plugins/animation_player_editor_plugin.cpp
-msgid "Rename..."
-msgstr "Hernoemen..."
-
-#: editor/filesystem_dock.cpp
-msgid "Duplicate..."
-msgstr "Dupliceren..."
-
 #: editor/filesystem_dock.cpp
 msgid "Move To..."
 msgstr "Verplaats Naar..."
@@ -3842,11 +3983,24 @@ msgid "Collapse All"
 msgstr "Alles inklappen"
 
 #: editor/filesystem_dock.cpp
+<<<<<<< HEAD
 #: editor/plugins/animation_tree_player_editor_plugin.cpp
 #: editor/project_manager.cpp editor/rename_dialog.cpp
 #: editor/scene_tree_dock.cpp
 msgid "Rename"
 msgstr "Naam wijzigen"
+=======
+msgid "Duplicate..."
+msgstr "Dupliceren..."
+
+#: editor/filesystem_dock.cpp
+msgid "Move to Trash"
+msgstr "Naar prullenbak verplaatsen"
+
+#: editor/filesystem_dock.cpp editor/plugins/animation_player_editor_plugin.cpp
+msgid "Rename..."
+msgstr "Hernoemen..."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/filesystem_dock.cpp
 msgid "Previous Folder/File"
@@ -3881,8 +4035,11 @@ msgid "Move"
 msgstr "Verplaatsen"
 
 #: editor/filesystem_dock.cpp
-msgid "There is already file or folder with the same name in this location."
-msgstr "Er is al een bestand of map met dezelfde naam op dit pad."
+#: editor/plugins/animation_tree_player_editor_plugin.cpp
+#: editor/project_manager.cpp editor/rename_dialog.cpp
+#: editor/scene_tree_dock.cpp
+msgid "Rename"
+msgstr "Naam wijzigen"
 
 #: editor/filesystem_dock.cpp
 msgid "Overwrite"
@@ -3950,8 +4107,16 @@ msgid "Searching..."
 msgstr "Aan het zoeken..."
 
 #: editor/find_in_files.cpp
-msgid "Search complete"
-msgstr "Zoek Compleet"
+msgid "%d match in %d file."
+msgstr "%d overeenkomst in %d bestand."
+
+#: editor/find_in_files.cpp
+msgid "%d matches in %d file."
+msgstr "%d overeenkomsten in %d bestand."
+
+#: editor/find_in_files.cpp
+msgid "%d matches in %d files."
+msgstr "%d overeenkomsten in %d bestanden."
 
 #: editor/groups_editor.cpp
 msgid "Add to Group"
@@ -4087,6 +4252,26 @@ msgstr ""
 #: editor/import/resource_importer_scene.cpp
 msgid "Saving..."
 msgstr "Opslaan..."
+
+#: editor/import_defaults_editor.cpp
+msgid "Select Importer"
+msgstr "Selecteer Importeren"
+
+#: editor/import_defaults_editor.cpp
+msgid "Importer:"
+msgstr "Lader:"
+
+#: editor/import_defaults_editor.cpp
+msgid "Reset to Defaults"
+msgstr "Reset naar standaard waarden"
+
+#: editor/import_dock.cpp
+msgid "Keep File (No Import)"
+msgstr "Bestand bewaren (niet importeren)"
+
+#: editor/import_dock.cpp
+msgid "%d Files"
+msgstr "%d Bestanden"
 
 #: editor/import_dock.cpp
 msgid "%d Files"
@@ -5055,8 +5240,8 @@ msgid "Got:"
 msgstr "Gekregen:"
 
 #: editor/plugins/asset_library_editor_plugin.cpp
-msgid "Failed sha256 hash check"
-msgstr "SHA256-proef mislukt"
+msgid "Failed SHA-256 hash check"
+msgstr "SHA256-hash controle mislukt"
 
 #: editor/plugins/asset_library_editor_plugin.cpp
 msgid "Asset Download Error:"
@@ -5159,7 +5344,6 @@ msgid "Sort:"
 msgstr "Sorteren op:"
 
 #: editor/plugins/asset_library_editor_plugin.cpp
-#: editor/project_settings_editor.cpp
 msgid "Category:"
 msgstr "Categorie:"
 
@@ -5190,12 +5374,10 @@ msgstr "Assets ZIP Bestand"
 #: editor/plugins/baked_lightmap_editor_plugin.cpp
 msgid ""
 "Can't determine a save path for lightmap images.\n"
-"Save your scene (for images to be saved in the same dir), or pick a save "
-"path from the BakedLightmap properties."
+"Save your scene and try again."
 msgstr ""
-"Kan geen opslag pad voor de lichtmappen bepalen.\n"
-"Sla jouw scène op (om lichtmappen op te slaan in dezelfde map) of kies een "
-"opslag pad vanaf de BakedLightmap eigenschappen."
+"Kan geen opslagplaats voor de lichtmap afbeeldingen bepalen.\n"
+"Sla uw scène op en probeer opnieuw."
 
 #: editor/plugins/baked_lightmap_editor_plugin.cpp
 msgid ""
@@ -5212,8 +5394,32 @@ msgstr ""
 "beschrijfbaar is."
 
 #: editor/plugins/baked_lightmap_editor_plugin.cpp
+msgid "Failed determining lightmap size. Maximum lightmap size too small?"
+msgstr ""
+"Lichtmap grootte bepalen mislukt. Is de maximale lichtmap grootte te klein?"
+
+#: editor/plugins/baked_lightmap_editor_plugin.cpp
+msgid ""
+"Some mesh is invalid. Make sure the UV2 channel values are contained within "
+"the [0.0,1.0] square region."
+msgstr ""
+"Sommige vormen zijn ongeldig. Controleer of de UV2 kanaal waarden binnen het "
+"vierkante [0.0,1.0] bereik zijn."
+
+#: editor/plugins/baked_lightmap_editor_plugin.cpp
+msgid ""
+"Godot editor was built without ray tracing support, lightmaps can't be baked."
+msgstr ""
+"Godot editor is gemaakt zonder ray tracing ondersteuning, en lichtmappen "
+"kunnen hierdoor niet ingebakken worden."
+
+#: editor/plugins/baked_lightmap_editor_plugin.cpp
 msgid "Bake Lightmaps"
 msgstr "Bak Lichtmappen"
+
+#: editor/plugins/baked_lightmap_editor_plugin.cpp
+msgid "Select lightmap bake file:"
+msgstr "Selecteer lightmap bake-bestand"
 
 #: editor/plugins/camera_editor_plugin.cpp
 #: editor/plugins/spatial_editor_plugin.cpp
@@ -5282,6 +5488,7 @@ msgstr "Maak nieuwe horizontale en verticale gidsen"
 
 #: editor/plugins/canvas_item_editor_plugin.cpp
 msgid "Set CanvasItem \"%s\" Pivot Offset to (%d, %d)"
+<<<<<<< HEAD
 msgstr ""
 
 #: editor/plugins/canvas_item_editor_plugin.cpp
@@ -5326,6 +5533,45 @@ msgstr "Verplaats CanvasItem"
 #, fuzzy
 msgid "Move CanvasItem \"%s\" to (%d, %d)"
 msgstr "Verplaats CanvasItem"
+=======
+msgstr "CanvasItem \"%s\" draaipunt verschuiving instellen als (%d, %d)"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Rotate %d CanvasItems"
+msgstr "%d CanvasItems roteren"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Rotate CanvasItem \"%s\" to %d degrees"
+msgstr "CanvasItem \"%s\" roteren tot %d graden"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Move CanvasItem \"%s\" Anchor"
+msgstr "Verplaats Anker van CanvasItem \"%s\""
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Scale Node2D \"%s\" to (%s, %s)"
+msgstr "Node2D \"%s\" verschalen naar (%s, %s)"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Resize Control \"%s\" to (%d, %d)"
+msgstr "Control \"%s\" vergrootten tot (%d, %d)"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Scale %d CanvasItems"
+msgstr "Schaal %d CanvasItems"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Scale CanvasItem \"%s\" to (%s, %s)"
+msgstr "Schaal CanvasItem \"%s\" naar (%s, %s)"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Move %d CanvasItems"
+msgstr "Verplaats %d CanvasItems"
+
+#: editor/plugins/canvas_item_editor_plugin.cpp
+msgid "Move CanvasItem \"%s\" to (%d, %d)"
+msgstr "CanvasItem \"%s\" naar (%d, %d) verplaatsen"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/canvas_item_editor_plugin.cpp
 msgid ""
@@ -6018,6 +6264,7 @@ msgstr ""
 #: editor/plugins/mesh_instance_editor_plugin.cpp
 msgid "Couldn't create a single convex collision shape."
 msgstr "Kon geen enkelvoudige convexe botsingsvorm maken."
+<<<<<<< HEAD
 
 #: editor/plugins/mesh_instance_editor_plugin.cpp
 msgid "Create Single Convex Shape"
@@ -6034,6 +6281,24 @@ msgid "Couldn't create any collision shapes."
 msgstr "Kon geen enkele botsingsvormen maken."
 
 #: editor/plugins/mesh_instance_editor_plugin.cpp
+=======
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+msgid "Create Single Convex Shape"
+msgstr "Enkele convexe vorm maken"
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+msgid "Can't create multiple convex collision shapes for the scene root."
+msgstr ""
+"Uit de scènewortel kunnen niet meerdere convexe botsingsvormen gemaakt "
+"worden."
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+msgid "Couldn't create any collision shapes."
+msgstr "Kon geen enkele botsingsvormen maken."
+
+#: editor/plugins/mesh_instance_editor_plugin.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Create Multiple Convex Shapes"
 msgstr "Meerdere convexe vormen maken"
 
@@ -6319,6 +6584,10 @@ msgid "Can only set point into a ParticlesMaterial process material"
 msgstr "Kan punt alleen plaatsen in een PartikelsMateriaal proces materiaal"
 
 #: editor/plugins/particles_2d_editor_plugin.cpp
+msgid "Convert to CPUParticles2D"
+msgstr "Omzetten naar CPUParticles2D"
+
+#: editor/plugins/particles_2d_editor_plugin.cpp
 #: editor/plugins/particles_editor_plugin.cpp
 msgid "Generation Time (sec):"
 msgstr "Genereer Tijd (sec):"
@@ -6378,10 +6647,6 @@ msgstr "AABB Genereren"
 #: editor/plugins/particles_editor_plugin.cpp
 msgid "Generate Visibility AABB"
 msgstr "Genereer Zichtbaarheid AABB"
-
-#: editor/plugins/particles_editor_plugin.cpp
-msgid "Generate AABB"
-msgstr "Genereer AABB"
 
 #: editor/plugins/path_2d_editor_plugin.cpp
 msgid "Remove Point from Curve"
@@ -6611,16 +6876,24 @@ msgid "Move Points"
 msgstr "Beweeg Punten"
 
 #: editor/plugins/polygon_2d_editor_plugin.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "Command: Rotate"
 msgstr "Sleep: Roteer"
+=======
+msgid "Command: Rotate"
+msgstr "Ctrl: Roteer"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/polygon_2d_editor_plugin.cpp
 msgid "Shift: Move All"
 msgstr "Shift: Beweeg alles"
 
 #: editor/plugins/polygon_2d_editor_plugin.cpp
+<<<<<<< HEAD
 #, fuzzy
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Shift+Command: Scale"
 msgstr "Shift+Ctrl: Schaal"
 
@@ -6671,6 +6944,7 @@ msgid "Radius:"
 msgstr "Radius:"
 
 #: editor/plugins/polygon_2d_editor_plugin.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "Copy Polygon to UV"
 msgstr "Creëer Polygon & UV"
@@ -6679,6 +6953,14 @@ msgstr "Creëer Polygon & UV"
 #, fuzzy
 msgid "Copy UV to Polygon"
 msgstr "Naar Polygon2D omzetten"
+=======
+msgid "Copy Polygon to UV"
+msgstr "Kopieer Polygon naar UV"
+
+#: editor/plugins/polygon_2d_editor_plugin.cpp
+msgid "Copy UV to Polygon"
+msgstr "Kopieer UV naar Polygon2D"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/polygon_2d_editor_plugin.cpp
 msgid "Clear UV"
@@ -6979,6 +7261,21 @@ msgstr "Sluit Docs"
 #: editor/plugins/script_editor_plugin.cpp editor/project_manager.cpp
 msgid "Run"
 msgstr "Uitvoeren"
+<<<<<<< HEAD
+
+#: editor/plugins/script_editor_plugin.cpp editor/script_editor_debugger.cpp
+msgid "Step Into"
+msgstr "Stap In"
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
+
+#: editor/plugins/script_editor_plugin.cpp
+#: editor/plugins/script_text_editor.cpp
+#: editor/plugins/shader_editor_plugin.cpp editor/plugins/text_editor.cpp
+#: editor/plugins/visual_shader_editor_plugin.cpp editor/project_manager.cpp
+#: editor/project_settings_editor.cpp editor/settings_config_dialog.cpp
+msgid "Search"
+msgstr "Zoeken"
 
 #: editor/plugins/script_editor_plugin.cpp editor/script_editor_debugger.cpp
 msgid "Step Into"
@@ -7032,16 +7329,6 @@ msgid ""
 msgstr ""
 "De volgende bestanden zijn nieuwer op de schijf.\n"
 "Welke aktie moet worden genomen?:"
-
-#: editor/plugins/script_editor_plugin.cpp
-#: editor/plugins/shader_editor_plugin.cpp
-msgid "Reload"
-msgstr "Herladen"
-
-#: editor/plugins/script_editor_plugin.cpp
-#: editor/plugins/shader_editor_plugin.cpp
-msgid "Resave"
-msgstr "Heropslaan"
 
 #: editor/plugins/script_editor_plugin.cpp editor/script_editor_debugger.cpp
 msgid "Debugger"
@@ -7136,8 +7423,13 @@ msgstr "Breekpunten"
 msgid "Go To"
 msgstr "Ga Naar"
 
+<<<<<<< HEAD
 #: editor/plugins/script_text_editor.cpp scene/gui/line_edit.cpp
 #: scene/gui/text_edit.cpp
+=======
+#: editor/plugins/script_text_editor.cpp editor/scene_tree_dock.cpp
+#: scene/gui/line_edit.cpp scene/gui/text_edit.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Cut"
 msgstr "Knippen"
 
@@ -7256,7 +7548,7 @@ msgid ""
 "This shader has been modified on on disk.\n"
 "What action should be taken?"
 msgstr ""
-"Deze Shader is aangepast op de schijf.\n"
+"Deze shader is aangepast op de schijf.\n"
 "Welke actie moet worden genomen?"
 
 #: editor/plugins/shader_editor_plugin.cpp
@@ -7358,6 +7650,10 @@ msgstr "Pitch"
 #: editor/plugins/spatial_editor_plugin.cpp
 msgid "Yaw"
 msgstr "Yaw"
+
+#: editor/plugins/spatial_editor_plugin.cpp
+msgid "Size"
+msgstr "Grootte"
 
 #: editor/plugins/spatial_editor_plugin.cpp
 msgid "Objects Drawn"
@@ -7540,6 +7836,14 @@ msgid "View Rotation Locked"
 msgstr "Beeldrotatie vergrendeld"
 
 #: editor/plugins/spatial_editor_plugin.cpp
+<<<<<<< HEAD
+=======
+msgid ""
+"To zoom further, change the camera's clipping planes (View -> Settings...)"
+msgstr ""
+
+#: editor/plugins/spatial_editor_plugin.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid ""
 "Note: The FPS value displayed is the editor's framerate.\n"
 "It cannot be used as a reliable indication of in-game performance."
@@ -7772,7 +8076,7 @@ msgstr "Polygon2D Voorbeeldweergave"
 
 #: editor/plugins/sprite_editor_plugin.cpp
 msgid "Create CollisionPolygon2D"
-msgstr "Creëer CollisionPolygon2D"
+msgstr "CollisionPolygon2D aanmaken"
 
 #: editor/plugins/sprite_editor_plugin.cpp
 msgid "CollisionPolygon2D Preview"
@@ -7814,11 +8118,11 @@ msgstr "Naar Polygon2D omzetten"
 
 #: editor/plugins/sprite_editor_plugin.cpp
 msgid "Invalid geometry, can't create collision polygon."
-msgstr "Ongeldige geometrie, kan geen collision polygoon creëren."
+msgstr "Ongeldige geometrie, kan geen botsingspolygoon aanmaken."
 
 #: editor/plugins/sprite_editor_plugin.cpp
 msgid "Create CollisionPolygon2D Sibling"
-msgstr "Creëer CollisionPolygon2D Sibling"
+msgstr "CollisionPolygon2D aanmaken"
 
 #: editor/plugins/sprite_editor_plugin.cpp
 msgid "Invalid geometry, can't create light occluder."
@@ -8235,6 +8539,14 @@ msgstr ""
 #: editor/plugins/tile_map_editor_plugin.cpp
 msgid ""
 "Shift+LMB: Line Draw\n"
+"Shift+Command+LMB: Rectangle Paint"
+msgstr ""
+"Shift+LMB: Lijn tekenen\n"
+"Shift+Ctrl+LMB: Vierkant tekenen"
+
+#: editor/plugins/tile_map_editor_plugin.cpp
+msgid ""
+"Shift+LMB: Line Draw\n"
 "Shift+Ctrl+LMB: Rectangle Paint"
 msgstr ""
 "Shift+LMB: Lijn Tekenen\n"
@@ -8385,15 +8697,21 @@ msgid "Create a new rectangle."
 msgstr "Creëer nieuwe driehoek."
 
 #: editor/plugins/tile_set_editor_plugin.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "New Rectangle"
 msgstr "Teken Driehoek"
+=======
+msgid "New Rectangle"
+msgstr "Nieuwe rechthoek"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/tile_set_editor_plugin.cpp
 msgid "Create a new polygon."
 msgstr "Nieuwe veelhoek aanmaken."
 
 #: editor/plugins/tile_set_editor_plugin.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "New Polygon"
 msgstr "Beweeg Polygon"
@@ -8402,6 +8720,14 @@ msgstr "Beweeg Polygon"
 #, fuzzy
 msgid "Delete Selected Shape"
 msgstr "Geselecteerde Verwijderen"
+=======
+msgid "New Polygon"
+msgstr "Nieuwe veelhoek"
+
+#: editor/plugins/tile_set_editor_plugin.cpp
+msgid "Delete Selected Shape"
+msgstr "Geselecteerde vormen verwijderen"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/tile_set_editor_plugin.cpp
 msgid "Keep polygon inside region Rect."
@@ -8528,7 +8854,7 @@ msgstr "Tegelbitmasker bewerken"
 
 #: editor/plugins/tile_set_editor_plugin.cpp
 msgid "Edit Collision Polygon"
-msgstr "Bewerk Collision Polygon"
+msgstr "Botsingspolygoon aanpassen"
 
 #: editor/plugins/tile_set_editor_plugin.cpp
 msgid "Edit Occlusion Polygon"
@@ -8560,7 +8886,7 @@ msgstr "Verwijder Tile"
 
 #: editor/plugins/tile_set_editor_plugin.cpp
 msgid "Remove Collision Polygon"
-msgstr "Verwijder Collision Polygon"
+msgstr "Botsingsvorm verwijderen"
 
 #: editor/plugins/tile_set_editor_plugin.cpp
 msgid "Remove Occlusion Polygon"
@@ -8588,7 +8914,7 @@ msgstr "Maak concaaf"
 
 #: editor/plugins/tile_set_editor_plugin.cpp
 msgid "Create Collision Polygon"
-msgstr "Creëer Collision Polygon"
+msgstr "Botsingsvorm aanmaken"
 
 #: editor/plugins/tile_set_editor_plugin.cpp
 msgid "Create Occlusion Polygon"
@@ -8609,10 +8935,6 @@ msgstr "Geen VCS addons beschikbaar."
 #: editor/plugins/version_control_editor_plugin.cpp
 msgid "Error"
 msgstr "Fout"
-
-#: editor/plugins/version_control_editor_plugin.cpp
-msgid "No commit message was provided"
-msgstr "Geen commitbericht was gegeven"
 
 #: editor/plugins/version_control_editor_plugin.cpp
 msgid "No files added to stage"
@@ -8669,10 +8991,6 @@ msgstr "Stage Geselecteerd"
 #: editor/plugins/version_control_editor_plugin.cpp
 msgid "Stage All"
 msgstr "Stage Alles"
-
-#: editor/plugins/version_control_editor_plugin.cpp
-msgid "Add a commit message"
-msgstr "Voeg een vastleggingsbericht toe"
 
 #: editor/plugins/version_control_editor_plugin.cpp
 msgid "Commit Changes"
@@ -8774,9 +9092,14 @@ msgid "Add Node to Visual Shader"
 msgstr "VisualShader-knoop toevoegen"
 
 #: editor/plugins/visual_shader_editor_plugin.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "Node(s) Moved"
 msgstr "Knoop verplaatst"
+=======
+msgid "Node(s) Moved"
+msgstr "Knoop/knopen verplaatst"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/visual_shader_editor_plugin.cpp
 msgid "Duplicate Nodes"
@@ -8796,9 +9119,14 @@ msgid "Visual Shader Input Type Changed"
 msgstr "Visuele Shader Invoertype Gewijzigd"
 
 #: editor/plugins/visual_shader_editor_plugin.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "UniformRef Name Changed"
 msgstr "Uniforme naam instellen"
+=======
+msgid "UniformRef Name Changed"
+msgstr "UniformRef naam veranderd"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/visual_shader_editor_plugin.cpp
 msgid "Vertex"
@@ -8891,7 +9219,7 @@ msgstr "Kleur uniform."
 #: editor/plugins/visual_shader_editor_plugin.cpp
 msgid "Returns the boolean result of the %s comparison between two parameters."
 msgstr ""
-"Geeft de booleaanse resultaat van de %s-vergelijking tussen twee parameters."
+"Geeft het booleaanse resultaat van de %s-vergelijking tussen twee parameters."
 
 #: editor/plugins/visual_shader_editor_plugin.cpp
 msgid "Equal (==)"
@@ -9526,7 +9854,11 @@ msgstr ""
 
 #: editor/plugins/visual_shader_editor_plugin.cpp
 msgid "A reference to an existing uniform."
+<<<<<<< HEAD
 msgstr ""
+=======
+msgstr "Een verwijzing naar een bestaand uniform."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/plugins/visual_shader_editor_plugin.cpp
 msgid "(Fragment/Light mode only) Scalar derivative function."
@@ -9892,6 +10224,10 @@ msgid "OpenGL ES 3.0"
 msgstr "OpenGL ES 3.0"
 
 #: editor/project_manager.cpp
+msgid "Not supported by your GPU drivers."
+msgstr "Niet ondersteund door uw GPU drivers."
+
+#: editor/project_manager.cpp
 msgid ""
 "Higher visual quality\n"
 "All features available\n"
@@ -10046,9 +10382,14 @@ msgid ""
 "Language changed.\n"
 "The interface will update after restarting the editor or project manager."
 msgstr ""
+<<<<<<< HEAD
 "De taal is veranderd. \n"
 "De gebruikersomgeving wordt bij het herstarten van de editor of "
 "projectbeheer bijgewerkt."
+=======
+"De taal is veranderd.\n"
+"De gebruikersomgeving wordt bijgewerkt na het herstarten."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/project_manager.cpp
 msgid ""
@@ -10066,6 +10407,10 @@ msgstr "Projectbeheer"
 #: editor/project_manager.cpp
 msgid "Projects"
 msgstr "Projecten"
+
+#: editor/project_manager.cpp
+msgid "Loading, please wait..."
+msgstr "Aan het laden, even wachten a.u.b..."
 
 #: editor/project_manager.cpp
 msgid "Last Modified"
@@ -10105,7 +10450,18 @@ msgid ""
 "Would you like to explore official example projects in the Asset Library?"
 msgstr ""
 "U heeft momenteel geen projecten.\n"
-"Wilt u de officiële voorbeeldprojecten verkennen in de Asset Library?"
+"Wilt u officiële voorbeeldprojecten verkennen in de Materiaalbibliotheek?"
+
+#: editor/project_manager.cpp
+msgid ""
+"The search box filters projects by name and last path component.\n"
+"To filter projects by name and full path, the query must contain at least "
+"one `/` character."
+msgstr ""
+"De zoekbalk filtert projecten op naam en naam van de map waarin het project "
+"staat.\n"
+"Om ook op het volledige pad te filteren, moet de zoekopdracht tenminste één "
+"`/` karakter bevatten."
 
 #: editor/project_manager.cpp
 msgid ""
@@ -10136,7 +10492,7 @@ msgstr "Muis Knop"
 
 #: editor/project_settings_editor.cpp
 msgid ""
-"Invalid action name. it cannot be empty nor contain '/', ':', '=', '\\' or "
+"Invalid action name. It cannot be empty nor contain '/', ':', '=', '\\' or "
 "'\"'"
 msgstr ""
 "Ongeldige actienaam. Kan niet leeg zijn en mag niet '/', ':', '=', '\\' of "
@@ -10438,6 +10794,10 @@ msgstr "Automatisch Laden"
 msgid "Plugins"
 msgstr "Plugins"
 
+#: editor/project_settings_editor.cpp
+msgid "Import Defaults"
+msgstr "Laad de standaard waarden"
+
 #: editor/property_editor.cpp
 msgid "Preset..."
 msgstr "Voorinstelling..."
@@ -10499,6 +10859,7 @@ msgid "Batch Rename"
 msgstr "Bulk hernoemen"
 
 #: editor/rename_dialog.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "Replace:"
 msgstr "Vervangen: "
@@ -10512,6 +10873,22 @@ msgstr "Voorvoegsel"
 #, fuzzy
 msgid "Suffix:"
 msgstr "Achtervoegsel"
+=======
+msgid "Replace:"
+msgstr "Vervangen:"
+
+#: editor/rename_dialog.cpp
+msgid "Prefix:"
+msgstr "Voorvoegsel:"
+
+#: editor/rename_dialog.cpp
+msgid "Suffix:"
+msgstr "Achtervoegsel:"
+
+#: editor/rename_dialog.cpp
+msgid "Use Regular Expressions"
+msgstr "Reguliere expressies gebruiken"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/rename_dialog.cpp
 msgid "Use Regular Expressions"
@@ -10558,11 +10935,14 @@ msgid "Per-level Counter"
 msgstr "Per niveau teller"
 
 #: editor/rename_dialog.cpp
+<<<<<<< HEAD
 #, fuzzy
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "If set, the counter restarts for each group of child nodes."
 msgstr ""
-"Indien ingesteld: herstart de teller voor iedere groep van onderliggende "
-"knopen"
+"Indien ingesteld, zal de teller voor iedere groep van onderliggende knopen "
+"opnieuw starten."
 
 #: editor/rename_dialog.cpp
 msgid "Initial value for the counter"
@@ -10621,9 +11001,14 @@ msgid "Reset"
 msgstr "Resetten"
 
 #: editor/rename_dialog.cpp
+<<<<<<< HEAD
 #, fuzzy
 msgid "Regular Expression Error:"
 msgstr "Fout in reguliere expressie"
+=======
+msgid "Regular Expression Error:"
+msgstr "Fout in reguliere expressie:"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/rename_dialog.cpp
 msgid "At character %s"
@@ -10694,6 +11079,18 @@ msgid "Instance Child Scene"
 msgstr "Scène instantiëren"
 
 #: editor/scene_tree_dock.cpp
+<<<<<<< HEAD
+=======
+#, fuzzy
+msgid "Can't paste root node into the same scene."
+msgstr "Kan deze operatie niet uitvoeren op knopen uit een vreemde scène!"
+
+#: editor/scene_tree_dock.cpp
+msgid "Paste Node(s)"
+msgstr "Knopen plakken"
+
+#: editor/scene_tree_dock.cpp
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgid "Detach Script"
 msgstr "Script losmaken"
 
@@ -10733,7 +11130,11 @@ msgstr "Knoop tot wortelknoop maken"
 
 #: editor/scene_tree_dock.cpp
 msgid "Delete %d nodes and any children?"
+<<<<<<< HEAD
 msgstr "%d knopen en hun (eventuele) kinderen verwijderen?"
+=======
+msgstr "Verwijder %d knopen en eventuele kinderen?"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/scene_tree_dock.cpp
 msgid "Delete %d nodes?"
@@ -10819,6 +11220,13 @@ msgstr "Kan niet werken aan knopen waar de huidige scène van erft!"
 #: editor/scene_tree_dock.cpp
 msgid "Attach Script"
 msgstr "Script toevoegen"
+<<<<<<< HEAD
+=======
+
+#: editor/scene_tree_dock.cpp
+msgid "Cut Node(s)"
+msgstr "Knopen knippen"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: editor/scene_tree_dock.cpp
 msgid "Remove Node(s)"
@@ -10932,6 +11340,13 @@ msgstr "Script van geselecteerde knoop losmaken."
 #: editor/scene_tree_dock.cpp
 msgid "Remote"
 msgstr "Remote"
+
+#: editor/scene_tree_dock.cpp
+msgid ""
+"If selected, the Remote scene tree dock will cause the project to stutter "
+"every time it updates.\n"
+"Switch back to the Local scene tree dock to improve performance."
+msgstr ""
 
 #: editor/scene_tree_dock.cpp
 msgid "Local"
@@ -11327,7 +11742,7 @@ msgstr "Editor Instellingen"
 
 #: editor/settings_config_dialog.cpp
 msgid "Shortcuts"
-msgstr "Snelkoppelingen"
+msgstr "Sneltoetsen"
 
 #: editor/settings_config_dialog.cpp
 msgid "Binding"
@@ -11625,6 +12040,34 @@ msgstr "Filter Meshes"
 #: modules/gridmap/grid_map_editor_plugin.cpp
 msgid "Give a MeshLibrary resource to this GridMap to use its meshes."
 msgstr "Voeg een MeshLibrary aan deze GridMap toe om meshes te gebruiken."
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Begin Bake"
+msgstr "Begin lichtberekening"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Preparing data structures"
+msgstr "Datastructuren worden voorbereid"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Generate buffers"
+msgstr "Genereer buffers"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Direct lighting"
+msgstr "Directe verlichting"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Indirect lighting"
+msgstr "Indirecte verlichting"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Post processing"
+msgstr "Nabewerking"
+
+#: modules/lightmapper_cpu/lightmapper_cpu.cpp
+msgid "Plotting lightmaps"
+msgstr "Lightmaps plotten"
 
 #: modules/mono/csharp_script.cpp
 msgid "Class name can't be a reserved keyword"
@@ -12143,12 +12586,16 @@ msgid "Select device from the list"
 msgstr "Selecteer apparaat uit de lijst"
 
 #: platform/android/export/export.cpp
-msgid "ADB executable not configured in the Editor Settings."
-msgstr "ADB niet ingesteld in Editor Settings."
+msgid "Unable to find the 'apksigner' tool."
+msgstr "Het hulpmiddel 'apksigner' kon niet gevonden worden."
 
 #: platform/android/export/export.cpp
-msgid "OpenJDK jarsigner not configured in the Editor Settings."
-msgstr "OpenJDK niet ingesteld in Editor Settings."
+msgid ""
+"Android build template not installed in the project. Install it from the "
+"Project menu."
+msgstr ""
+"Geen Android bouwsjabloon geïnstalleerd in dit project. Vanuit het "
+"projectmenu kan het geïnstalleerd worden."
 
 #: platform/android/export/export.cpp
 msgid "Debug keystore not configured in the Editor Settings nor in the preset."
@@ -12159,15 +12606,33 @@ msgid "Release keystore incorrectly configured in the export preset."
 msgstr "Release-Keystore is verkeerd ingesteld in de exportinstelingen."
 
 #: platform/android/export/export.cpp
+<<<<<<< HEAD
 msgid "Custom build requires a valid Android SDK path in Editor Settings."
+=======
+msgid "A valid Android SDK path is required in Editor Settings."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgstr ""
-"Eigen build vereist een geldige Android SDK pad in de Editorinstellingen."
+"Een geldig Android SDK-pad moet in de Editorinstellingen ingesteld zijn."
 
 #: platform/android/export/export.cpp
-msgid "Invalid Android SDK path for custom build in Editor Settings."
+msgid "Invalid Android SDK path in Editor Settings."
+msgstr "Ongeldig Android SDK-pad in Editorinstellingen."
+
+#: platform/android/export/export.cpp
+msgid "Missing 'platform-tools' directory!"
+msgstr "'platform-tools' map ontbreekt!"
+
+#: platform/android/export/export.cpp
+msgid "Unable to find Android SDK platform-tools' adb command."
+msgstr ""
+
+#: platform/android/export/export.cpp
+#, fuzzy
+msgid "Please check in the Android SDK directory specified in Editor Settings."
 msgstr "Ongeldig Android SDK pad voor custom build in Editor Settings."
 
 #: platform/android/export/export.cpp
+<<<<<<< HEAD
 msgid "Missing 'platform-tools' directory!"
 msgstr ""
 
@@ -12175,9 +12640,14 @@ msgstr ""
 msgid ""
 "Android build template not installed in the project. Install it from the "
 "Project menu."
+=======
+msgid "Missing 'build-tools' directory!"
+msgstr "'build tools' map ontbreekt!"
+
+#: platform/android/export/export.cpp
+msgid "Unable to find Android SDK build-tools' apksigner command."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 msgstr ""
-"Geen Android bouwsjabloon geïnstalleerd in dit project. Vanuit het "
-"projectmenu kan het geïnstalleerd worden."
 
 #: platform/android/export/export.cpp
 msgid "Invalid public key for APK expansion."
@@ -12223,11 +12693,16 @@ msgstr ""
 
 #: platform/android/export/export.cpp
 msgid "\"Export AAB\" is only valid when \"Use Custom Build\" is enabled."
+<<<<<<< HEAD
 msgstr ""
+=======
+msgstr "\"Export AAB\" is alleen geldig als \"Use Custom Build\" aan staat."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: platform/android/export/export.cpp
 msgid "Invalid filename! Android App Bundle requires the *.aab extension."
 msgstr ""
+<<<<<<< HEAD
 
 #: platform/android/export/export.cpp
 msgid "APK Expansion not compatible with Android App Bundle."
@@ -12236,6 +12711,17 @@ msgstr ""
 #: platform/android/export/export.cpp
 msgid "Invalid filename! Android APK requires the *.apk extension."
 msgstr ""
+=======
+"Bestandsnaam niet toegestaan! Android App Bundle vereist een *.aab extensie."
+
+#: platform/android/export/export.cpp
+msgid "APK Expansion not compatible with Android App Bundle."
+msgstr "APK Expansion werkt niet samen met Android App Bundle."
+
+#: platform/android/export/export.cpp
+msgid "Invalid filename! Android APK requires the *.apk extension."
+msgstr "Bestandsnaam niet toegestaan! Android APK vereist een *.apk extensie."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: platform/android/export/export.cpp
 msgid ""
@@ -12271,13 +12757,22 @@ msgstr ""
 
 #: platform/android/export/export.cpp
 msgid "Moving output"
+<<<<<<< HEAD
 msgstr ""
+=======
+msgstr "Output verplaatsen"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: platform/android/export/export.cpp
 msgid ""
 "Unable to copy and rename export file, check gradle project directory for "
 "outputs."
 msgstr ""
+<<<<<<< HEAD
+=======
+"Niet in staat om het export bestand te kopiëren en hernoemen. Controleer de "
+"gradle project folder voor outputs."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: platform/iphone/export/export.cpp
 msgid "Identifier is missing."
@@ -12419,10 +12914,10 @@ msgid ""
 "Consider adding a CollisionShape2D or CollisionPolygon2D as a child to "
 "define its shape."
 msgstr ""
-"Deze knoop heeft geen vorm (Shape), dus kan het niet met andere objecten "
-"botsen of interactie hebben.\n"
-"Overweeg om een CollisionShape2D of CollisionPolygon2D als kind toe te "
-"voegen om de vorm ervan vast te leggen."
+"Deze knoop heeft geen botsingsvorm als onderliggende knoop en kan dus niet "
+"met andere objecten botsen of interageren.\n"
+"Plaats hieronder een knoop als CollisionShape2D of CollisionPolygon2D om "
+"deze vorm vast te leggen."
 
 #: scene/2d/collision_polygon_2d.cpp
 msgid ""
@@ -12430,13 +12925,22 @@ msgid ""
 "CollisionObject2D derived node. Please only use it as a child of Area2D, "
 "StaticBody2D, RigidBody2D, KinematicBody2D, etc. to give them a shape."
 msgstr ""
-"CollisionPolygon2D dient enkel om een botsingsvorm te koppelen aan een knoop "
-"afgeleid van CollisionObject2D. Plaats hem onder een Area2D-, StaticBody2D-, "
-"RigidBody2D- of KinematicBody2D-knoop."
+"Een knooppunt van het type CollisionPolygon2D kan alleen een botsingsvorm "
+"keveren aan knopen die zijn afgeleid van CollisionObject2D. Plaats het dus "
+"alleen onder een knoop als Area2D, StaticBody2D, RigidBody2D of "
+"KinematicBody2D."
 
 #: scene/2d/collision_polygon_2d.cpp
 msgid "An empty CollisionPolygon2D has no effect on collision."
-msgstr "Een lege CollisionPolygon2D heeft geen effect op botsingen."
+msgstr "Lege CollisionPolygon2D hebben geen botsingsfunctie."
+
+#: scene/2d/collision_polygon_2d.cpp
+msgid "Invalid polygon. At least 3 points are needed in 'Solids' build mode."
+msgstr ""
+
+#: scene/2d/collision_polygon_2d.cpp
+msgid "Invalid polygon. At least 2 points are needed in 'Segments' build mode."
+msgstr ""
 
 #: scene/2d/collision_shape_2d.cpp
 msgid ""
@@ -12444,21 +12948,32 @@ msgid ""
 "CollisionObject2D derived node. Please only use it as a child of Area2D, "
 "StaticBody2D, RigidBody2D, KinematicBody2D, etc. to give them a shape."
 msgstr ""
-"CollisionShape2D dient enkel om een botsingsvorm te koppelen aan een knoop "
-"afgeleid van CollisionObject2D. Plaats hem onder een Area2D-, StaticBody2D-, "
-"RigidBody2D- of KinematicBody2D-knoop."
+"Een knooppunt van het type CollisionShape2D kan alleen een botsingsvorm "
+"keveren aan knopen die zijn afgeleid van CollisionObject2D. Plaats het dus "
+"alleen onder een knoop als Area2D, StaticBody2D, RigidBody2D of "
+"KinematicBody2D."
 
 #: scene/2d/collision_shape_2d.cpp
 msgid ""
 "A shape must be provided for CollisionShape2D to function. Please create a "
 "shape resource for it!"
+<<<<<<< HEAD
 msgstr "Een CollisionShape2D heeft een vorm nodig in de Shape-eigenschap!"
+=======
+msgstr "Een CollisionShape2D heeft een vorm nodig."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: scene/2d/collision_shape_2d.cpp
 msgid ""
 "Polygon-based shapes are not meant be used nor edited directly through the "
 "CollisionShape2D node. Please use the CollisionPolygon2D node instead."
 msgstr ""
+<<<<<<< HEAD
+=======
+"Op polygonen gebaseerde vormen zijn niet bedoeld om rechtstreeks via het "
+"CollisionShape2D-knooppunt te worden gebruikt of bewerkt. Gebruik in plaats "
+"daarvan het CollisionPolygon2D-knooppunt."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: scene/2d/cpu_particles_2d.cpp
 msgid ""
@@ -12467,6 +12982,26 @@ msgid ""
 msgstr ""
 "CPUParticles2D vereist een CanvasItemMaterial met \"Particles Animation\" "
 "ingeschakeld."
+
+#: scene/2d/joints_2d.cpp
+msgid "Node A and Node B must be PhysicsBody2Ds"
+msgstr "Knoop A en Knoop B moeten PhysicsBody2D zijn"
+
+#: scene/2d/joints_2d.cpp
+msgid "Node A must be a PhysicsBody2D"
+msgstr "Knoop A moet een PhysicsBody2D zijn"
+
+#: scene/2d/joints_2d.cpp
+msgid "Node B must be a PhysicsBody2D"
+msgstr "Knoop B moet een PhysicsBody2D zijn"
+
+#: scene/2d/joints_2d.cpp
+msgid "Joint is not connected to two PhysicsBody2Ds"
+msgstr ""
+
+#: scene/2d/joints_2d.cpp
+msgid "Node A and Node B must be different PhysicsBody2Ds"
+msgstr "Knoop A en Knoop B moeten verschillende PhysicsBody2D's zijn"
 
 #: scene/2d/light_2d.cpp
 msgid ""
@@ -12548,9 +13083,9 @@ msgid ""
 "by the physics engine when running.\n"
 "Change the size in children collision shapes instead."
 msgstr ""
-"Grootteveranderingen van een RigidBody2D (in Character- of Rigidmodus) zal "
-"overschreven worden door de physics engine als het spel start.\n"
-"Verander in plaats daarvan de grootte van CollisionShapes in de kinderen."
+"De grootte van een RigidBody2D (in Character- of Rigidmodus) wordt "
+"overschreven wanneer het spel start.\n"
+"Verander in plaats daarvan de grootte van de onderliggende botsingsvormen."
 
 #: scene/2d/remote_transform_2d.cpp
 msgid "Path property must point to a valid Node2D node to work."
@@ -12579,10 +13114,9 @@ msgid ""
 "to. Please use it as a child of Area2D, StaticBody2D, RigidBody2D, "
 "KinematicBody2D, etc. to give them a shape."
 msgstr ""
-"TileMap met de optie \"Use Parent\" aan heeft een CollisionShape2D-ouder "
-"nodig om vormen aan te geven. De TileMap hoort een kind van een Area2D, "
-"StaticBody2D, RigidBody2D, KinematicBody2D enz. knoop te zijn om ze een vorm "
-"te geven."
+"Een TileMap met de optie \"Use Parent\" ingeschakeld moet knoop afgeleid van "
+"CollisionObject2D (Area2D, StaticBody2D, RigidBody2D of KinematicBody2D) als "
+"ouder hebben."
 
 #: scene/2d/visibility_notifier_2d.cpp
 msgid ""
@@ -12625,28 +13159,29 @@ msgid "ARVROrigin requires an ARVRCamera child node."
 msgstr "ARVROrigin heeft een ARVRCamera nodig als kind."
 
 #: scene/3d/baked_lightmap.cpp
-msgid "%d%%"
-msgstr "%d%%"
+msgid "Finding meshes and lights"
+msgstr ""
 
 #: scene/3d/baked_lightmap.cpp
-msgid "(Time Left: %d:%02d s)"
-msgstr "(Tijd resterend: %d:%02d s)"
+msgid "Preparing geometry (%d/%d)"
+msgstr "Geometrie aan het voorbereiden (%d/%d)"
 
 #: scene/3d/baked_lightmap.cpp
-msgid "Plotting Meshes: "
-msgstr "Plotten Meshes: "
+msgid "Preparing environment"
+msgstr "Omgeving aan het voorbereiden"
 
 #: scene/3d/baked_lightmap.cpp
-msgid "Plotting Lights:"
-msgstr "Plotten Light:"
-
-#: scene/3d/baked_lightmap.cpp scene/3d/gi_probe.cpp
-msgid "Finishing Plot"
-msgstr "Plotten Voltooid"
+#, fuzzy
+msgid "Generating capture"
+msgstr "Bouw Lightmappen"
 
 #: scene/3d/baked_lightmap.cpp
-msgid "Lighting Meshes: "
-msgstr "Light Meshes: "
+msgid "Saving lightmaps"
+msgstr "Lightmappen aan het opslaan"
+
+#: scene/3d/baked_lightmap.cpp
+msgid "Done"
+msgstr "Klaar"
 
 #: scene/3d/collision_object.cpp
 msgid ""
@@ -12654,10 +13189,10 @@ msgid ""
 "Consider adding a CollisionShape or CollisionPolygon as a child to define "
 "its shape."
 msgstr ""
-"Deze knoop heeft geen vorm (Shape), dus het kan niet met andere objecten "
-"botsen of interactie hebben.\n"
-"Overweeg om een CollisionShape of CollisionPolygon als kind toe te voegen om "
-"de vorm ervan vast te leggen."
+"Deze knoop heeft geen botsingsvorm als onderliggende knoop en kan dus niet "
+"met andere objecten botsen of interageren.\n"
+"Plaats hieronder een knoop als CollisionShape of CollisionPolygon om deze "
+"vorm vast te leggen."
 
 #: scene/3d/collision_polygon.cpp
 msgid ""
@@ -12665,13 +13200,13 @@ msgid ""
 "CollisionObject derived node. Please only use it as a child of Area, "
 "StaticBody, RigidBody, KinematicBody, etc. to give them a shape."
 msgstr ""
-"CollisionPolygon dient enkel om een botsingsvorm te koppelen aan een knoop "
-"afgeleid van CollisionObject. Plaats hem onder een Area-, StaticBody-, "
-"RigidBody- of KinematicBody-knoop."
+"Een knooppunt van het type CollisionPolygon kan alleen een botsingsvorm "
+"keveren aan knopen die zijn afgeleid van CollisionObject. Plaats het dus "
+"alleen onder een knoop als Area, StaticBody, RigidBody of KinematicBody."
 
 #: scene/3d/collision_polygon.cpp
 msgid "An empty CollisionPolygon has no effect on collision."
-msgstr "Een lege CollisionPolygon heeft geen effect op botsingen."
+msgstr "Lege CollisionPolygon hebben geen botsingsfunctie."
 
 #: scene/3d/collision_shape.cpp
 msgid ""
@@ -12679,17 +13214,15 @@ msgid ""
 "derived node. Please only use it as a child of Area, StaticBody, RigidBody, "
 "KinematicBody, etc. to give them a shape."
 msgstr ""
-"CollisionShape dient enkel om een botsingsvorm te koppelen aan een knoop "
-"afgeleid van CollisionObject. Plaats hem onder een Area-, StaticBody-, "
-"RigidBody- of KinematicBody-knoop."
+"Een knooppunt van het type CollisionShape kan alleen een botsingsvorm "
+"keveren aan knopen die zijn afgeleid van CollisionObject2D. Plaats het dus "
+"alleen onder een knoop als Area, StaticBody, RigidBody of KinematicBody."
 
 #: scene/3d/collision_shape.cpp
 msgid ""
 "A shape must be provided for CollisionShape to function. Please create a "
 "shape resource for it."
-msgstr ""
-"Om CollisionShape te laten werken, hoort het een Shape te hebben. Maak "
-"hiervoor alstublieft een Shape bron aan."
+msgstr "Een CollisionShape heeft een vorm nodig."
 
 #: scene/3d/collision_shape.cpp
 msgid ""
@@ -12719,6 +13252,10 @@ msgstr ""
 #: scene/3d/gi_probe.cpp
 msgid "Plotting Meshes"
 msgstr "Plotten van Meshes"
+
+#: scene/3d/gi_probe.cpp
+msgid "Finishing Plot"
+msgstr "Plotten Voltooid"
 
 #: scene/3d/gi_probe.cpp
 msgid ""
@@ -12794,9 +13331,29 @@ msgid ""
 "by the physics engine when running.\n"
 "Change the size in children collision shapes instead."
 msgstr ""
-"Grootteveranderingen van een RigidBody (in Character- of Rigidmodus) zal "
-"overschreven worden door de physics engine als het spel start.\n"
-"Verander in plaats daarvan de grootte van CollisionShapes in de kinderen."
+"De grootte van een RigidBody (in Character- of Rigidmodus) wordt "
+"overschreven wanneer het spel start.\n"
+"Verander in plaats daarvan de grootte van de onderliggende botsingsvormen."
+
+#: scene/3d/physics_joint.cpp
+msgid "Node A and Node B must be PhysicsBodies"
+msgstr "Knoop A en Knoop B moeten PhysicsBody's zijn"
+
+#: scene/3d/physics_joint.cpp
+msgid "Node A must be a PhysicsBody"
+msgstr "Knoop A moet een PhysicsBody zijn"
+
+#: scene/3d/physics_joint.cpp
+msgid "Node B must be a PhysicsBody"
+msgstr "Knoop B moet een PhysicsBody zijn"
+
+#: scene/3d/physics_joint.cpp
+msgid "Joint is not connected to any PhysicsBodies"
+msgstr ""
+
+#: scene/3d/physics_joint.cpp
+msgid "Node A and Node B must be different PhysicsBodies"
+msgstr "Knoop A en Knoop B moeten PhysicsBody's zijn"
 
 #: scene/3d/remote_transform.cpp
 msgid ""
@@ -12816,9 +13373,8 @@ msgid ""
 "running.\n"
 "Change the size in children collision shapes instead."
 msgstr ""
-"Grootteveranderingen van een SoftBody (in Character- of Rigidmodus) zal "
-"overschreven worden door de physics engine als het spel start.\n"
-"Verander de grootte van CollisionShapes in de kinderen."
+"De grootte van een SoftBody wordt overschreven wanneer het spel start.\n"
+"Verander in plaats daarvan de grootte van de onderliggende botsingsvormen."
 
 #: scene/3d/sprite_3d.cpp
 msgid ""
@@ -12957,6 +13513,17 @@ msgstr "Alarm!"
 #: scene/gui/dialogs.cpp
 msgid "Please Confirm..."
 msgstr "Bevestig alstublieft..."
+<<<<<<< HEAD
+=======
+
+#: scene/gui/file_dialog.cpp
+msgid "Must use a valid extension."
+msgstr "Een geldige extensie moet gebruikt worden."
+
+#: scene/gui/graph_edit.cpp
+msgid "Enable grid minimap."
+msgstr "Rasteroverzicht inschakelen."
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #: scene/gui/popup.cpp
 msgid ""
@@ -13011,6 +13578,15 @@ msgid "Viewport size must be greater than 0 to render anything."
 msgstr ""
 "De grootte van een Viewport moet groter zijn dan 0 om iets weer te geven."
 
+<<<<<<< HEAD
+=======
+#: scene/resources/visual_shader_nodes.cpp
+msgid ""
+"The sampler port is connected but not used. Consider changing the source to "
+"'SamplerPort'."
+msgstr ""
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #: scene/resources/visual_shader_nodes.cpp
 msgid "Invalid source for preview."
 msgstr "Ongeldige bron voor voorvertoning."
@@ -13039,6 +13615,49 @@ msgstr "Varyings kunnen alleen worden toegewezenin vertex functies."
 msgid "Constants cannot be modified."
 msgstr "Constanten kunnen niet worden aangepast."
 
+<<<<<<< HEAD
+=======
+#~ msgid "No"
+#~ msgstr "Nee"
+
+#~ msgid "This scene has never been saved. Save before running?"
+#~ msgstr "Deze scene is nooit opgeslagen. Sla op voor het uitvoeren?"
+
+#~ msgid "ADB executable not configured in the Editor Settings."
+#~ msgstr "ADB niet ingesteld in Editor Settings."
+
+#~ msgid "OpenJDK jarsigner not configured in the Editor Settings."
+#~ msgstr "OpenJDK niet ingesteld in Editor Settings."
+
+#~ msgid "Custom build requires a valid Android SDK path in Editor Settings."
+#~ msgstr ""
+#~ "Eigen build vereist een geldige Android SDK pad in de Editorinstellingen."
+
+#~ msgid "%d%%"
+#~ msgstr "%d%%"
+
+#~ msgid "(Time Left: %d:%02d s)"
+#~ msgstr "(Tijd resterend: %d:%02d s)"
+
+#~ msgid "Plotting Meshes: "
+#~ msgstr "Plotten Meshes: "
+
+#~ msgid "Lighting Meshes: "
+#~ msgstr "Light Meshes: "
+
+#~ msgid "Search complete"
+#~ msgstr "Zoek Compleet"
+
+#~ msgid "No commit message was provided"
+#~ msgstr "Geen commitbericht was gegeven"
+
+#~ msgid "Add a commit message"
+#~ msgstr "Voeg een vastleggingsbericht toe"
+
+#~ msgid "There is already file or folder with the same name in this location."
+#~ msgstr "Er is al een bestand of map met dezelfde naam op dit pad."
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #~ msgid "Error trying to save layout!"
 #~ msgstr "Fout bij het opslaan van indeling!"
 

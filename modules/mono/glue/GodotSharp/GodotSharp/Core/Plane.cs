@@ -117,6 +117,7 @@ namespace Godot
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// The center of the plane, the point where the normal line intersects the plane.
         /// Deprecated, use the Center property instead.
         /// </summary>
@@ -128,6 +129,8 @@ namespace Godot
         }
 
         /// <summary>
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         /// Returns true if point is inside the plane.
         /// Comparison uses a custom minimum epsilon threshold.
         /// </summary>

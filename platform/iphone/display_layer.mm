@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -29,9 +34,15 @@
 /*************************************************************************/
 
 #import "display_layer.h"
+<<<<<<< HEAD
 
 #include "core/os/keyboard.h"
 #include "core/project_settings.h"
+=======
+#include "core/config/project_settings.h"
+#include "core/os/keyboard.h"
+#include "display_server_iphone.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #include "main/main.h"
 #include "os_iphone.h"
 #include "servers/audio_server.h"
@@ -44,8 +55,30 @@
 #import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIKit.h>
 
+<<<<<<< HEAD
 int gl_view_base_fb;
 bool gles3_available = true;
+=======
+@implementation GodotMetalLayer
+
+- (void)initializeDisplayLayer {
+#if defined(TARGET_OS_SIMULATOR) && TARGET_OS_SIMULATOR
+	if (@available(iOS 13, *)) {
+		// Simulator supports Metal since iOS 13
+	} else {
+		NSLog(@"iOS Simulator prior to iOS 13 does not support Metal rendering.");
+	}
+#endif
+}
+
+- (void)layoutDisplayLayer {
+}
+
+- (void)renderDisplayLayer {
+}
+
+@end
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 @implementation GodotOpenGLLayer {
 	// The pixel dimensions of the backbuffer
@@ -58,6 +91,11 @@ bool gles3_available = true;
 }
 
 - (void)initializeDisplayLayer {
+<<<<<<< HEAD
+=======
+	// Get our backing layer
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// Configure it so that it is opaque, does not retain the contents of the backbuffer when displayed, and uses RGBA8888 color.
 	self.opaque = YES;
 	self.drawableProperties = [NSDictionary
@@ -66,6 +104,7 @@ bool gles3_available = true;
 			kEAGLColorFormatRGBA8,
 			kEAGLDrawablePropertyColorFormat,
 			nil];
+<<<<<<< HEAD
 	bool fallback_gl2 = false;
 	// Create a GL ES 3 context based on the gl driver from project settings
 	if (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3") {
@@ -80,6 +119,13 @@ bool gles3_available = true;
 
 	// Create GL ES 2 context
 	if (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES2" || fallback_gl2) {
+=======
+
+	// FIXME: Add Vulkan support via MoltenVK. Add fallback code back?
+
+	// Create GL ES 2 context
+	if (GLOBAL_GET("rendering/driver/driver_name") == "GLES2") {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 		NSLog(@"Setting up an OpenGL ES 2.0 context.");
 		if (!context) {
@@ -104,6 +150,7 @@ bool gles3_available = true;
 	[self createFramebuffer];
 }
 
+<<<<<<< HEAD
 - (void)startRenderDisplayLayer {
 	[EAGLContext setCurrentContext:context];
 
@@ -120,6 +167,10 @@ bool gles3_available = true;
 		NSLog(@"DrawView: %x error", err);
 	}
 #endif
+=======
+- (void)renderDisplayLayer {
+	[EAGLContext setCurrentContext:context];
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 - (void)dealloc {
@@ -133,13 +184,20 @@ bool gles3_available = true;
 }
 
 - (BOOL)createFramebuffer {
+<<<<<<< HEAD
 	// Generate IDs for a framebuffer object and a color renderbuffer
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	glGenFramebuffersOES(1, &viewFramebuffer);
 	glGenRenderbuffersOES(1, &viewRenderbuffer);
 
 	glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
 	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+<<<<<<< HEAD
 	// This call associates the storage for the current render buffer with the EAGLDrawable (our CAEAGLLayer)
+=======
+	// This call associates the storage for the current render buffer with the EAGLDrawable (our CAself)
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// allowing us to draw into a buffer that will later be rendered to screen wherever the layer is (which corresponds with our view).
 	[context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(id<EAGLDrawable>)self];
 	glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, viewRenderbuffer);
@@ -158,6 +216,7 @@ bool gles3_available = true;
 		return NO;
 	}
 
+<<<<<<< HEAD
 	if (OS::get_singleton()) {
 		OS::VideoMode vm;
 		vm.fullscreen = true;
@@ -169,6 +228,18 @@ bool gles3_available = true;
 	}
 
 	gl_view_base_fb = viewFramebuffer;
+=======
+	//    if (OS::get_singleton()) {
+	//        OS::VideoMode vm;
+	//        vm.fullscreen = true;
+	//        vm.width = backingWidth;
+	//        vm.height = backingHeight;
+	//        vm.resizable = false;
+	//        OS::get_singleton()->set_video_mode(vm);
+	//        OSIPhone::get_singleton()->set_base_framebuffer(viewFramebuffer);
+	//    };
+	//    gl_view_base_fb = viewFramebuffer;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	return YES;
 }

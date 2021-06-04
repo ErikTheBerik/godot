@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -33,8 +38,13 @@
 #include "fbx_node.h"
 #include "import_state.h"
 
+<<<<<<< HEAD
 Ref<FBXNode> FBXBone::get_link(const ImportState &state) const {
 	print_verbose("bone name: " + bone_name);
+=======
+Ref<FBXNode> FBXSkinDeformer::get_link(const ImportState &state) const {
+	print_verbose("bone name: " + bone->bone_name);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	// safe for when deformers must be polyfilled when skin has different count of binds to bones in the scene ;)
 	if (!cluster) {
@@ -54,6 +64,7 @@ Ref<FBXNode> FBXBone::get_link(const ImportState &state) const {
 	// the node in space this is for, like if it's FOR a target.
 	return link_node;
 }
+<<<<<<< HEAD
 
 /* right now we just get single skin working and we can patch in the multiple tomorrow - per skin not per bone. */
 // this will work for multiple meshes :) awesomeness.
@@ -104,3 +115,5 @@ Transform FBXBone::get_vertex_skin_xform(const ImportState &state, Transform mes
 
 	return vertex_transform_matrix;
 }
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45

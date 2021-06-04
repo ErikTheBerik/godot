@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ResourceSaver" inherits="Object" version="3.2">
+<class name="ResourceSaver" inherits="Object" version="4.0">
 	<brief_description>
 		Singleton for saving Godot-specific resource types.
 	</brief_description>
@@ -11,7 +11,7 @@
 	</tutorials>
 	<methods>
 		<method name="get_recognized_extensions">
-			<return type="PoolStringArray">
+			<return type="PackedStringArray">
 			</return>
 			<argument index="0" name="type" type="Resource">
 			</argument>
@@ -49,7 +49,7 @@
 			Do not save editor-specific metadata (identified by their [code]__editor[/code] prefix).
 		</constant>
 		<constant name="FLAG_SAVE_BIG_ENDIAN" value="16" enum="SaverFlags">
-			Save as big endian (see [member File.endian_swap]).
+			Save as big endian (see [member File.big_endian]).
 		</constant>
 		<constant name="FLAG_COMPRESS" value="32" enum="SaverFlags">
 			Compress the resource on save using [constant File.COMPRESSION_ZSTD]. Only available for binary resource types.

@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -59,7 +64,11 @@ const GodotAudio = {
 				}
 				onstatechange(state);
 			};
+<<<<<<< HEAD
 			ctx.onstatechange(); // Immeditately notify state.
+=======
+			ctx.onstatechange(); // Immediately notify state.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			// Update computed latency
 			GodotAudio.interval = setInterval(function () {
 				let computed_latency = 0;
@@ -77,6 +86,7 @@ const GodotAudio = {
 
 		create_input: function (callback) {
 			if (GodotAudio.input) {
+<<<<<<< HEAD
 				return; // Already started.
 			}
 			function gotMediaInput(stream) {
@@ -88,17 +98,45 @@ const GodotAudio = {
 					'audio': true,
 				}).then(gotMediaInput, function (e) {
 					GodotRuntime.print(e);
+=======
+				return 0; // Already started.
+			}
+			function gotMediaInput(stream) {
+				try {
+					GodotAudio.input = GodotAudio.ctx.createMediaStreamSource(stream);
+					callback(GodotAudio.input);
+				} catch (e) {
+					GodotRuntime.error('Failed creaating input.', e);
+				}
+			}
+			if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+				navigator.mediaDevices.getUserMedia({
+					'audio': true,
+				}).then(gotMediaInput, function (e) {
+					GodotRuntime.error('Error getting user media.', e);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				});
 			} else {
 				if (!navigator.getUserMedia) {
 					navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 				}
+<<<<<<< HEAD
+=======
+				if (!navigator.getUserMedia) {
+					GodotRuntime.error('getUserMedia not available.');
+					return 1;
+				}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				navigator.getUserMedia({
 					'audio': true,
 				}, gotMediaInput, function (e) {
 					GodotRuntime.print(e);
 				});
 			}
+<<<<<<< HEAD
+=======
+			return 0;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		},
 
 		close_async: function (resolve, reject) {
@@ -137,6 +175,10 @@ const GodotAudio = {
 		},
 	},
 
+<<<<<<< HEAD
+=======
+	godot_audio_is_available__sig: 'i',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_is_available__proxy: 'sync',
 	godot_audio_is_available: function () {
 		if (!(window.AudioContext || window.webkitAudioContext)) {
@@ -145,12 +187,20 @@ const GodotAudio = {
 		return 1;
 	},
 
+<<<<<<< HEAD
+=======
+	godot_audio_init__sig: 'iiiii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_init: function (p_mix_rate, p_latency, p_state_change, p_latency_update) {
 		const statechange = GodotRuntime.get_func(p_state_change);
 		const latencyupdate = GodotRuntime.get_func(p_latency_update);
 		return GodotAudio.init(p_mix_rate, p_latency, statechange, latencyupdate);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_audio_resume__sig: 'v',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_resume: function () {
 		if (GodotAudio.ctx && GodotAudio.ctx.state !== 'running') {
 			GodotAudio.ctx.resume();
@@ -158,16 +208,26 @@ const GodotAudio = {
 	},
 
 	godot_audio_capture_start__proxy: 'sync',
+<<<<<<< HEAD
 	godot_audio_capture_start: function () {
 		if (GodotAudio.input) {
 			return; // Already started.
 		}
 		GodotAudio.create_input(function (input) {
+=======
+	godot_audio_capture_start__sig: 'i',
+	godot_audio_capture_start: function () {
+		return GodotAudio.create_input(function (input) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			input.connect(GodotAudio.driver.get_node());
 		});
 	},
 
 	godot_audio_capture_stop__proxy: 'sync',
+<<<<<<< HEAD
+=======
+	godot_audio_capture_stop__sig: 'v',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_capture_stop: function () {
 		if (GodotAudio.input) {
 			const tracks = GodotAudio.input['mediaStream']['getTracks']();
@@ -227,6 +287,12 @@ const GodotAudioWorklet = {
 
 		close: function () {
 			return new Promise(function (resolve, reject) {
+<<<<<<< HEAD
+=======
+				if (GodotAudioWorklet.promise === null) {
+					return;
+				}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				GodotAudioWorklet.promise.then(function () {
 					GodotAudioWorklet.worklet.port.postMessage({
 						'cmd': 'stop',
@@ -236,15 +302,27 @@ const GodotAudioWorklet = {
 					GodotAudioWorklet.worklet = null;
 					GodotAudioWorklet.promise = null;
 					resolve();
+<<<<<<< HEAD
 				});
+=======
+				}).catch(function (err) { /* aborted? */ });
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			});
 		},
 	},
 
+<<<<<<< HEAD
+=======
+	godot_audio_worklet_create__sig: 'vi',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_worklet_create: function (channels) {
 		GodotAudioWorklet.create(channels);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_audio_worklet_start__sig: 'viiiii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_worklet_start: function (p_in_buf, p_in_size, p_out_buf, p_out_size, p_state) {
 		const out_buffer = GodotRuntime.heapSub(HEAPF32, p_out_buf, p_out_size);
 		const in_buffer = GodotRuntime.heapSub(HEAPF32, p_in_buf, p_in_size);
@@ -252,15 +330,27 @@ const GodotAudioWorklet = {
 		GodotAudioWorklet.start(in_buffer, out_buffer, state);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_audio_worklet_state_wait__sig: 'iiii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_worklet_state_wait: function (p_state, p_idx, p_expected, p_timeout) {
 		Atomics.wait(HEAP32, (p_state >> 2) + p_idx, p_expected, p_timeout);
 		return Atomics.load(HEAP32, (p_state >> 2) + p_idx);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_audio_worklet_state_add__sig: 'iiii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_worklet_state_add: function (p_state, p_idx, p_value) {
 		return Atomics.add(HEAP32, (p_state >> 2) + p_idx, p_value);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_audio_worklet_state_get__sig: 'iii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_worklet_state_get: function (p_state, p_idx) {
 		return Atomics.load(HEAP32, (p_state >> 2) + p_idx);
 	},
@@ -330,10 +420,18 @@ const GodotAudioScript = {
 		},
 	},
 
+<<<<<<< HEAD
+=======
+	godot_audio_script_create__sig: 'iii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_script_create: function (buffer_length, channel_count) {
 		return GodotAudioScript.create(buffer_length, channel_count);
 	},
 
+<<<<<<< HEAD
+=======
+	godot_audio_script_start__sig: 'viiiii',
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	godot_audio_script_start: function (p_in_buf, p_in_size, p_out_buf, p_out_size, p_cb) {
 		const onprocess = GodotRuntime.get_func(p_cb);
 		GodotAudioScript.start(p_in_buf, p_in_size, p_out_buf, p_out_size, onprocess);

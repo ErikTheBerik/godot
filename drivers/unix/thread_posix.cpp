@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -28,9 +28,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#if (defined(UNIX_ENABLED) || defined(PTHREAD_ENABLED)) && !defined(NO_THREADS)
+
 #include "thread_posix.h"
 
-#if (defined(UNIX_ENABLED) || defined(PTHREAD_ENABLED)) && !defined(NO_THREADS)
+#include "core/os/thread.h"
+#include "core/string/ustring.h"
 
 #include "core/os/memory.h"
 #include "core/safe_refcount.h"
@@ -40,6 +43,7 @@
 #include <pthread_np.h>
 #endif
 
+<<<<<<< HEAD
 static void _thread_id_key_destr_callback(void *p_value) {
 	memdelete(static_cast<Thread::ID *>(p_value));
 }
@@ -114,6 +118,9 @@ void ThreadPosix::wait_to_finish_func_posix(Thread *p_thread) {
 
 Error ThreadPosix::set_name_func_posix(const String &p_name) {
 
+=======
+static Error set_name(const String &p_name) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 #ifdef PTHREAD_NO_RENAME
 	return ERR_UNAVAILABLE;
 
@@ -141,22 +148,10 @@ Error ThreadPosix::set_name_func_posix(const String &p_name) {
 	return err == 0 ? OK : ERR_INVALID_PARAMETER;
 
 #endif // PTHREAD_NO_RENAME
-};
-
-void ThreadPosix::make_default() {
-
-	create_func = create_func_posix;
-	get_thread_id_func = get_thread_id_func_posix;
-	wait_to_finish_func = wait_to_finish_func_posix;
-	set_name_func = set_name_func_posix;
 }
 
-ThreadPosix::ThreadPosix() {
-
-	pthread = 0;
-}
-
-ThreadPosix::~ThreadPosix() {
+void init_thread_posix() {
+	Thread::_set_platform_funcs(&set_name, nullptr);
 }
 
 #endif

@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,7 +35,11 @@
 
 #import "godot_view_gesture_recognizer.h"
 
+<<<<<<< HEAD
 #include "core/project_settings.h"
+=======
+#include "core/config/project_settings.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 // Minimum distance for touches to move to fire
 // a delay timer before scheduled time.
@@ -44,6 +53,21 @@ const CGFloat kGLGestureMovementDistance = 0.5;
 
 @end
 
+<<<<<<< HEAD
+=======
+@interface GodotViewGestureRecognizer ()
+
+// Timer used to delay begin touch message.
+// Should work as simple emulation of UIDelayedAction
+@property(strong, nonatomic) NSTimer *delayTimer;
+
+// Delayed touch parameters
+@property(strong, nonatomic) NSSet *delayedTouches;
+@property(strong, nonatomic) UIEvent *delayedEvent;
+
+@end
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 @implementation GodotViewGestureRecognizer
 
 - (instancetype)init {
@@ -58,6 +82,7 @@ const CGFloat kGLGestureMovementDistance = 0.5;
 	return self;
 }
 
+<<<<<<< HEAD
 - (void)delayTouches:(NSSet *)touches andEvent:(UIEvent *)event {
 	[delayTimer fire];
 
@@ -77,6 +102,47 @@ const CGFloat kGLGestureMovementDistance = 0.5;
 
 	delayedTouches = nil;
 	delayedEvent = nil;
+=======
+- (void)dealloc {
+	if (self.delayTimer) {
+		[self.delayTimer invalidate];
+		self.delayTimer = nil;
+	}
+
+	if (self.delayedTouches) {
+		self.delayedTouches = nil;
+	}
+
+	if (self.delayedEvent) {
+		self.delayedEvent = nil;
+	}
+}
+
+- (void)delayTouches:(NSSet *)touches andEvent:(UIEvent *)event {
+	[self.delayTimer fire];
+
+	self.delayedTouches = touches;
+	self.delayedEvent = event;
+
+	self.delayTimer = [NSTimer
+			scheduledTimerWithTimeInterval:self.delayTimeInterval
+									target:self
+								  selector:@selector(fireDelayedTouches:)
+								  userInfo:nil
+								   repeats:NO];
+}
+
+- (void)fireDelayedTouches:(id)timer {
+	[self.delayTimer invalidate];
+	self.delayTimer = nil;
+
+	if (self.delayedTouches) {
+		[self.view touchesBegan:self.delayedTouches withEvent:self.delayedEvent];
+	}
+
+	self.delayedTouches = nil;
+	self.delayedEvent = nil;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -87,7 +153,11 @@ const CGFloat kGLGestureMovementDistance = 0.5;
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 	NSSet *cleared = [self copyClearedTouches:touches phase:UITouchPhaseMoved];
 
+<<<<<<< HEAD
 	if (delayTimer) {
+=======
+	if (self.delayTimer) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		// We should check if movement was significant enough to fire an event
 		// for dragging to work correctly.
 		for (UITouch *touch in cleared) {
@@ -100,11 +170,19 @@ const CGFloat kGLGestureMovementDistance = 0.5;
 
 			// Early exit, since one of touches has moved enough to fire a drag event.
 			if (distance > kGLGestureMovementDistance) {
+<<<<<<< HEAD
 				[delayTimer fire];
+=======
+				[self.delayTimer fire];
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				[self.view touchesMoved:cleared withEvent:event];
 				return;
 			}
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		return;
 	}
 
@@ -112,14 +190,22 @@ const CGFloat kGLGestureMovementDistance = 0.5;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+<<<<<<< HEAD
 	[delayTimer fire];
+=======
+	[self.delayTimer fire];
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	NSSet *cleared = [self copyClearedTouches:touches phase:UITouchPhaseEnded];
 	[self.view touchesEnded:cleared withEvent:event];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+<<<<<<< HEAD
 	[delayTimer fire];
+=======
+	[self.delayTimer fire];
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	[self.view touchesCancelled:touches withEvent:event];
 };
 

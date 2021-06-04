@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -88,7 +93,11 @@ using namespace Util;
 
 // ------------------------------------------------------------------------------------------------
 Geometry::Geometry(uint64_t id, const ElementPtr element, const std::string &name, const Document &doc) :
+<<<<<<< HEAD
 		Object(id, element, name), skin() {
+=======
+		Object(id, element, name) {
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	const std::vector<const Connection *> &conns = doc.GetConnectionsByDestinationSequenced(ID(), "Deformer");
 	for (const Connection *con : conns) {
 		const Skin *sk = ProcessSimpleConnection<Skin>(*con, false, "Skin -> Geometry", element);
@@ -125,7 +134,11 @@ MeshGeometry::MeshGeometry(uint64_t id, const ElementPtr element, const std::str
 
 	ScopePtr sc = element->Compound();
 	ERR_FAIL_COND_MSG(sc == nullptr, "failed to read geometry, prevented crash");
+<<<<<<< HEAD
 	ERR_FAIL_COND_MSG(!HasElement(sc, "Vertices"), "Detected mesh with no vertexes, didn't populate the mesh");
+=======
+	ERR_FAIL_COND_MSG(!HasElement(sc, "Vertices"), "Detected mesh with no vertices, didn't populate the mesh");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	// must have Mesh elements:
 	const ElementPtr Vertices = GetRequiredElement(sc, "Vertices", element);
@@ -140,14 +153,22 @@ MeshGeometry::MeshGeometry(uint64_t id, const ElementPtr element, const std::str
 	ParseVectorDataArray(m_vertices, Vertices);
 	ParseVectorDataArray(m_face_indices, PolygonVertexIndex);
 
+<<<<<<< HEAD
 	ERR_FAIL_COND_MSG(m_vertices.empty(), "mesh with no vertexes in FBX file, did you mean to delete it?");
+=======
+	ERR_FAIL_COND_MSG(m_vertices.empty(), "mesh with no vertices in FBX file, did you mean to delete it?");
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	ERR_FAIL_COND_MSG(m_face_indices.empty(), "mesh has no faces, was this intended?");
 
 	// Retrieve layer elements, for all of the mesh
 	const ElementCollection &Layer = sc->GetCollection("Layer");
 
 	// Store all layers
+<<<<<<< HEAD
 	std::vector<std::tuple<int, std::string> > valid_layers;
+=======
+	std::vector<std::tuple<int, std::string>> valid_layers;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	// now read the sub mesh information from the geometry (normals, uvs, etc)
 	for (ElementMap::const_iterator it = Layer.first; it != Layer.second; ++it) {
@@ -182,7 +203,11 @@ MeshGeometry::MeshGeometry(uint64_t id, const ElementPtr element, const std::str
 
 		// This is stupid, because it means we select them ALL not just the one we want.
 		// but it's fine we can match by id.
+<<<<<<< HEAD
 		GetRequiredElement(top, layer_type_name);
+=======
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 		const ElementCollection &candidates = top->GetCollection(layer_type_name);
 
 		ElementMap::const_iterator iter;
@@ -211,7 +236,37 @@ MeshGeometry::MeshGeometry(uint64_t id, const ElementPtr element, const std::str
 				} else if (layer_type_name == "LayerElementNormal") {
 					m_normals = resolve_vertex_data_array<Vector3>(layer_scope, MappingInformationType, ReferenceInformationType, "Normals");
 				} else if (layer_type_name == "LayerElementColor") {
+<<<<<<< HEAD
 					m_colors = resolve_vertex_data_array<Color>(layer_scope, MappingInformationType, ReferenceInformationType, "Colors");
+=======
+					m_colors = resolve_vertex_data_array<Color>(layer_scope, MappingInformationType, ReferenceInformationType, "Colors", "ColorIndex");
+					// NOTE: this is a useful sanity check to ensure you're getting any color data which is not default.
+					//					const Color first_color_check = m_colors.data[0];
+					//					bool colors_are_all_the_same = true;
+					//					size_t i = 1;
+					//					for(i = 1; i < m_colors.data.size(); i++)
+					//					{
+					//						const Color current_color = m_colors.data[i];
+					//						if(current_color.is_equal_approx(first_color_check))
+					//						{
+					//							continue;
+					//						}
+					//						else
+					//						{
+					//							colors_are_all_the_same = false;
+					//							break;
+					//						}
+					//					}
+					//
+					//					if(colors_are_all_the_same)
+					//					{
+					//						print_error("Color serialisation is not working for vertex colors some should be different in the test asset.");
+					//					}
+					//					else
+					//					{
+					//						print_verbose("Color array has unique colors at index: " + itos(i));
+					//					}
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 				}
 			}
 		}
@@ -252,7 +307,11 @@ MeshGeometry::MeshGeometry(uint64_t id, const ElementPtr element, const std::str
 				}
 			}
 			// As the algorithm above, this check is useless. Because the first
+<<<<<<< HEAD
 			// ever vertex is always considered the begining of a polygon.
+=======
+			// ever vertex is always considered the beginning of a polygon.
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 			ERR_FAIL_COND_MSG(found_it == false, "Was not possible to find the first vertex of this polygon. FBX file is corrupted.");
 
 		} else {
@@ -335,12 +394,30 @@ MeshGeometry::MappingData<T> MeshGeometry::resolve_vertex_data_array(
 		const ScopePtr source,
 		const std::string &MappingInformationType,
 		const std::string &ReferenceInformationType,
+<<<<<<< HEAD
 		const std::string &dataElementName) {
 
 	ERR_FAIL_COND_V_MSG(source == nullptr, MappingData<T>(), "Invalid scope operator preventing memory corruption");
 
 	// UVIndex, MaterialIndex, NormalIndex, etc..
 	std::string indexDataElementName = dataElementName + "Index";
+=======
+		const std::string &dataElementName,
+		const std::string &indexOverride) {
+	ERR_FAIL_COND_V_MSG(source == nullptr, MappingData<T>(), "Invalid scope operator preventing memory corruption");
+
+	// UVIndex, MaterialIndex, NormalIndex, etc..
+	std::string indexDataElementName;
+
+	if (indexOverride != "") {
+		// Colors should become ColorIndex
+		indexDataElementName = indexOverride;
+	} else {
+		// Some indexes will exist.
+		indexDataElementName = dataElementName + "Index";
+	}
+
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// goal: expand everything to be per vertex
 
 	ReferenceType l_ref_type = ReferenceType::direct;
@@ -383,7 +460,11 @@ MeshGeometry::MappingData<T> MeshGeometry::resolve_vertex_data_array(
 	// parse data into array
 	ParseVectorDataArray(tempData.data, GetRequiredElement(source, dataElementName));
 
+<<<<<<< HEAD
 	// index array wont always exist
+=======
+	// index array won't always exist
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	const ElementPtr element = GetOptionalElement(source, indexDataElementName);
 	if (element) {
 		ParseVectorDataArray(tempData.index, element);
@@ -447,5 +528,8 @@ const std::vector<Vector3> &LineGeometry::GetVertices() const {
 const std::vector<int> &LineGeometry::GetIndices() const {
 	return m_indices;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 } // namespace FBXDocParser

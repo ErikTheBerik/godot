@@ -3,9 +3,10 @@
 All such functions are invoked in a subprocess on Windows to prevent build flakiness.
 
 """
+
 import os
+from io import StringIO
 from platform_methods import subprocess_main
-from compat import StringIO
 
 
 def make_editor_icons_action(target, source, env):
@@ -50,10 +51,14 @@ def make_editor_icons_action(target, source, env):
 
         fname = str(f)
 
-        icon_name = os.path.basename(fname)[5:-4].title().replace("_", "")
+        # Trim the `.svg` extension from the string.
+        icon_name = os.path.basename(fname)[:-4]
         # some special cases
+<<<<<<< HEAD
         if icon_name in ["Int", "Bool", "Float"]:
             icon_name = icon_name.lower()
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
         if icon_name.endswith("MediumThumb"):  # don't know a better way to handle this
             thumb_medium_indices.append(str(index))
         if icon_name.endswith("BigThumb"):  # don't know a better way to handle this

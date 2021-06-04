@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,7 +36,12 @@
 #ifndef PIVOT_TRANSFORM_H
 #define PIVOT_TRANSFORM_H
 
+<<<<<<< HEAD
 #include "core/reference.h"
+=======
+#include "core/math/transform_3d.h"
+#include "core/object/reference.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #include "model_abstraction.h"
 
@@ -55,7 +65,10 @@ enum TransformationComp {
 };
 // Abstract away pivot data so its simpler to handle
 struct PivotTransform : Reference, ModelAbstraction {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	// at the end we want to keep geometric_ everything, post and pre rotation
 	// these are used during animation data processing / keyframe ingestion the rest can be simplified down / out.
 	Quat pre_rotation = Quat();
@@ -84,8 +97,16 @@ struct PivotTransform : Reference, ModelAbstraction {
 		print_verbose("raw pre_rotation " + raw_pre_rotation * (180 / Math_PI));
 		print_verbose("raw post_rotation " + raw_post_rotation * (180 / Math_PI));
 	}
+<<<<<<< HEAD
 	Transform ComputeGlobalTransform(Vector3 p_translation, Quat p_rotation, Vector3 p_scaling) const;
 	Transform ComputeLocalTransform(Vector3 p_translation, Quat p_rotation, Vector3 p_scaling) const;
+=======
+
+	Transform3D ComputeGlobalTransform(Transform3D t) const;
+	Transform3D ComputeLocalTransform(Transform3D t) const;
+	Transform3D ComputeGlobalTransform(Vector3 p_translation, Quat p_rotation, Vector3 p_scaling) const;
+	Transform3D ComputeLocalTransform(Vector3 p_translation, Quat p_rotation, Vector3 p_scaling) const;
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 	/* Extract into xforms and calculate once */
 	void ComputePivotTransform();
@@ -102,10 +123,17 @@ struct PivotTransform : Reference, ModelAbstraction {
 	//Transform chain[TransformationComp_MAXIMUM];
 
 	// cached for later use
+<<<<<<< HEAD
 	Transform GlobalTransform = Transform();
 	Transform LocalTransform = Transform();
 	Transform Local_Scaling_Matrix = Transform(); // used for inherit type.
 	Transform GeometricTransform = Transform(); // 3DS max only
+=======
+	Transform3D GlobalTransform = Transform3D();
+	Transform3D LocalTransform = Transform3D();
+	Transform3D Local_Scaling_Matrix = Transform3D(); // used for inherit type.
+	Transform3D GeometricTransform = Transform3D(); // 3DS max only
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 	FBXDocParser::TransformInheritance inherit_type = FBXDocParser::TransformInheritance_MAX; // maya fbx requires this - sorry <3
 };
 

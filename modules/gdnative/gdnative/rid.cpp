@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,14 +30,16 @@
 
 #include "gdnative/rid.h"
 
-#include "core/resource.h"
-#include "core/rid.h"
-#include "core/variant.h"
+#include "core/os/memory.h"
+#include "core/templates/rid.h"
+
+static_assert(sizeof(godot_rid) == sizeof(RID), "RID size mismatch");
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+<<<<<<< HEAD
 static_assert(sizeof(godot_rid) == sizeof(RID), "RID size mismatch");
 
 void GDAPI godot_rid_new(godot_rid *r_dest) {
@@ -63,12 +65,14 @@ godot_bool GDAPI godot_rid_operator_equal(const godot_rid *p_self, const godot_r
 	const RID *self = (const RID *)p_self;
 	const RID *b = (const RID *)p_b;
 	return *self == *b;
+=======
+void GDAPI godot_rid_new(godot_rid *p_self) {
+	memnew_placement(p_self, RID);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
-godot_bool GDAPI godot_rid_operator_less(const godot_rid *p_self, const godot_rid *p_b) {
-	const RID *self = (const RID *)p_self;
-	const RID *b = (const RID *)p_b;
-	return *self < *b;
+void GDAPI godot_rid_new_copy(godot_rid *r_dest, const godot_rid *p_src) {
+	memnew_placement(r_dest, RID(*(RID *)p_src));
 }
 
 #ifdef __cplusplus

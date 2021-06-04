@@ -5,8 +5,13 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
+<<<<<<< HEAD
 /* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
 /* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+=======
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -78,7 +83,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "FBXMeshGeometry.h"
 #include "FBXParser.h"
 #include "core/math/math_funcs.h"
+<<<<<<< HEAD
 #include "core/math/transform.h"
+=======
+#include "core/math/transform_3d.h"
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 
 #include <iostream>
 
@@ -89,10 +98,13 @@ using namespace Util;
 // ------------------------------------------------------------------------------------------------
 Deformer::Deformer(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name) :
 		Object(id, element, name) {
+<<<<<<< HEAD
 	const ScopePtr sc = GetRequiredScope(element);
 
 	const std::string &classname = ParseTokenAsString(GetRequiredToken(element, 2));
 	props = GetPropertyTable(doc, "Deformer.Fbx" + classname, element, sc, true);
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -101,10 +113,13 @@ Deformer::~Deformer() {
 
 Constraint::Constraint(uint64_t id, const ElementPtr element, const Document &doc, const std::string &name) :
 		Object(id, element, name) {
+<<<<<<< HEAD
 	const ScopePtr sc = GetRequiredScope(element);
 	const std::string &classname = ParseTokenAsString(GetRequiredToken(element, 2));
 	// used something.fbx as this is a cache name.
 	props = GetPropertyTable(doc, "Something.Fbx" + classname, element, sc, true);
+=======
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
 Constraint::~Constraint() {

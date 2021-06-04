@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -34,47 +34,53 @@
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
 #include "core/os/file_access.h"
-#include "core/variant_parser.h"
+#include "core/variant/variant_parser.h"
 #include "scene/resources/packed_scene.h"
 
-class ResourceInteractiveLoaderText : public ResourceInteractiveLoader {
-
-	bool translation_remapped;
+class ResourceLoaderText {
+	bool translation_remapped = false;
 	String local_path;
 	String res_path;
 	String error_text;
 
-	FileAccess *f;
+	FileAccess *f = nullptr;
 
 	VariantParser::StreamFile stream;
 
 	struct ExtResource {
+		RES cache;
 		String path;
 		String type;
 	};
 
-	bool is_scene;
+	bool is_scene = false;
 	String res_type;
 
-	bool ignore_resource_parsing;
+	bool ignore_resource_parsing = false;
 
 	//Map<String,String> remaps;
 
 	Map<int, ExtResource> ext_resources;
+	Map<int, RES> int_resources;
 
-	int resources_total;
-	int resource_current;
+	int resources_total = 0;
+	int resource_current = 0;
 	String resource_type;
 
 	VariantParser::Tag next_tag;
 
-	mutable int lines;
+	ResourceFormatLoader::CacheMode cache_mode = ResourceFormatLoader::CACHE_MODE_REUSE;
+
+	bool use_sub_threads = false;
+	float *progress = nullptr;
+
+	mutable int lines = 0;
 
 	Map<String, String> remaps;
 	//void _printerr();
 
-	static Error _parse_sub_resources(void *p_self, VariantParser::Stream *p_stream, Ref<Resource> &r_res, int &line, String &r_err_str) { return reinterpret_cast<ResourceInteractiveLoaderText *>(p_self)->_parse_sub_resource(p_stream, r_res, line, r_err_str); }
-	static Error _parse_ext_resources(void *p_self, VariantParser::Stream *p_stream, Ref<Resource> &r_res, int &line, String &r_err_str) { return reinterpret_cast<ResourceInteractiveLoaderText *>(p_self)->_parse_ext_resource(p_stream, r_res, line, r_err_str); }
+	static Error _parse_sub_resources(void *p_self, VariantParser::Stream *p_stream, Ref<Resource> &r_res, int &line, String &r_err_str) { return reinterpret_cast<ResourceLoaderText *>(p_self)->_parse_sub_resource(p_stream, r_res, line, r_err_str); }
+	static Error _parse_ext_resources(void *p_self, VariantParser::Stream *p_stream, Ref<Resource> &r_res, int &line, String &r_err_str) { return reinterpret_cast<ResourceLoaderText *>(p_self)->_parse_ext_resource(p_stream, r_res, line, r_err_str); }
 
 	Error _parse_sub_resource(VariantParser::Stream *p_stream, Ref<Resource> &r_res, int &line, String &r_err_str);
 	Error _parse_ext_resource(VariantParser::Stream *p_stream, Ref<Resource> &r_res, int &line, String &r_err_str);
@@ -85,7 +91,6 @@ class ResourceInteractiveLoaderText : public ResourceInteractiveLoader {
 	};
 
 	struct DummyReadData {
-
 		Map<RES, int> external_resources;
 		Map<int, RES> rev_external_resources;
 		Set<RES> resource_set;
@@ -102,20 +107,19 @@ class ResourceInteractiveLoaderText : public ResourceInteractiveLoader {
 
 	friend class ResourceFormatLoaderText;
 
-	List<RES> resource_cache;
-	Error error;
+	Error error = OK;
 
 	RES resource;
 
 	Ref<PackedScene> _parse_node_tag(VariantParser::ResourceParser &parser);
 
 public:
-	virtual void set_local_path(const String &p_local_path);
-	virtual Ref<Resource> get_resource();
-	virtual Error poll();
-	virtual int get_stage() const;
-	virtual int get_stage_count() const;
-	virtual void set_translation_remapped(bool p_remapped);
+	void set_local_path(const String &p_local_path);
+	Ref<Resource> get_resource();
+	Error load();
+	int get_stage() const;
+	int get_stage_count() const;
+	void set_translation_remapped(bool p_remapped);
 
 	void open(FileAccess *p_f, bool p_skip_first_tag = false);
 	String recognize(FileAccess *p_f);
@@ -123,14 +127,14 @@ public:
 	Error rename_dependencies(FileAccess *p_f, const String &p_path, const Map<String, String> &p_map);
 
 	Error save_as_binary(FileAccess *p_f, const String &p_path);
-	ResourceInteractiveLoaderText();
-	~ResourceInteractiveLoaderText();
+	ResourceLoaderText();
+	~ResourceLoaderText();
 };
 
 class ResourceFormatLoaderText : public ResourceFormatLoader {
 public:
 	static ResourceFormatLoaderText *singleton;
-	virtual Ref<ResourceInteractiveLoader> load_interactive(const String &p_path, const String &p_original_path = "", Error *r_error = NULL);
+	virtual RES load(const String &p_path, const String &p_original_path = "", Error *r_error = nullptr, bool p_use_sub_threads = false, float *r_progress = nullptr, CacheMode p_cache_mode = CACHE_MODE_REUSE);
 	virtual void get_recognized_extensions_for_type(const String &p_type, List<String> *p_extensions) const;
 	virtual void get_recognized_extensions(List<String> *p_extensions) const;
 	virtual bool handles_type(const String &p_type) const;
@@ -144,16 +148,15 @@ public:
 };
 
 class ResourceFormatSaverTextInstance {
-
 	String local_path;
 
 	Ref<PackedScene> packed_scene;
 
-	bool takeover_paths;
-	bool relative_paths;
-	bool bundle_resources;
-	bool skip_editor;
-	FileAccess *f;
+	bool takeover_paths = false;
+	bool relative_paths = false;
+	bool bundle_resources = false;
+	bool skip_editor = false;
+	FileAccess *f = nullptr;
 
 	struct NonPersistentKey { //for resource properties generated on the fly
 		RES base;
@@ -170,7 +173,7 @@ class ResourceFormatSaverTextInstance {
 
 	struct ResourceSort {
 		RES resource;
-		int index;
+		int index = 0;
 		bool operator<(const ResourceSort &p_right) const {
 			return index < p_right.index;
 		}

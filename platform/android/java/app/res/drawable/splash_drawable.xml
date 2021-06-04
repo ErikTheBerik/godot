@@ -6,7 +6,13 @@
 	<item>
 		<bitmap
 				android:gravity="center"
+<<<<<<< HEAD
 				android:src="@drawable/splash" />
 	</item>
 
+=======
+				android:filter="false"
+				android:src="@drawable/splash" />
+	</item>
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 </layer-list>

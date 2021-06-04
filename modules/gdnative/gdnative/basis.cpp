@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -31,12 +31,14 @@
 #include "gdnative/basis.h"
 
 #include "core/math/basis.h"
-#include "core/variant.h"
+
+static_assert(sizeof(godot_basis) == sizeof(Basis), "Basis size mismatch");
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+<<<<<<< HEAD
 static_assert(sizeof(godot_basis) == sizeof(Basis), "Basis size mismatch");
 
 void GDAPI godot_basis_new_with_rows(godot_basis *r_dest, const godot_vector3 *p_x_axis, const godot_vector3 *p_y_axis, const godot_vector3 *p_z_axis) {
@@ -204,93 +206,24 @@ void GDAPI godot_basis_new_with_euler_quat(godot_basis *r_dest, const godot_quat
 	Basis *dest = (Basis *)r_dest;
 	const Quat *euler = (const Quat *)p_euler;
 	*dest = Basis(*euler);
+=======
+void GDAPI godot_basis_new(godot_basis *p_self) {
+	memnew_placement(p_self, Basis);
+>>>>>>> 5d9cab3aeb3c62df6b7b44e6e68c0ebbb67f7a45
 }
 
-// p_elements is a pointer to an array of 3 (!!) vector3
-void GDAPI godot_basis_get_elements(const godot_basis *p_self, godot_vector3 *p_elements) {
-	const Basis *self = (const Basis *)p_self;
-	Vector3 *elements = (Vector3 *)p_elements;
-	elements[0] = self->elements[0];
-	elements[1] = self->elements[1];
-	elements[2] = self->elements[2];
+void GDAPI godot_basis_new_copy(godot_basis *r_dest, const godot_basis *p_src) {
+	memnew_placement(r_dest, Basis(*(Basis *)p_src));
 }
 
-godot_vector3 GDAPI godot_basis_get_axis(const godot_basis *p_self, const godot_int p_axis) {
-	godot_vector3 dest;
-	Vector3 *d = (Vector3 *)&dest;
-	const Basis *self = (const Basis *)p_self;
-	*d = self->get_axis(p_axis);
-	return dest;
-}
-
-void GDAPI godot_basis_set_axis(godot_basis *p_self, const godot_int p_axis, const godot_vector3 *p_value) {
+godot_vector3 GDAPI *godot_basis_operator_index(godot_basis *p_self, godot_int p_index) {
 	Basis *self = (Basis *)p_self;
-	const Vector3 *value = (const Vector3 *)p_value;
-	self->set_axis(p_axis, *value);
+	return (godot_vector3 *)&self->operator[](p_index);
 }
 
-godot_vector3 GDAPI godot_basis_get_row(const godot_basis *p_self, const godot_int p_row) {
-	godot_vector3 dest;
-	Vector3 *d = (Vector3 *)&dest;
+const godot_vector3 GDAPI *godot_basis_operator_index_const(const godot_basis *p_self, godot_int p_index) {
 	const Basis *self = (const Basis *)p_self;
-	*d = self->get_row(p_row);
-	return dest;
-}
-
-void GDAPI godot_basis_set_row(godot_basis *p_self, const godot_int p_row, const godot_vector3 *p_value) {
-	Basis *self = (Basis *)p_self;
-	const Vector3 *value = (const Vector3 *)p_value;
-	self->set_row(p_row, *value);
-}
-
-godot_bool GDAPI godot_basis_operator_equal(const godot_basis *p_self, const godot_basis *p_b) {
-	const Basis *self = (const Basis *)p_self;
-	const Basis *b = (const Basis *)p_b;
-	return *self == *b;
-}
-
-godot_basis GDAPI godot_basis_operator_add(const godot_basis *p_self, const godot_basis *p_b) {
-	godot_basis raw_dest;
-	Basis *dest = (Basis *)&raw_dest;
-	const Basis *self = (const Basis *)p_self;
-	const Basis *b = (const Basis *)p_b;
-	*dest = *self + *b;
-	return raw_dest;
-}
-
-godot_basis GDAPI godot_basis_operator_subtract(const godot_basis *p_self, const godot_basis *p_b) {
-	godot_basis raw_dest;
-	Basis *dest = (Basis *)&raw_dest;
-	const Basis *self = (const Basis *)p_self;
-	const Basis *b = (const Basis *)p_b;
-	*dest = *self - *b;
-	return raw_dest;
-}
-
-godot_basis GDAPI godot_basis_operator_multiply_vector(const godot_basis *p_self, const godot_basis *p_b) {
-	godot_basis raw_dest;
-	Basis *dest = (Basis *)&raw_dest;
-	const Basis *self = (const Basis *)p_self;
-	const Basis *b = (const Basis *)p_b;
-	*dest = *self * *b;
-	return raw_dest;
-}
-
-godot_basis GDAPI godot_basis_operator_multiply_scalar(const godot_basis *p_self, const godot_real p_b) {
-	godot_basis raw_dest;
-	Basis *dest = (Basis *)&raw_dest;
-	const Basis *self = (const Basis *)p_self;
-	*dest = *self * p_b;
-	return raw_dest;
-}
-
-godot_basis GDAPI godot_basis_slerp(const godot_basis *p_self, const godot_basis *p_b, const godot_real p_t) {
-	godot_basis raw_dest;
-	Basis *dest = (Basis *)&raw_dest;
-	const Basis *self = (const Basis *)p_self;
-	const Basis *b = (const Basis *)p_b;
-	*dest = self->slerp(*b, p_t);
-	return raw_dest;
+	return (const godot_vector3 *)&self->operator[](p_index);
 }
 
 #ifdef __cplusplus
